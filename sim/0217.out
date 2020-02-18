@@ -1,0 +1,2128 @@
+Using TensorFlow backend.
+WARNING: Logging before flag parsing goes to stderr.
+W0216 20:35:53.195370 140044311807808 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+W0216 20:35:53.209779 140044311807808 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0216 20:35:53.211694 140044311807808 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+W0216 20:35:53.235373 140044311807808 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+W0216 20:35:53.326580 140044311807808 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:986: The name tf.assign_add is deprecated. Please use tf.compat.v1.assign_add instead.
+
+W0216 20:35:53.357525 140044311807808 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:973: The name tf.assign is deprecated. Please use tf.compat.v1.assign instead.
+
+2020-02-16 20:35:53.377208: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-02-16 20:35:53.394583: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3699850000 Hz
+2020-02-16 20:35:53.395565: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55c1ab58a2a0 executing computations on platform Host. Devices:
+2020-02-16 20:35:53.396099: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2020-02-16 20:35:53.406775: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2020-02-16 20:35:53.423808: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+2020-02-16 20:35:53.423853: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (Gibbs): /proc/driver/nvidia/version does not exist
+2020-02-16 20:35:53.537691: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+the number of training sample: 50000; number of parameters: 29312
+mean Y: 3.276
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.118
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.305
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.043
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.258
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.469
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.301
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.527
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.288
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.748
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.001
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.291
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.124
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.262
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.639
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.290
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.674
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.312
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.701
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.003
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.287
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.126
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.333
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.239
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.301
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.996
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.282
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.286
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.267
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.826
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.318
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.518
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.272
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.525
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.280
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.096
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.290
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.901
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.276
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.018
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.292
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.838
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.282
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.852
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.285
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.899
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.298
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.611
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.293
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.843
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.294
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.722
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.272
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.398
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.286
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.768
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.267
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.422
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.328
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.232
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.282
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.307
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.283
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.919
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.302
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.566
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.293
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.414
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.275
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.723
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.300
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.193
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.260
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.911
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.289
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.066
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.279
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.043
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.285
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.471
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.259
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.942
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.289
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.019
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.311
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.688
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.258
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.213
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.269
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.170
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.310
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.536
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.278
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.484
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.292
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.102
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.306
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.368
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.290
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+accept H0 with p_value: 0.961
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.271
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.859
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.265
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.701
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.294
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.848
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.293
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.713
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.273
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.562
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.260
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.461
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.267
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.691
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.297
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.586
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.285
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.556
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.270
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.591
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.267
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.766
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.285
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.895
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.290
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.194
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.269
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.505
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.271
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.839
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.310
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.092
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.273
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.230
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.300
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.559
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.280
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.902
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.288
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.952
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.001
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.270
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.603
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.303
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.829
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.252
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.129
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.281
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.301
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.284
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.597
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.264
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.132
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.302
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.085
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.323
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.277
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.312
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.997
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.328
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.140
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.272
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.116
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.342
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.429
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.300
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.503
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.280
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.879
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.297
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.502
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.301
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.310
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00011: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.273
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.428
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.267
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.268
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.273
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.647
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.303
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.303
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.303
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+reject H0 with p_value: 0.037
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.259
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.279
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.304
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.805
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.309
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.448
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.001
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.293
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.137
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.273
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.813
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00016: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.286
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+accept H0 with p_value: 0.661
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.001
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.282
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.920
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.291
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+accept H0 with p_value: 0.599
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.312
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00015: early stopping
+accept H0 with p_value: 0.353
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+mean Y: 3.294
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+accept H0 with p_value: 0.862
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00014: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+reject H0 with p_value: 0.000
+Restoring model weights from the end of the best epoch
+Epoch 00013: early stopping
+Restoring model weights from the end of the best epoch
+Epoch 00012: early stopping
+reject H0 with p_value: 0.000
+Type 1 error: 0.050
+CASE 1: Power: 1.000
+CASE 2: Power: 1.000
+CASE 3: Power: 1.000
+training sample: 50000; MSE: 1.101, MSE_mask: 1.098
