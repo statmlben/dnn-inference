@@ -1,0 +1,3667 @@
+Using TensorFlow backend.
+/home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/home/ben/.local/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/ben/.local/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/ben/.local/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/ben/.local/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/ben/.local/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/ben/.local/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+WARNING: Logging before flag parsing goes to stderr.
+W0225 23:43:09.636506 140405763643200 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+
+W0225 23:43:09.636713 140405763643200 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:98: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
+
+W0225 23:43:09.645163 140405763643200 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:102: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+W0225 23:43:09.713429 140405763643200 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0225 23:43:09.715021 140405763643200 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+W0225 23:43:09.746535 140405763643200 deprecation_wrapper.py:119] From /home/ben/anaconda3/envs/taylor/lib/python3.6/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+2020-02-25 23:43:09.876218: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-02-25 23:43:09.880191: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3699850000 Hz
+2020-02-25 23:43:09.880609: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x555c5b40c090 executing computations on platform Host. Devices:
+2020-02-25 23:43:09.880630: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2020-02-25 23:43:09.881393: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2020-02-25 23:43:09.887948: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+2020-02-25 23:43:09.887998: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (Gibbs): /proc/driver/nvidia/version does not exist
+2020-02-25 23:43:09.935189: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+the number of training sample: 2000; number of parameters: 29312
+mean Y: 3.137
+Ratio is 0.100; SE: 1.551(1.878); SE_mask: 1.572(2.289)
+accept H0 with p_value: 0.459
+Ratio is 0.100; SE: 1.551(1.878); SE_mask: 2.057(3.690)
+reject H0 with p_value: 0.042
+Ratio is 0.100; SE: 1.551(1.878); SE_mask: 2.813(4.415)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.551(1.878); SE_mask: 2.581(4.455)
+reject H0 with p_value: 0.001
+mean Y: 3.273
+Ratio is 0.100; SE: 1.735(2.769); SE_mask: 1.458(2.081)
+accept H0 with p_value: 0.871
+Ratio is 0.100; SE: 1.735(2.769); SE_mask: 1.866(2.656)
+accept H0 with p_value: 0.315
+Ratio is 0.100; SE: 1.735(2.769); SE_mask: 3.001(5.328)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.735(2.769); SE_mask: 2.514(3.790)
+reject H0 with p_value: 0.009
+mean Y: 3.357
+Ratio is 0.100; SE: 1.305(1.824); SE_mask: 1.339(1.924)
+accept H0 with p_value: 0.427
+Ratio is 0.100; SE: 1.305(1.824); SE_mask: 2.121(3.231)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.305(1.824); SE_mask: 2.709(4.440)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.305(1.824); SE_mask: 3.183(4.937)
+reject H0 with p_value: 0.000
+mean Y: 3.168
+Ratio is 0.100; SE: 1.769(2.724); SE_mask: 1.158(1.828)
+accept H0 with p_value: 0.996
+Ratio is 0.100; SE: 1.769(2.724); SE_mask: 1.775(2.621)
+accept H0 with p_value: 0.492
+Ratio is 0.100; SE: 1.769(2.724); SE_mask: 2.764(5.016)
+reject H0 with p_value: 0.007
+Ratio is 0.100; SE: 1.769(2.724); SE_mask: 2.525(4.249)
+reject H0 with p_value: 0.017
+mean Y: 3.162
+Ratio is 0.100; SE: 1.620(2.810); SE_mask: 1.354(1.804)
+accept H0 with p_value: 0.869
+Ratio is 0.100; SE: 1.620(2.810); SE_mask: 2.216(3.531)
+reject H0 with p_value: 0.031
+Ratio is 0.100; SE: 1.620(2.810); SE_mask: 3.030(4.808)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.620(2.810); SE_mask: 2.396(4.193)
+reject H0 with p_value: 0.015
+mean Y: 3.433
+Ratio is 0.100; SE: 1.606(3.417); SE_mask: 1.213(1.676)
+accept H0 with p_value: 0.928
+Ratio is 0.100; SE: 1.606(3.417); SE_mask: 2.016(3.203)
+accept H0 with p_value: 0.108
+Ratio is 0.100; SE: 1.606(3.417); SE_mask: 2.321(4.437)
+reject H0 with p_value: 0.035
+Ratio is 0.100; SE: 1.606(3.417); SE_mask: 2.352(3.907)
+reject H0 with p_value: 0.021
+mean Y: 3.376
+Ratio is 0.100; SE: 1.491(2.367); SE_mask: 1.374(1.891)
+accept H0 with p_value: 0.707
+Ratio is 0.100; SE: 1.491(2.367); SE_mask: 1.835(2.843)
+accept H0 with p_value: 0.094
+Ratio is 0.100; SE: 1.491(2.367); SE_mask: 2.411(3.823)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.491(2.367); SE_mask: 2.429(3.485)
+reject H0 with p_value: 0.001
+mean Y: 3.307
+Ratio is 0.100; SE: 1.646(2.420); SE_mask: 1.240(1.664)
+accept H0 with p_value: 0.974
+Ratio is 0.100; SE: 1.646(2.420); SE_mask: 1.976(2.957)
+accept H0 with p_value: 0.111
+Ratio is 0.100; SE: 1.646(2.420); SE_mask: 2.423(3.291)
+reject H0 with p_value: 0.004
+Ratio is 0.100; SE: 1.646(2.420); SE_mask: 3.667(5.947)
+reject H0 with p_value: 0.000
+mean Y: 3.394
+Ratio is 0.100; SE: 1.629(2.343); SE_mask: 1.344(1.833)
+accept H0 with p_value: 0.913
+Ratio is 0.100; SE: 1.629(2.343); SE_mask: 1.990(2.692)
+accept H0 with p_value: 0.077
+Ratio is 0.100; SE: 1.629(2.343); SE_mask: 2.622(4.020)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.629(2.343); SE_mask: 2.787(4.974)
+reject H0 with p_value: 0.001
+mean Y: 3.146
+Ratio is 0.100; SE: 27.063(53.435); SE_mask: 1.426(2.218)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 27.063(53.435); SE_mask: 2.167(3.948)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 27.063(53.435); SE_mask: 2.327(3.795)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 27.063(53.435); SE_mask: 3.160(5.433)
+accept H0 with p_value: 1.000
+mean Y: 3.325
+Ratio is 0.100; SE: 1.926(2.763); SE_mask: 1.329(1.876)
+accept H0 with p_value: 0.994
+Ratio is 0.100; SE: 1.926(2.763); SE_mask: 2.294(3.665)
+accept H0 with p_value: 0.129
+Ratio is 0.100; SE: 1.926(2.763); SE_mask: 2.270(3.557)
+accept H0 with p_value: 0.140
+Ratio is 0.100; SE: 1.926(2.763); SE_mask: 2.328(4.209)
+accept H0 with p_value: 0.129
+mean Y: 3.419
+Ratio is 0.100; SE: 1.880(3.010); SE_mask: 31.168(60.777)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.880(3.010); SE_mask: 31.168(60.777)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.880(3.010); SE_mask: 2.462(3.567)
+reject H0 with p_value: 0.039
+Ratio is 0.100; SE: 1.880(3.010); SE_mask: 3.592(6.869)
+reject H0 with p_value: 0.001
+mean Y: 3.240
+Ratio is 0.100; SE: 1.734(2.519); SE_mask: 1.180(1.564)
+accept H0 with p_value: 0.996
+Ratio is 0.100; SE: 1.734(2.519); SE_mask: 2.071(3.437)
+accept H0 with p_value: 0.132
+Ratio is 0.100; SE: 1.734(2.519); SE_mask: 2.205(4.120)
+accept H0 with p_value: 0.084
+Ratio is 0.100; SE: 1.734(2.519); SE_mask: 2.204(4.030)
+accept H0 with p_value: 0.081
+mean Y: 3.553
+Ratio is 0.100; SE: 1.765(3.233); SE_mask: 1.360(1.785)
+accept H0 with p_value: 0.939
+Ratio is 0.100; SE: 1.765(3.233); SE_mask: 1.984(2.913)
+accept H0 with p_value: 0.239
+Ratio is 0.100; SE: 1.765(3.233); SE_mask: 2.759(4.666)
+reject H0 with p_value: 0.007
+Ratio is 0.100; SE: 1.765(3.233); SE_mask: 30.293(57.933)
+reject H0 with p_value: 0.000
+mean Y: 3.141
+Ratio is 0.100; SE: 1.637(2.374); SE_mask: 1.519(2.422)
+accept H0 with p_value: 0.688
+Ratio is 0.100; SE: 1.637(2.374); SE_mask: 2.218(3.505)
+reject H0 with p_value: 0.026
+Ratio is 0.100; SE: 1.637(2.374); SE_mask: 31.900(72.639)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.637(2.374); SE_mask: 2.819(4.483)
+reject H0 with p_value: 0.000
+mean Y: 3.162
+Ratio is 0.100; SE: 1.663(2.156); SE_mask: 1.267(1.949)
+accept H0 with p_value: 0.973
+Ratio is 0.100; SE: 1.663(2.156); SE_mask: 2.244(3.525)
+reject H0 with p_value: 0.023
+Ratio is 0.100; SE: 1.663(2.156); SE_mask: 2.358(3.545)
+reject H0 with p_value: 0.009
+Ratio is 0.100; SE: 1.663(2.156); SE_mask: 2.644(3.896)
+reject H0 with p_value: 0.001
+mean Y: 3.267
+Ratio is 0.100; SE: 1.458(2.036); SE_mask: 1.461(1.791)
+accept H0 with p_value: 0.494
+Ratio is 0.100; SE: 1.458(2.036); SE_mask: 2.295(3.549)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.458(2.036); SE_mask: 2.172(3.642)
+reject H0 with p_value: 0.008
+Ratio is 0.100; SE: 1.458(2.036); SE_mask: 2.516(3.904)
+reject H0 with p_value: 0.000
+mean Y: 3.140
+Ratio is 0.100; SE: 28.095(72.324); SE_mask: 1.399(1.898)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 28.095(72.324); SE_mask: 1.880(2.733)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 28.095(72.324); SE_mask: 2.534(3.570)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 28.095(72.324); SE_mask: 2.258(3.097)
+accept H0 with p_value: 1.000
+mean Y: 3.242
+Ratio is 0.100; SE: 1.881(3.055); SE_mask: 1.077(1.528)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 1.881(3.055); SE_mask: 1.889(3.125)
+accept H0 with p_value: 0.489
+Ratio is 0.100; SE: 1.881(3.055); SE_mask: 2.348(3.682)
+accept H0 with p_value: 0.084
+Ratio is 0.100; SE: 1.881(3.055); SE_mask: 2.264(3.551)
+accept H0 with p_value: 0.123
+mean Y: 3.372
+Ratio is 0.100; SE: 1.918(3.507); SE_mask: 1.101(1.543)
+accept H0 with p_value: 0.999
+Ratio is 0.100; SE: 1.918(3.507); SE_mask: 1.744(2.742)
+accept H0 with p_value: 0.709
+Ratio is 0.100; SE: 1.918(3.507); SE_mask: 2.688(4.210)
+reject H0 with p_value: 0.024
+Ratio is 0.100; SE: 1.918(3.507); SE_mask: 2.456(4.436)
+accept H0 with p_value: 0.089
+mean Y: 3.383
+Ratio is 0.100; SE: 1.744(2.530); SE_mask: 1.389(2.172)
+accept H0 with p_value: 0.934
+Ratio is 0.100; SE: 1.744(2.530); SE_mask: 1.956(2.892)
+accept H0 with p_value: 0.218
+Ratio is 0.100; SE: 1.744(2.530); SE_mask: 2.462(4.195)
+reject H0 with p_value: 0.019
+Ratio is 0.100; SE: 1.744(2.530); SE_mask: 2.825(5.817)
+reject H0 with p_value: 0.008
+mean Y: 3.451
+Ratio is 0.100; SE: 1.642(2.997); SE_mask: 1.520(1.984)
+accept H0 with p_value: 0.686
+Ratio is 0.100; SE: 1.642(2.997); SE_mask: 2.148(2.865)
+reject H0 with p_value: 0.042
+Ratio is 0.100; SE: 1.642(2.997); SE_mask: 2.521(3.295)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 1.642(2.997); SE_mask: 2.697(4.084)
+reject H0 with p_value: 0.002
+mean Y: 3.190
+Ratio is 0.100; SE: 1.548(2.494); SE_mask: 1.540(2.050)
+accept H0 with p_value: 0.513
+Ratio is 0.100; SE: 1.548(2.494); SE_mask: 1.866(2.949)
+accept H0 with p_value: 0.122
+Ratio is 0.100; SE: 1.548(2.494); SE_mask: 2.638(4.691)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.548(2.494); SE_mask: 2.974(5.187)
+reject H0 with p_value: 0.000
+mean Y: 3.244
+Ratio is 0.100; SE: 2.049(4.051); SE_mask: 24.441(52.249)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 2.049(4.051); SE_mask: 2.369(4.598)
+accept H0 with p_value: 0.230
+Ratio is 0.100; SE: 2.049(4.051); SE_mask: 2.355(5.070)
+accept H0 with p_value: 0.252
+Ratio is 0.100; SE: 2.049(4.051); SE_mask: 2.251(3.963)
+accept H0 with p_value: 0.307
+mean Y: 3.220
+Ratio is 0.100; SE: 1.729(2.652); SE_mask: 1.368(1.804)
+accept H0 with p_value: 0.944
+Ratio is 0.100; SE: 1.729(2.652); SE_mask: 1.780(2.357)
+accept H0 with p_value: 0.419
+Ratio is 0.100; SE: 1.729(2.652); SE_mask: 3.197(5.287)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.729(2.652); SE_mask: 3.230(5.421)
+reject H0 with p_value: 0.000
+mean Y: 3.409
+Ratio is 0.100; SE: 1.825(2.882); SE_mask: 1.397(2.004)
+accept H0 with p_value: 0.958
+Ratio is 0.100; SE: 1.825(2.882); SE_mask: 2.175(3.359)
+accept H0 with p_value: 0.132
+Ratio is 0.100; SE: 1.825(2.882); SE_mask: 2.324(3.493)
+accept H0 with p_value: 0.060
+Ratio is 0.100; SE: 1.825(2.882); SE_mask: 2.487(3.942)
+reject H0 with p_value: 0.028
+mean Y: 3.095
+Ratio is 0.100; SE: 1.717(2.638); SE_mask: 1.131(1.491)
+accept H0 with p_value: 0.997
+Ratio is 0.100; SE: 1.717(2.638); SE_mask: 1.665(2.462)
+accept H0 with p_value: 0.580
+Ratio is 0.100; SE: 1.717(2.638); SE_mask: 2.296(3.738)
+reject H0 with p_value: 0.037
+Ratio is 0.100; SE: 1.717(2.638); SE_mask: 2.028(4.011)
+accept H0 with p_value: 0.180
+mean Y: 3.261
+Ratio is 0.100; SE: 1.589(2.352); SE_mask: 1.362(1.840)
+accept H0 with p_value: 0.859
+Ratio is 0.100; SE: 1.589(2.352); SE_mask: 2.143(2.913)
+reject H0 with p_value: 0.018
+Ratio is 0.100; SE: 1.589(2.352); SE_mask: 2.370(4.234)
+reject H0 with p_value: 0.011
+Ratio is 0.100; SE: 1.589(2.352); SE_mask: 2.465(3.704)
+reject H0 with p_value: 0.002
+mean Y: 3.351
+Ratio is 0.100; SE: 1.725(2.629); SE_mask: 1.397(2.055)
+accept H0 with p_value: 0.918
+Ratio is 0.100; SE: 1.725(2.629); SE_mask: 2.254(3.351)
+reject H0 with p_value: 0.039
+Ratio is 0.100; SE: 1.725(2.629); SE_mask: 2.527(4.167)
+reject H0 with p_value: 0.011
+Ratio is 0.100; SE: 1.725(2.629); SE_mask: 2.799(4.546)
+reject H0 with p_value: 0.002
+mean Y: 3.478
+Ratio is 0.100; SE: 1.306(1.941); SE_mask: 1.385(2.087)
+accept H0 with p_value: 0.347
+Ratio is 0.100; SE: 1.306(1.941); SE_mask: 2.271(3.844)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.306(1.941); SE_mask: 2.543(4.644)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.306(1.941); SE_mask: 2.758(5.295)
+reject H0 with p_value: 0.000
+mean Y: 3.345
+Ratio is 0.100; SE: 1.534(2.583); SE_mask: 1.133(1.760)
+accept H0 with p_value: 0.965
+Ratio is 0.100; SE: 1.534(2.583); SE_mask: 1.882(3.028)
+accept H0 with p_value: 0.108
+Ratio is 0.100; SE: 1.534(2.583); SE_mask: 2.051(3.644)
+accept H0 with p_value: 0.051
+Ratio is 0.100; SE: 1.534(2.583); SE_mask: 2.616(3.967)
+reject H0 with p_value: 0.001
+mean Y: 3.195
+Ratio is 0.100; SE: 1.709(2.551); SE_mask: 1.342(2.254)
+accept H0 with p_value: 0.936
+Ratio is 0.100; SE: 1.709(2.551); SE_mask: 2.054(2.947)
+accept H0 with p_value: 0.105
+Ratio is 0.100; SE: 1.709(2.551); SE_mask: 2.234(3.717)
+reject H0 with p_value: 0.050
+Ratio is 0.100; SE: 1.709(2.551); SE_mask: 2.357(3.325)
+reject H0 with p_value: 0.014
+mean Y: 3.353
+Ratio is 0.100; SE: 1.536(2.083); SE_mask: 1.271(1.595)
+accept H0 with p_value: 0.923
+Ratio is 0.100; SE: 1.536(2.083); SE_mask: 1.812(2.908)
+accept H0 with p_value: 0.138
+Ratio is 0.100; SE: 1.536(2.083); SE_mask: 2.020(3.189)
+reject H0 with p_value: 0.036
+Ratio is 0.100; SE: 1.536(2.083); SE_mask: 2.546(3.993)
+reject H0 with p_value: 0.001
+mean Y: 3.157
+Ratio is 0.100; SE: 1.482(2.185); SE_mask: 1.494(2.336)
+accept H0 with p_value: 0.478
+Ratio is 0.100; SE: 1.482(2.185); SE_mask: 2.075(3.306)
+reject H0 with p_value: 0.017
+Ratio is 0.100; SE: 1.482(2.185); SE_mask: 2.663(5.060)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.482(2.185); SE_mask: 2.908(4.801)
+reject H0 with p_value: 0.000
+mean Y: 3.355
+Ratio is 0.100; SE: 1.538(2.199); SE_mask: 1.281(1.980)
+accept H0 with p_value: 0.890
+Ratio is 0.100; SE: 1.538(2.199); SE_mask: 1.656(4.082)
+accept H0 with p_value: 0.359
+Ratio is 0.100; SE: 1.538(2.199); SE_mask: 1.847(3.223)
+accept H0 with p_value: 0.132
+Ratio is 0.100; SE: 1.538(2.199); SE_mask: 2.291(4.879)
+reject H0 with p_value: 0.023
+mean Y: 3.310
+Ratio is 0.100; SE: 1.794(2.379); SE_mask: 1.135(1.696)
+accept H0 with p_value: 0.999
+Ratio is 0.100; SE: 1.794(2.379); SE_mask: 2.142(3.626)
+accept H0 with p_value: 0.129
+Ratio is 0.100; SE: 1.794(2.379); SE_mask: 2.548(4.655)
+reject H0 with p_value: 0.021
+Ratio is 0.100; SE: 1.794(2.379); SE_mask: 2.679(4.396)
+reject H0 with p_value: 0.006
+mean Y: 3.379
+Ratio is 0.100; SE: 1.549(2.127); SE_mask: 1.324(1.998)
+accept H0 with p_value: 0.862
+Ratio is 0.100; SE: 1.549(2.127); SE_mask: 1.976(2.904)
+reject H0 with p_value: 0.047
+Ratio is 0.100; SE: 1.549(2.127); SE_mask: 2.689(5.894)
+reject H0 with p_value: 0.005
+Ratio is 0.100; SE: 1.549(2.127); SE_mask: 2.597(4.623)
+reject H0 with p_value: 0.002
+mean Y: 3.467
+Ratio is 0.100; SE: 1.663(2.329); SE_mask: 1.694(2.660)
+accept H0 with p_value: 0.450
+Ratio is 0.100; SE: 1.663(2.329); SE_mask: 2.330(3.663)
+reject H0 with p_value: 0.015
+Ratio is 0.100; SE: 1.663(2.329); SE_mask: 2.886(4.443)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.663(2.329); SE_mask: 3.536(7.390)
+reject H0 with p_value: 0.000
+mean Y: 3.322
+Ratio is 0.100; SE: 1.402(1.949); SE_mask: 1.158(1.543)
+accept H0 with p_value: 0.918
+Ratio is 0.100; SE: 1.402(1.949); SE_mask: 1.768(2.924)
+accept H0 with p_value: 0.070
+Ratio is 0.100; SE: 1.402(1.949); SE_mask: 2.204(3.365)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.402(1.949); SE_mask: 2.693(4.503)
+reject H0 with p_value: 0.000
+mean Y: 3.364
+Ratio is 0.100; SE: 1.327(1.801); SE_mask: 1.349(2.297)
+accept H0 with p_value: 0.458
+Ratio is 0.100; SE: 1.327(1.801); SE_mask: 1.945(2.938)
+reject H0 with p_value: 0.006
+Ratio is 0.100; SE: 1.327(1.801); SE_mask: 2.331(4.080)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.327(1.801); SE_mask: 2.355(3.822)
+reject H0 with p_value: 0.000
+mean Y: 3.314
+Ratio is 0.100; SE: 1.353(1.903); SE_mask: 1.562(2.152)
+accept H0 with p_value: 0.151
+Ratio is 0.100; SE: 1.353(1.903); SE_mask: 2.266(4.189)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 1.353(1.903); SE_mask: 2.755(4.549)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.353(1.903); SE_mask: 2.366(4.271)
+reject H0 with p_value: 0.001
+mean Y: 3.271
+Ratio is 0.100; SE: 1.719(2.703); SE_mask: 1.393(1.855)
+accept H0 with p_value: 0.920
+Ratio is 0.100; SE: 1.719(2.703); SE_mask: 2.394(3.711)
+reject H0 with p_value: 0.019
+Ratio is 0.100; SE: 1.719(2.703); SE_mask: 3.110(5.536)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.719(2.703); SE_mask: 2.495(3.994)
+reject H0 with p_value: 0.011
+mean Y: 3.309
+Ratio is 0.100; SE: 1.863(2.850); SE_mask: 1.597(2.511)
+accept H0 with p_value: 0.840
+Ratio is 0.100; SE: 1.863(2.850); SE_mask: 2.157(3.816)
+accept H0 with p_value: 0.191
+Ratio is 0.100; SE: 1.863(2.850); SE_mask: 3.112(5.314)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.863(2.850); SE_mask: 2.722(5.047)
+reject H0 with p_value: 0.018
+mean Y: 3.449
+Ratio is 0.100; SE: 1.576(2.457); SE_mask: 1.407(2.520)
+accept H0 with p_value: 0.751
+Ratio is 0.100; SE: 1.576(2.457); SE_mask: 2.112(4.229)
+accept H0 with p_value: 0.061
+Ratio is 0.100; SE: 1.576(2.457); SE_mask: 3.384(7.568)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.576(2.457); SE_mask: 3.428(6.205)
+reject H0 with p_value: 0.000
+mean Y: 3.172
+Ratio is 0.100; SE: 2.093(3.305); SE_mask: 1.488(1.972)
+accept H0 with p_value: 0.987
+Ratio is 0.100; SE: 2.093(3.305); SE_mask: 2.112(3.296)
+accept H0 with p_value: 0.477
+Ratio is 0.100; SE: 2.093(3.305); SE_mask: 2.769(4.380)
+reject H0 with p_value: 0.041
+Ratio is 0.100; SE: 2.093(3.305); SE_mask: 2.488(4.114)
+accept H0 with p_value: 0.145
+mean Y: 3.190
+Ratio is 0.100; SE: 1.434(2.218); SE_mask: 1.373(1.981)
+accept H0 with p_value: 0.614
+Ratio is 0.100; SE: 1.434(2.218); SE_mask: 2.281(3.536)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.434(2.218); SE_mask: 2.908(4.513)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.434(2.218); SE_mask: 2.475(3.966)
+reject H0 with p_value: 0.001
+mean Y: 3.252
+Ratio is 0.100; SE: 1.335(2.001); SE_mask: 1.482(1.870)
+accept H0 with p_value: 0.223
+Ratio is 0.100; SE: 1.335(2.001); SE_mask: 2.064(2.544)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.335(2.001); SE_mask: 2.559(3.722)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.335(2.001); SE_mask: 3.013(5.450)
+reject H0 with p_value: 0.000
+mean Y: 3.364
+Ratio is 0.100; SE: 1.507(2.489); SE_mask: 1.415(2.465)
+accept H0 with p_value: 0.644
+Ratio is 0.100; SE: 1.507(2.489); SE_mask: 1.651(2.470)
+accept H0 with p_value: 0.280
+Ratio is 0.100; SE: 1.507(2.489); SE_mask: 2.268(4.115)
+reject H0 with p_value: 0.013
+Ratio is 0.100; SE: 1.507(2.489); SE_mask: 2.861(5.178)
+reject H0 with p_value: 0.000
+mean Y: 3.225
+Ratio is 0.100; SE: 1.429(2.267); SE_mask: 1.599(2.372)
+accept H0 with p_value: 0.231
+Ratio is 0.100; SE: 1.429(2.267); SE_mask: 1.948(3.347)
+reject H0 with p_value: 0.035
+Ratio is 0.100; SE: 1.429(2.267); SE_mask: 3.050(4.645)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.429(2.267); SE_mask: 2.386(3.767)
+reject H0 with p_value: 0.001
+mean Y: 3.326
+Ratio is 0.100; SE: 1.676(2.551); SE_mask: 1.627(2.264)
+accept H0 with p_value: 0.581
+Ratio is 0.100; SE: 1.676(2.551); SE_mask: 1.827(3.074)
+accept H0 with p_value: 0.297
+Ratio is 0.100; SE: 1.676(2.551); SE_mask: 2.865(4.382)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.676(2.551); SE_mask: 2.267(3.050)
+reject H0 with p_value: 0.018
+mean Y: 3.225
+Ratio is 0.100; SE: 1.768(2.519); SE_mask: 1.490(2.527)
+accept H0 with p_value: 0.864
+Ratio is 0.100; SE: 1.768(2.519); SE_mask: 1.911(3.606)
+accept H0 with p_value: 0.323
+Ratio is 0.100; SE: 1.768(2.519); SE_mask: 2.615(4.541)
+reject H0 with p_value: 0.011
+Ratio is 0.100; SE: 1.768(2.519); SE_mask: 3.063(5.104)
+reject H0 with p_value: 0.001
+mean Y: 3.188
+Ratio is 0.100; SE: 1.400(2.168); SE_mask: 1.405(1.873)
+accept H0 with p_value: 0.490
+Ratio is 0.100; SE: 1.400(2.168); SE_mask: 1.590(2.368)
+accept H0 with p_value: 0.202
+Ratio is 0.100; SE: 1.400(2.168); SE_mask: 2.723(4.546)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.400(2.168); SE_mask: 20.183(47.597)
+reject H0 with p_value: 0.000
+mean Y: 3.393
+Ratio is 0.100; SE: 1.502(2.438); SE_mask: 1.321(1.865)
+accept H0 with p_value: 0.798
+Ratio is 0.100; SE: 1.502(2.438); SE_mask: 2.086(3.101)
+reject H0 with p_value: 0.018
+Ratio is 0.100; SE: 1.502(2.438); SE_mask: 2.312(3.829)
+reject H0 with p_value: 0.006
+Ratio is 0.100; SE: 1.502(2.438); SE_mask: 2.772(4.202)
+reject H0 with p_value: 0.000
+mean Y: 3.388
+Ratio is 0.100; SE: 1.939(3.118); SE_mask: 1.464(1.862)
+accept H0 with p_value: 0.968
+Ratio is 0.100; SE: 1.939(3.118); SE_mask: 2.006(2.973)
+accept H0 with p_value: 0.413
+Ratio is 0.100; SE: 1.939(3.118); SE_mask: 2.758(5.211)
+reject H0 with p_value: 0.028
+Ratio is 0.100; SE: 1.939(3.118); SE_mask: 2.612(4.431)
+reject H0 with p_value: 0.040
+mean Y: 3.101
+Ratio is 0.100; SE: 1.739(2.588); SE_mask: 1.611(2.213)
+accept H0 with p_value: 0.702
+Ratio is 0.100; SE: 1.739(2.588); SE_mask: 2.921(5.394)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 1.739(2.588); SE_mask: 3.015(5.129)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.739(2.588); SE_mask: 3.101(5.716)
+reject H0 with p_value: 0.001
+mean Y: 3.340
+Ratio is 0.100; SE: 1.998(2.897); SE_mask: 1.339(1.744)
+accept H0 with p_value: 0.997
+Ratio is 0.100; SE: 1.998(2.897); SE_mask: 1.976(3.107)
+accept H0 with p_value: 0.529
+Ratio is 0.100; SE: 1.998(2.897); SE_mask: 23.560(45.986)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.998(2.897); SE_mask: 2.455(3.814)
+accept H0 with p_value: 0.088
+mean Y: 3.251
+Ratio is 0.100; SE: 1.621(2.202); SE_mask: 1.549(2.322)
+accept H0 with p_value: 0.624
+Ratio is 0.100; SE: 1.621(2.202); SE_mask: 2.325(4.044)
+reject H0 with p_value: 0.015
+Ratio is 0.100; SE: 1.621(2.202); SE_mask: 2.154(3.267)
+reject H0 with p_value: 0.028
+Ratio is 0.100; SE: 1.621(2.202); SE_mask: 2.635(5.349)
+reject H0 with p_value: 0.007
+mean Y: 3.280
+Ratio is 0.100; SE: 1.913(3.094); SE_mask: 1.448(2.194)
+accept H0 with p_value: 0.958
+Ratio is 0.100; SE: 1.913(3.094); SE_mask: 1.878(2.815)
+accept H0 with p_value: 0.547
+Ratio is 0.100; SE: 1.913(3.094); SE_mask: 2.617(3.902)
+reject H0 with p_value: 0.023
+Ratio is 0.100; SE: 1.913(3.094); SE_mask: 2.581(5.121)
+accept H0 with p_value: 0.057
+mean Y: 3.264
+Ratio is 0.100; SE: 1.462(2.307); SE_mask: 1.401(1.998)
+accept H0 with p_value: 0.612
+Ratio is 0.100; SE: 1.462(2.307); SE_mask: 1.980(3.237)
+reject H0 with p_value: 0.032
+Ratio is 0.100; SE: 1.462(2.307); SE_mask: 2.611(4.100)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.462(2.307); SE_mask: 2.872(5.235)
+reject H0 with p_value: 0.000
+mean Y: 3.341
+Ratio is 0.100; SE: 1.569(2.270); SE_mask: 1.484(2.109)
+accept H0 with p_value: 0.652
+Ratio is 0.100; SE: 1.569(2.270); SE_mask: 2.228(3.256)
+reject H0 with p_value: 0.009
+Ratio is 0.100; SE: 1.569(2.270); SE_mask: 2.866(5.428)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.569(2.270); SE_mask: 2.676(4.097)
+reject H0 with p_value: 0.000
+mean Y: 3.264
+Ratio is 0.100; SE: 1.754(2.781); SE_mask: 1.575(2.229)
+accept H0 with p_value: 0.761
+Ratio is 0.100; SE: 1.754(2.781); SE_mask: 2.530(4.421)
+reject H0 with p_value: 0.018
+Ratio is 0.100; SE: 1.754(2.781); SE_mask: 2.371(3.576)
+reject H0 with p_value: 0.027
+Ratio is 0.100; SE: 1.754(2.781); SE_mask: 2.455(3.592)
+reject H0 with p_value: 0.015
+mean Y: 3.424
+Ratio is 0.100; SE: 1.701(2.171); SE_mask: 1.443(2.185)
+accept H0 with p_value: 0.882
+Ratio is 0.100; SE: 1.701(2.171); SE_mask: 1.898(2.660)
+accept H0 with p_value: 0.209
+Ratio is 0.100; SE: 1.701(2.171); SE_mask: 2.584(3.943)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 1.701(2.171); SE_mask: 3.037(5.637)
+reject H0 with p_value: 0.001
+mean Y: 3.131
+Ratio is 0.100; SE: 1.661(2.877); SE_mask: 1.298(1.979)
+accept H0 with p_value: 0.929
+Ratio is 0.100; SE: 1.661(2.877); SE_mask: 2.477(4.264)
+reject H0 with p_value: 0.012
+Ratio is 0.100; SE: 1.661(2.877); SE_mask: 2.192(3.353)
+reject H0 with p_value: 0.044
+Ratio is 0.100; SE: 1.661(2.877); SE_mask: 2.259(4.457)
+accept H0 with p_value: 0.055
+mean Y: 3.305
+Ratio is 0.100; SE: 1.756(2.483); SE_mask: 1.040(1.284)
+accept H0 with p_value: 1.000
+Ratio is 0.100; SE: 1.756(2.483); SE_mask: 1.848(2.948)
+accept H0 with p_value: 0.368
+Ratio is 0.100; SE: 1.756(2.483); SE_mask: 2.663(3.979)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 1.756(2.483); SE_mask: 2.582(3.722)
+reject H0 with p_value: 0.005
+mean Y: 3.117
+Ratio is 0.100; SE: 1.575(2.353); SE_mask: 1.322(1.686)
+accept H0 with p_value: 0.892
+Ratio is 0.100; SE: 1.575(2.353); SE_mask: 2.017(2.876)
+reject H0 with p_value: 0.046
+Ratio is 0.100; SE: 1.575(2.353); SE_mask: 2.933(4.460)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.575(2.353); SE_mask: 2.796(5.027)
+reject H0 with p_value: 0.001
+mean Y: 3.302
+Ratio is 0.100; SE: 1.840(2.847); SE_mask: 1.393(1.663)
+accept H0 with p_value: 0.972
+Ratio is 0.100; SE: 1.840(2.847); SE_mask: 2.007(3.105)
+accept H0 with p_value: 0.288
+Ratio is 0.100; SE: 1.840(2.847); SE_mask: 2.438(3.486)
+reject H0 with p_value: 0.030
+Ratio is 0.100; SE: 1.840(2.847); SE_mask: 2.347(4.842)
+accept H0 with p_value: 0.101
+mean Y: 3.338
+Ratio is 0.100; SE: 1.637(2.502); SE_mask: 1.010(1.395)
+accept H0 with p_value: 0.999
+Ratio is 0.100; SE: 1.637(2.502); SE_mask: 2.103(3.718)
+accept H0 with p_value: 0.071
+Ratio is 0.100; SE: 1.637(2.502); SE_mask: 2.473(3.833)
+reject H0 with p_value: 0.005
+Ratio is 0.100; SE: 1.637(2.502); SE_mask: 33.954(71.241)
+reject H0 with p_value: 0.000
+mean Y: 3.238
+Ratio is 0.100; SE: 1.770(2.592); SE_mask: 1.279(2.018)
+accept H0 with p_value: 0.983
+Ratio is 0.100; SE: 1.770(2.592); SE_mask: 2.000(3.529)
+accept H0 with p_value: 0.229
+Ratio is 0.100; SE: 1.770(2.592); SE_mask: 3.160(6.516)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 1.770(2.592); SE_mask: 3.023(4.902)
+reject H0 with p_value: 0.001
+mean Y: 3.342
+Ratio is 0.100; SE: 1.751(2.484); SE_mask: 1.553(2.192)
+accept H0 with p_value: 0.800
+Ratio is 0.100; SE: 1.751(2.484); SE_mask: 1.931(2.524)
+accept H0 with p_value: 0.236
+Ratio is 0.100; SE: 1.751(2.484); SE_mask: 2.526(4.941)
+reject H0 with p_value: 0.024
+Ratio is 0.100; SE: 1.751(2.484); SE_mask: 2.936(5.402)
+reject H0 with p_value: 0.002
+mean Y: 3.290
+Ratio is 0.100; SE: 1.752(2.297); SE_mask: 1.221(1.527)
+accept H0 with p_value: 0.997
+Ratio is 0.100; SE: 1.752(2.297); SE_mask: 1.702(2.517)
+accept H0 with p_value: 0.582
+Ratio is 0.100; SE: 1.752(2.297); SE_mask: 2.748(4.852)
+reject H0 with p_value: 0.004
+Ratio is 0.100; SE: 1.752(2.297); SE_mask: 2.153(3.856)
+accept H0 with p_value: 0.103
+mean Y: 3.223
+Ratio is 0.100; SE: 1.627(2.663); SE_mask: 1.543(2.292)
+accept H0 with p_value: 0.633
+Ratio is 0.100; SE: 1.627(2.663); SE_mask: 2.834(4.286)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.627(2.663); SE_mask: 2.900(4.647)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.627(2.663); SE_mask: 2.913(4.720)
+reject H0 with p_value: 0.000
+mean Y: 3.303
+Ratio is 0.100; SE: 1.671(2.652); SE_mask: 1.372(2.194)
+accept H0 with p_value: 0.891
+Ratio is 0.100; SE: 1.671(2.652); SE_mask: 2.386(4.128)
+reject H0 with p_value: 0.020
+Ratio is 0.100; SE: 1.671(2.652); SE_mask: 2.338(3.945)
+reject H0 with p_value: 0.024
+Ratio is 0.100; SE: 1.671(2.652); SE_mask: 2.776(4.626)
+reject H0 with p_value: 0.002
+mean Y: 3.278
+Ratio is 0.100; SE: 1.479(2.041); SE_mask: 33.250(72.481)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.479(2.041); SE_mask: 1.836(3.280)
+accept H0 with p_value: 0.096
+Ratio is 0.100; SE: 1.479(2.041); SE_mask: 2.552(4.019)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.479(2.041); SE_mask: 2.778(4.951)
+reject H0 with p_value: 0.000
+mean Y: 3.274
+Ratio is 0.100; SE: 2.105(3.534); SE_mask: 1.425(2.224)
+accept H0 with p_value: 0.989
+Ratio is 0.100; SE: 2.105(3.534); SE_mask: 2.340(4.333)
+accept H0 with p_value: 0.276
+Ratio is 0.100; SE: 2.105(3.534); SE_mask: 2.297(3.650)
+accept H0 with p_value: 0.296
+Ratio is 0.100; SE: 2.105(3.534); SE_mask: 2.552(4.595)
+accept H0 with p_value: 0.138
+mean Y: 3.155
+Ratio is 0.100; SE: 1.820(2.595); SE_mask: 1.246(1.655)
+accept H0 with p_value: 0.996
+Ratio is 0.100; SE: 1.820(2.595); SE_mask: 1.657(2.480)
+accept H0 with p_value: 0.740
+Ratio is 0.100; SE: 1.820(2.595); SE_mask: 2.523(4.304)
+reject H0 with p_value: 0.024
+Ratio is 0.100; SE: 1.820(2.595); SE_mask: 2.150(3.303)
+accept H0 with p_value: 0.133
+mean Y: 3.147
+Ratio is 0.100; SE: 1.646(2.431); SE_mask: 1.330(1.976)
+accept H0 with p_value: 0.923
+Ratio is 0.100; SE: 1.646(2.431); SE_mask: 1.902(2.847)
+accept H0 with p_value: 0.166
+Ratio is 0.100; SE: 1.646(2.431); SE_mask: 2.325(4.759)
+reject H0 with p_value: 0.036
+Ratio is 0.100; SE: 1.646(2.431); SE_mask: 2.858(4.897)
+reject H0 with p_value: 0.001
+mean Y: 3.387
+Ratio is 0.100; SE: 1.707(2.466); SE_mask: 1.399(2.154)
+accept H0 with p_value: 0.909
+Ratio is 0.100; SE: 1.707(2.466); SE_mask: 1.915(3.276)
+accept H0 with p_value: 0.237
+Ratio is 0.100; SE: 1.707(2.466); SE_mask: 2.653(5.019)
+reject H0 with p_value: 0.008
+Ratio is 0.100; SE: 1.707(2.466); SE_mask: 3.066(6.381)
+reject H0 with p_value: 0.002
+mean Y: 3.189
+Ratio is 0.100; SE: 1.986(3.712); SE_mask: 1.389(2.134)
+accept H0 with p_value: 0.976
+Ratio is 0.100; SE: 1.986(3.712); SE_mask: 2.574(3.814)
+accept H0 with p_value: 0.059
+Ratio is 0.100; SE: 1.986(3.712); SE_mask: 2.829(4.869)
+reject H0 with p_value: 0.026
+Ratio is 0.100; SE: 1.986(3.712); SE_mask: 3.203(4.991)
+reject H0 with p_value: 0.003
+mean Y: 3.331
+Ratio is 0.100; SE: 1.680(2.508); SE_mask: 1.194(1.806)
+accept H0 with p_value: 0.987
+Ratio is 0.100; SE: 1.680(2.508); SE_mask: 1.608(2.238)
+accept H0 with p_value: 0.620
+Ratio is 0.100; SE: 1.680(2.508); SE_mask: 2.056(3.506)
+accept H0 with p_value: 0.109
+Ratio is 0.100; SE: 1.680(2.508); SE_mask: 2.436(4.064)
+reject H0 with p_value: 0.013
+mean Y: 3.314
+Ratio is 0.100; SE: 1.664(2.428); SE_mask: 1.381(2.030)
+accept H0 with p_value: 0.898
+Ratio is 0.100; SE: 1.664(2.428); SE_mask: 2.492(4.100)
+reject H0 with p_value: 0.007
+Ratio is 0.100; SE: 1.664(2.428); SE_mask: 3.239(5.856)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.664(2.428); SE_mask: 2.840(4.236)
+reject H0 with p_value: 0.000
+mean Y: 3.484
+Ratio is 0.100; SE: 1.789(2.687); SE_mask: 1.726(2.341)
+accept H0 with p_value: 0.598
+Ratio is 0.100; SE: 1.789(2.687); SE_mask: 2.851(4.419)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.789(2.687); SE_mask: 3.368(6.199)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.789(2.687); SE_mask: 2.875(5.279)
+reject H0 with p_value: 0.005
+mean Y: 3.162
+Ratio is 0.100; SE: 1.795(2.476); SE_mask: 1.442(1.913)
+accept H0 with p_value: 0.945
+Ratio is 0.100; SE: 1.795(2.476); SE_mask: 2.318(3.650)
+reject H0 with p_value: 0.047
+Ratio is 0.100; SE: 1.795(2.476); SE_mask: 2.909(4.739)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.795(2.476); SE_mask: 2.885(5.017)
+reject H0 with p_value: 0.003
+mean Y: 3.370
+Ratio is 0.100; SE: 1.712(2.536); SE_mask: 1.609(2.325)
+accept H0 with p_value: 0.665
+Ratio is 0.100; SE: 1.712(2.536); SE_mask: 2.106(3.448)
+accept H0 with p_value: 0.097
+Ratio is 0.100; SE: 1.712(2.536); SE_mask: 3.087(4.854)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.712(2.536); SE_mask: 2.989(4.683)
+reject H0 with p_value: 0.000
+mean Y: 3.295
+Ratio is 0.100; SE: 1.684(2.744); SE_mask: 1.206(1.763)
+accept H0 with p_value: 0.981
+Ratio is 0.100; SE: 1.684(2.744); SE_mask: 1.707(2.819)
+accept H0 with p_value: 0.466
+Ratio is 0.100; SE: 1.684(2.744); SE_mask: 2.503(4.806)
+reject H0 with p_value: 0.018
+Ratio is 0.100; SE: 1.684(2.744); SE_mask: 2.643(4.629)
+reject H0 with p_value: 0.006
+mean Y: 3.341
+Ratio is 0.100; SE: 1.549(2.172); SE_mask: 1.357(1.965)
+accept H0 with p_value: 0.823
+Ratio is 0.100; SE: 1.549(2.172); SE_mask: 2.323(3.719)
+reject H0 with p_value: 0.005
+Ratio is 0.100; SE: 1.549(2.172); SE_mask: 2.605(4.289)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.549(2.172); SE_mask: 3.013(4.735)
+reject H0 with p_value: 0.000
+mean Y: 3.355
+Ratio is 0.100; SE: 1.705(2.334); SE_mask: 1.290(1.790)
+accept H0 with p_value: 0.977
+Ratio is 0.100; SE: 1.705(2.334); SE_mask: 1.913(2.734)
+accept H0 with p_value: 0.207
+Ratio is 0.100; SE: 1.705(2.334); SE_mask: 2.275(3.452)
+reject H0 with p_value: 0.027
+Ratio is 0.100; SE: 1.705(2.334); SE_mask: 2.704(4.171)
+reject H0 with p_value: 0.002
+mean Y: 3.179
+Ratio is 0.100; SE: 1.646(2.376); SE_mask: 1.610(2.940)
+accept H0 with p_value: 0.554
+Ratio is 0.100; SE: 1.646(2.376); SE_mask: 2.081(4.049)
+accept H0 with p_value: 0.095
+Ratio is 0.100; SE: 1.646(2.376); SE_mask: 3.006(5.459)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.646(2.376); SE_mask: 29.470(51.101)
+reject H0 with p_value: 0.000
+mean Y: 3.363
+Ratio is 0.100; SE: 1.969(3.986); SE_mask: 1.413(2.210)
+accept H0 with p_value: 0.958
+Ratio is 0.100; SE: 1.969(3.986); SE_mask: 2.353(4.337)
+accept H0 with p_value: 0.179
+Ratio is 0.100; SE: 1.969(3.986); SE_mask: 2.487(4.211)
+accept H0 with p_value: 0.103
+Ratio is 0.100; SE: 1.969(3.986); SE_mask: 2.302(3.944)
+accept H0 with p_value: 0.200
+mean Y: 3.294
+Ratio is 0.100; SE: 1.726(2.719); SE_mask: 1.440(2.080)
+accept H0 with p_value: 0.882
+Ratio is 0.100; SE: 1.726(2.719); SE_mask: 1.843(2.682)
+accept H0 with p_value: 0.333
+Ratio is 0.100; SE: 1.726(2.719); SE_mask: 2.594(3.917)
+reject H0 with p_value: 0.005
+Ratio is 0.100; SE: 1.726(2.719); SE_mask: 2.284(3.800)
+reject H0 with p_value: 0.046
+mean Y: 3.225
+Ratio is 0.100; SE: 1.484(2.058); SE_mask: 1.523(2.087)
+accept H0 with p_value: 0.426
+Ratio is 0.100; SE: 1.484(2.058); SE_mask: 2.469(3.846)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.484(2.058); SE_mask: 2.567(4.051)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.484(2.058); SE_mask: 2.541(4.028)
+reject H0 with p_value: 0.000
+mean Y: 3.349
+Ratio is 0.100; SE: 1.492(2.164); SE_mask: 1.470(2.157)
+accept H0 with p_value: 0.540
+Ratio is 0.100; SE: 1.492(2.164); SE_mask: 2.398(3.946)
+reject H0 with p_value: 0.002
+Ratio is 0.100; SE: 1.492(2.164); SE_mask: 2.280(3.539)
+reject H0 with p_value: 0.004
+Ratio is 0.100; SE: 1.492(2.164); SE_mask: 2.773(5.671)
+reject H0 with p_value: 0.001
+mean Y: 3.164
+Ratio is 0.100; SE: 1.737(2.558); SE_mask: 1.157(1.671)
+accept H0 with p_value: 0.996
+Ratio is 0.100; SE: 1.737(2.558); SE_mask: 2.151(3.866)
+accept H0 with p_value: 0.103
+Ratio is 0.100; SE: 1.737(2.558); SE_mask: 2.248(3.414)
+reject H0 with p_value: 0.045
+Ratio is 0.100; SE: 1.737(2.558); SE_mask: 2.415(3.480)
+reject H0 with p_value: 0.013
+mean Y: 3.263
+Ratio is 0.100; SE: 1.677(2.546); SE_mask: 1.568(2.078)
+accept H0 with p_value: 0.680
+Ratio is 0.100; SE: 1.677(2.546); SE_mask: 2.714(4.198)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.677(2.546); SE_mask: 3.143(4.578)
+reject H0 with p_value: 0.000
+Ratio is 0.100; SE: 1.677(2.546); SE_mask: 2.430(4.000)
+reject H0 with p_value: 0.012
+mean Y: 3.335
+Ratio is 0.100; SE: 1.698(2.676); SE_mask: 1.343(1.806)
+accept H0 with p_value: 0.940
+Ratio is 0.100; SE: 1.698(2.676); SE_mask: 1.947(2.765)
+accept H0 with p_value: 0.180
+Ratio is 0.100; SE: 1.698(2.676); SE_mask: 2.587(4.477)
+reject H0 with p_value: 0.008
+Ratio is 0.100; SE: 1.698(2.676); SE_mask: 2.456(3.541)
+reject H0 with p_value: 0.008
+mean Y: 3.087
+Ratio is 0.100; SE: 1.675(2.570); SE_mask: 1.172(1.842)
+accept H0 with p_value: 0.988
+Ratio is 0.100; SE: 1.675(2.570); SE_mask: 1.696(2.619)
+accept H0 with p_value: 0.468
+Ratio is 0.100; SE: 1.675(2.570); SE_mask: 2.335(4.427)
+reject H0 with p_value: 0.034
+Ratio is 0.100; SE: 1.675(2.570); SE_mask: 2.496(4.118)
+reject H0 with p_value: 0.008
+mean Y: 3.355
+Ratio is 0.100; SE: 1.506(2.073); SE_mask: 1.297(2.172)
+accept H0 with p_value: 0.838
+Ratio is 0.100; SE: 1.506(2.073); SE_mask: 1.868(2.677)
+accept H0 with p_value: 0.065
+Ratio is 0.100; SE: 1.506(2.073); SE_mask: 2.333(4.339)
+reject H0 with p_value: 0.008
+Ratio is 0.100; SE: 1.506(2.073); SE_mask: 2.054(3.411)
+reject H0 with p_value: 0.026
+mean Y: 3.293
+Ratio is 0.100; SE: 1.701(2.350); SE_mask: 1.325(1.964)
+accept H0 with p_value: 0.958
+Ratio is 0.100; SE: 1.701(2.350); SE_mask: 1.979(3.031)
+accept H0 with p_value: 0.152
+Ratio is 0.100; SE: 1.701(2.350); SE_mask: 2.601(4.244)
+reject H0 with p_value: 0.004
+Ratio is 0.100; SE: 1.701(2.350); SE_mask: 2.245(4.213)
+accept H0 with p_value: 0.055
+mean Y: 3.231
+Ratio is 0.100; SE: 1.794(3.341); SE_mask: 1.484(2.184)
+accept H0 with p_value: 0.864
+Ratio is 0.100; SE: 1.794(3.341); SE_mask: 2.596(3.990)
+reject H0 with p_value: 0.015
+Ratio is 0.100; SE: 1.794(3.341); SE_mask: 2.769(4.555)
+reject H0 with p_value: 0.007
+Ratio is 0.100; SE: 1.794(3.341); SE_mask: 3.321(5.831)
+reject H0 with p_value: 0.001
+mean Y: 3.218
+Ratio is 0.100; SE: 2.069(3.070); SE_mask: 1.594(2.103)
+accept H0 with p_value: 0.965
+Ratio is 0.100; SE: 2.069(3.070); SE_mask: 2.463(4.122)
+accept H0 with p_value: 0.139
+Ratio is 0.100; SE: 2.069(3.070); SE_mask: 3.146(4.553)
+reject H0 with p_value: 0.003
+Ratio is 0.100; SE: 2.069(3.070); SE_mask: 2.772(4.648)
+reject H0 with p_value: 0.037
+mean Y: 3.441
+Ratio is 0.100; SE: 1.416(2.368); SE_mask: 1.521(2.334)
+accept H0 with p_value: 0.328
+Ratio is 0.100; SE: 1.416(2.368); SE_mask: 2.438(4.183)
+reject H0 with p_value: 0.001
+Ratio is 0.100; SE: 1.416(2.368); SE_mask: 2.105(2.994)
+reject H0 with p_value: 0.005
+Ratio is 0.100; SE: 1.416(2.368); SE_mask: 29.075(54.769)
+reject H0 with p_value: 0.000
+Ratio: 0.100; Type 1 error: 0.030
+Ratio: 0.100; CASE 1: Power: 0.390
+Ratio: 0.100; CASE 2: Power: 0.880
+Ratio: 0.100; CASE 3: Power: 0.820
+Ratio: 0.100; training sample: 1600; MSE: 2.191, MSE_mask: 2.231
+mean Y: 3.158
+Ratio is 0.200; SE: 1.753(2.548); SE_mask: 1.465(2.169)
+accept H0 with p_value: 0.957
+Ratio is 0.200; SE: 1.753(2.548); SE_mask: 1.864(2.936)
+accept H0 with p_value: 0.284
+Ratio is 0.200; SE: 1.753(2.548); SE_mask: 2.484(4.044)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.753(2.548); SE_mask: 2.529(4.186)
+reject H0 with p_value: 0.001
+mean Y: 3.284
+Ratio is 0.200; SE: 2.041(3.949); SE_mask: 1.370(2.041)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 2.041(3.949); SE_mask: 2.128(3.190)
+accept H0 with p_value: 0.365
+Ratio is 0.200; SE: 2.041(3.949); SE_mask: 2.586(4.088)
+reject H0 with p_value: 0.028
+Ratio is 0.200; SE: 2.041(3.949); SE_mask: 2.625(4.553)
+reject H0 with p_value: 0.026
+mean Y: 3.331
+Ratio is 0.200; SE: 1.723(2.610); SE_mask: 1.360(2.070)
+accept H0 with p_value: 0.985
+Ratio is 0.200; SE: 1.723(2.610); SE_mask: 2.404(3.828)
+reject H0 with p_value: 0.002
+Ratio is 0.200; SE: 1.723(2.610); SE_mask: 2.737(4.914)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.723(2.610); SE_mask: 2.821(4.767)
+reject H0 with p_value: 0.000
+mean Y: 3.389
+Ratio is 0.200; SE: 1.773(2.906); SE_mask: 1.530(2.047)
+accept H0 with p_value: 0.914
+Ratio is 0.200; SE: 1.773(2.906); SE_mask: 2.692(4.516)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.773(2.906); SE_mask: 3.041(4.736)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.773(2.906); SE_mask: 2.592(4.486)
+reject H0 with p_value: 0.001
+mean Y: 3.257
+Ratio is 0.200; SE: 1.988(2.935); SE_mask: 1.602(2.277)
+accept H0 with p_value: 0.981
+Ratio is 0.200; SE: 1.988(2.935); SE_mask: 2.276(3.416)
+accept H0 with p_value: 0.101
+Ratio is 0.200; SE: 1.988(2.935); SE_mask: 2.629(4.363)
+reject H0 with p_value: 0.007
+Ratio is 0.200; SE: 1.988(2.935); SE_mask: 3.097(5.525)
+reject H0 with p_value: 0.000
+mean Y: 3.282
+Ratio is 0.200; SE: 1.699(3.212); SE_mask: 1.643(2.753)
+accept H0 with p_value: 0.605
+Ratio is 0.200; SE: 1.699(3.212); SE_mask: 2.004(3.086)
+accept H0 with p_value: 0.085
+Ratio is 0.200; SE: 1.699(3.212); SE_mask: 2.553(4.616)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.699(3.212); SE_mask: 2.699(4.541)
+reject H0 with p_value: 0.000
+mean Y: 3.249
+Ratio is 0.200; SE: 1.826(2.964); SE_mask: 1.592(2.760)
+accept H0 with p_value: 0.875
+Ratio is 0.200; SE: 1.826(2.964); SE_mask: 2.208(3.545)
+reject H0 with p_value: 0.049
+Ratio is 0.200; SE: 1.826(2.964); SE_mask: 2.812(4.813)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.826(2.964); SE_mask: 2.801(4.378)
+reject H0 with p_value: 0.000
+mean Y: 3.177
+Ratio is 0.200; SE: 1.958(3.067); SE_mask: 1.613(2.210)
+accept H0 with p_value: 0.966
+Ratio is 0.200; SE: 1.958(3.067); SE_mask: 2.355(3.868)
+accept H0 with p_value: 0.054
+Ratio is 0.200; SE: 1.958(3.067); SE_mask: 2.860(4.848)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.958(3.067); SE_mask: 2.910(4.597)
+reject H0 with p_value: 0.000
+mean Y: 3.272
+Ratio is 0.200; SE: 1.788(2.764); SE_mask: 1.542(2.135)
+accept H0 with p_value: 0.920
+Ratio is 0.200; SE: 1.788(2.764); SE_mask: 2.143(3.229)
+reject H0 with p_value: 0.047
+Ratio is 0.200; SE: 1.788(2.764); SE_mask: 2.871(4.936)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.788(2.764); SE_mask: 2.511(4.673)
+reject H0 with p_value: 0.004
+mean Y: 3.376
+Ratio is 0.200; SE: 1.993(2.962); SE_mask: 1.711(2.584)
+accept H0 with p_value: 0.925
+Ratio is 0.200; SE: 1.993(2.962); SE_mask: 2.196(3.354)
+accept H0 with p_value: 0.183
+Ratio is 0.200; SE: 1.993(2.962); SE_mask: 3.004(6.722)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.993(2.962); SE_mask: 3.017(4.779)
+reject H0 with p_value: 0.000
+mean Y: 3.276
+Ratio is 0.200; SE: 1.735(2.560); SE_mask: 1.359(1.939)
+accept H0 with p_value: 0.990
+Ratio is 0.200; SE: 1.735(2.560); SE_mask: 2.004(3.150)
+accept H0 with p_value: 0.092
+Ratio is 0.200; SE: 1.735(2.560); SE_mask: 2.765(5.070)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.735(2.560); SE_mask: 2.778(5.186)
+reject H0 with p_value: 0.000
+mean Y: 3.367
+Ratio is 0.200; SE: 1.688(2.563); SE_mask: 1.334(1.783)
+accept H0 with p_value: 0.988
+Ratio is 0.200; SE: 1.688(2.563); SE_mask: 2.226(3.857)
+reject H0 with p_value: 0.010
+Ratio is 0.200; SE: 1.688(2.563); SE_mask: 2.273(3.460)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.688(2.563); SE_mask: 2.395(3.829)
+reject H0 with p_value: 0.001
+mean Y: 3.016
+Ratio is 0.200; SE: 2.252(3.908); SE_mask: 1.484(2.343)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 2.252(3.908); SE_mask: 2.080(3.150)
+accept H0 with p_value: 0.753
+Ratio is 0.200; SE: 2.252(3.908); SE_mask: 2.379(4.033)
+accept H0 with p_value: 0.325
+Ratio is 0.200; SE: 2.252(3.908); SE_mask: 2.730(4.394)
+accept H0 with p_value: 0.052
+mean Y: 3.136
+Ratio is 0.200; SE: 1.710(2.514); SE_mask: 1.675(2.458)
+accept H0 with p_value: 0.578
+Ratio is 0.200; SE: 1.710(2.514); SE_mask: 2.066(3.110)
+reject H0 with p_value: 0.037
+Ratio is 0.200; SE: 1.710(2.514); SE_mask: 2.701(4.279)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.710(2.514); SE_mask: 2.788(5.164)
+reject H0 with p_value: 0.000
+mean Y: 3.402
+Ratio is 0.200; SE: 1.794(2.873); SE_mask: 1.402(1.940)
+accept H0 with p_value: 0.988
+Ratio is 0.200; SE: 1.794(2.873); SE_mask: 2.080(3.203)
+accept H0 with p_value: 0.092
+Ratio is 0.200; SE: 1.794(2.873); SE_mask: 2.798(4.755)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.794(2.873); SE_mask: 2.744(4.690)
+reject H0 with p_value: 0.000
+mean Y: 3.317
+Ratio is 0.200; SE: 1.538(2.372); SE_mask: 1.529(2.213)
+accept H0 with p_value: 0.522
+Ratio is 0.200; SE: 1.538(2.372); SE_mask: 2.056(3.485)
+reject H0 with p_value: 0.007
+Ratio is 0.200; SE: 1.538(2.372); SE_mask: 2.707(5.085)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.538(2.372); SE_mask: 2.772(4.513)
+reject H0 with p_value: 0.000
+mean Y: 3.531
+Ratio is 0.200; SE: 1.646(2.420); SE_mask: 1.356(2.006)
+accept H0 with p_value: 0.967
+Ratio is 0.200; SE: 1.646(2.420); SE_mask: 2.350(3.741)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.646(2.420); SE_mask: 2.520(4.225)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.646(2.420); SE_mask: 2.971(5.569)
+reject H0 with p_value: 0.000
+mean Y: 3.239
+Ratio is 0.200; SE: 1.866(2.969); SE_mask: 1.363(1.832)
+accept H0 with p_value: 0.998
+Ratio is 0.200; SE: 1.866(2.969); SE_mask: 1.819(2.734)
+accept H0 with p_value: 0.592
+Ratio is 0.200; SE: 1.866(2.969); SE_mask: 2.923(6.347)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.866(2.969); SE_mask: 2.701(4.256)
+reject H0 with p_value: 0.001
+mean Y: 3.371
+Ratio is 0.200; SE: 1.874(2.633); SE_mask: 1.743(2.412)
+accept H0 with p_value: 0.770
+Ratio is 0.200; SE: 1.874(2.633); SE_mask: 2.403(3.714)
+reject H0 with p_value: 0.010
+Ratio is 0.200; SE: 1.874(2.633); SE_mask: 2.877(5.668)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.874(2.633); SE_mask: 2.978(5.046)
+reject H0 with p_value: 0.000
+mean Y: 3.342
+Ratio is 0.200; SE: 1.645(2.414); SE_mask: 1.574(2.241)
+accept H0 with p_value: 0.666
+Ratio is 0.200; SE: 1.645(2.414); SE_mask: 2.558(4.113)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.645(2.414); SE_mask: 2.941(4.949)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.645(2.414); SE_mask: 2.889(4.591)
+reject H0 with p_value: 0.000
+mean Y: 3.351
+Ratio is 0.200; SE: 1.944(2.963); SE_mask: 1.448(2.251)
+accept H0 with p_value: 0.996
+Ratio is 0.200; SE: 1.944(2.963); SE_mask: 2.335(3.845)
+accept H0 with p_value: 0.054
+Ratio is 0.200; SE: 1.944(2.963); SE_mask: 2.899(4.939)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.944(2.963); SE_mask: 3.081(6.557)
+reject H0 with p_value: 0.001
+mean Y: 3.424
+Ratio is 0.200; SE: 1.741(2.591); SE_mask: 1.380(1.812)
+accept H0 with p_value: 0.989
+Ratio is 0.200; SE: 1.741(2.591); SE_mask: 2.420(3.619)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.741(2.591); SE_mask: 2.817(4.529)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.741(2.591); SE_mask: 2.800(4.631)
+reject H0 with p_value: 0.000
+mean Y: 3.215
+Ratio is 0.200; SE: 1.818(2.488); SE_mask: 1.664(2.502)
+accept H0 with p_value: 0.809
+Ratio is 0.200; SE: 1.818(2.488); SE_mask: 2.508(5.038)
+reject H0 with p_value: 0.007
+Ratio is 0.200; SE: 1.818(2.488); SE_mask: 2.731(4.121)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.818(2.488); SE_mask: 2.800(4.534)
+reject H0 with p_value: 0.000
+mean Y: 3.329
+Ratio is 0.200; SE: 1.871(3.035); SE_mask: 1.492(1.993)
+accept H0 with p_value: 0.982
+Ratio is 0.200; SE: 1.871(3.035); SE_mask: 2.230(3.919)
+accept H0 with p_value: 0.074
+Ratio is 0.200; SE: 1.871(3.035); SE_mask: 2.785(4.391)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.871(3.035); SE_mask: 2.610(4.107)
+reject H0 with p_value: 0.002
+mean Y: 3.373
+Ratio is 0.200; SE: 1.724(2.565); SE_mask: 1.402(2.096)
+accept H0 with p_value: 0.974
+Ratio is 0.200; SE: 1.724(2.565); SE_mask: 2.112(3.289)
+reject H0 with p_value: 0.031
+Ratio is 0.200; SE: 1.724(2.565); SE_mask: 2.437(3.873)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.724(2.565); SE_mask: 2.871(5.097)
+reject H0 with p_value: 0.000
+mean Y: 3.321
+Ratio is 0.200; SE: 1.627(2.579); SE_mask: 1.734(2.750)
+accept H0 with p_value: 0.285
+Ratio is 0.200; SE: 1.627(2.579); SE_mask: 2.195(3.173)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.627(2.579); SE_mask: 2.862(4.651)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.627(2.579); SE_mask: 2.710(4.216)
+reject H0 with p_value: 0.000
+mean Y: 3.262
+Ratio is 0.200; SE: 1.734(2.621); SE_mask: 1.541(2.370)
+accept H0 with p_value: 0.862
+Ratio is 0.200; SE: 1.734(2.621); SE_mask: 2.490(4.078)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.734(2.621); SE_mask: 3.030(4.698)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.734(2.621); SE_mask: 3.216(6.240)
+reject H0 with p_value: 0.000
+mean Y: 3.257
+Ratio is 0.200; SE: 1.950(2.856); SE_mask: 1.504(2.133)
+accept H0 with p_value: 0.994
+Ratio is 0.200; SE: 1.950(2.856); SE_mask: 2.058(3.290)
+accept H0 with p_value: 0.310
+Ratio is 0.200; SE: 1.950(2.856); SE_mask: 2.790(4.434)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.950(2.856); SE_mask: 2.632(3.927)
+reject H0 with p_value: 0.002
+mean Y: 3.532
+Ratio is 0.200; SE: 1.661(2.412); SE_mask: 1.497(2.151)
+accept H0 with p_value: 0.845
+Ratio is 0.200; SE: 1.661(2.412); SE_mask: 2.333(3.294)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.661(2.412); SE_mask: 2.979(5.043)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.661(2.412); SE_mask: 3.228(5.215)
+reject H0 with p_value: 0.000
+mean Y: 3.262
+Ratio is 0.200; SE: 1.890(2.907); SE_mask: 1.546(2.543)
+accept H0 with p_value: 0.962
+Ratio is 0.200; SE: 1.890(2.907); SE_mask: 2.545(4.397)
+reject H0 with p_value: 0.006
+Ratio is 0.200; SE: 1.890(2.907); SE_mask: 3.098(5.294)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.890(2.907); SE_mask: 2.655(3.927)
+reject H0 with p_value: 0.001
+mean Y: 3.489
+Ratio is 0.200; SE: 1.833(2.808); SE_mask: 1.578(2.296)
+accept H0 with p_value: 0.920
+Ratio is 0.200; SE: 1.833(2.808); SE_mask: 2.129(3.185)
+accept H0 with p_value: 0.082
+Ratio is 0.200; SE: 1.833(2.808); SE_mask: 3.188(5.280)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.833(2.808); SE_mask: 3.226(5.190)
+reject H0 with p_value: 0.000
+mean Y: 3.378
+Ratio is 0.200; SE: 1.541(2.332); SE_mask: 1.364(2.005)
+accept H0 with p_value: 0.874
+Ratio is 0.200; SE: 1.541(2.332); SE_mask: 2.329(3.502)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.541(2.332); SE_mask: 2.198(4.061)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.541(2.332); SE_mask: 2.796(4.894)
+reject H0 with p_value: 0.000
+mean Y: 3.193
+Ratio is 0.200; SE: 1.733(2.641); SE_mask: 1.582(2.277)
+accept H0 with p_value: 0.808
+Ratio is 0.200; SE: 1.733(2.641); SE_mask: 2.076(3.716)
+accept H0 with p_value: 0.066
+Ratio is 0.200; SE: 1.733(2.641); SE_mask: 2.497(4.352)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.733(2.641); SE_mask: 3.015(4.845)
+reject H0 with p_value: 0.000
+mean Y: 3.243
+Ratio is 0.200; SE: 1.655(2.594); SE_mask: 1.568(2.326)
+accept H0 with p_value: 0.690
+Ratio is 0.200; SE: 1.655(2.594); SE_mask: 2.347(3.749)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.655(2.594); SE_mask: 2.788(4.245)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.655(2.594); SE_mask: 2.826(5.208)
+reject H0 with p_value: 0.000
+mean Y: 3.361
+Ratio is 0.200; SE: 1.992(3.151); SE_mask: 1.630(2.416)
+accept H0 with p_value: 0.966
+Ratio is 0.200; SE: 1.992(3.151); SE_mask: 2.395(3.943)
+accept H0 with p_value: 0.055
+Ratio is 0.200; SE: 1.992(3.151); SE_mask: 2.651(4.617)
+reject H0 with p_value: 0.009
+Ratio is 0.200; SE: 1.992(3.151); SE_mask: 3.214(5.693)
+reject H0 with p_value: 0.000
+mean Y: 3.471
+Ratio is 0.200; SE: 1.831(2.637); SE_mask: 1.511(2.347)
+accept H0 with p_value: 0.965
+Ratio is 0.200; SE: 1.831(2.637); SE_mask: 2.180(3.841)
+accept H0 with p_value: 0.067
+Ratio is 0.200; SE: 1.831(2.637); SE_mask: 2.765(4.635)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.831(2.637); SE_mask: 28.705(66.553)
+reject H0 with p_value: 0.000
+mean Y: 3.334
+Ratio is 0.200; SE: 1.766(3.240); SE_mask: 1.461(1.985)
+accept H0 with p_value: 0.946
+Ratio is 0.200; SE: 1.766(3.240); SE_mask: 2.462(3.773)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.766(3.240); SE_mask: 3.060(5.178)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.766(3.240); SE_mask: 2.666(4.089)
+reject H0 with p_value: 0.000
+mean Y: 3.398
+Ratio is 0.200; SE: 1.740(2.739); SE_mask: 1.394(1.874)
+accept H0 with p_value: 0.981
+Ratio is 0.200; SE: 1.740(2.739); SE_mask: 2.184(3.543)
+reject H0 with p_value: 0.024
+Ratio is 0.200; SE: 1.740(2.739); SE_mask: 2.813(4.456)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.740(2.739); SE_mask: 2.683(5.069)
+reject H0 with p_value: 0.001
+mean Y: 3.244
+Ratio is 0.200; SE: 1.723(2.990); SE_mask: 1.453(2.165)
+accept H0 with p_value: 0.928
+Ratio is 0.200; SE: 1.723(2.990); SE_mask: 2.209(3.351)
+reject H0 with p_value: 0.015
+Ratio is 0.200; SE: 1.723(2.990); SE_mask: 2.274(4.319)
+reject H0 with p_value: 0.018
+Ratio is 0.200; SE: 1.723(2.990); SE_mask: 2.703(4.672)
+reject H0 with p_value: 0.000
+mean Y: 3.319
+Ratio is 0.200; SE: 1.838(2.642); SE_mask: 1.591(2.359)
+accept H0 with p_value: 0.918
+Ratio is 0.200; SE: 1.838(2.642); SE_mask: 2.085(2.985)
+accept H0 with p_value: 0.108
+Ratio is 0.200; SE: 1.838(2.642); SE_mask: 3.193(5.443)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.838(2.642); SE_mask: 3.100(5.167)
+reject H0 with p_value: 0.000
+mean Y: 3.231
+Ratio is 0.200; SE: 1.644(2.647); SE_mask: 1.488(2.163)
+accept H0 with p_value: 0.819
+Ratio is 0.200; SE: 1.644(2.647); SE_mask: 2.155(3.605)
+reject H0 with p_value: 0.011
+Ratio is 0.200; SE: 1.644(2.647); SE_mask: 2.574(3.832)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.644(2.647); SE_mask: 2.566(4.232)
+reject H0 with p_value: 0.000
+mean Y: 3.368
+Ratio is 0.200; SE: 1.838(2.831); SE_mask: 1.462(2.057)
+accept H0 with p_value: 0.984
+Ratio is 0.200; SE: 1.838(2.831); SE_mask: 2.041(3.118)
+accept H0 with p_value: 0.168
+Ratio is 0.200; SE: 1.838(2.831); SE_mask: 2.663(4.308)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.838(2.831); SE_mask: 2.826(4.853)
+reject H0 with p_value: 0.000
+mean Y: 3.474
+Ratio is 0.200; SE: 2.049(2.989); SE_mask: 1.489(2.028)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 2.049(2.989); SE_mask: 2.461(4.206)
+accept H0 with p_value: 0.055
+Ratio is 0.200; SE: 2.049(2.989); SE_mask: 2.650(4.055)
+reject H0 with p_value: 0.009
+Ratio is 0.200; SE: 2.049(2.989); SE_mask: 2.609(4.848)
+reject H0 with p_value: 0.025
+mean Y: 3.237
+Ratio is 0.200; SE: 1.697(2.539); SE_mask: 1.423(2.020)
+accept H0 with p_value: 0.954
+Ratio is 0.200; SE: 1.697(2.539); SE_mask: 2.024(3.415)
+accept H0 with p_value: 0.062
+Ratio is 0.200; SE: 1.697(2.539); SE_mask: 2.710(4.581)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.697(2.539); SE_mask: 3.003(4.560)
+reject H0 with p_value: 0.000
+mean Y: 3.408
+Ratio is 0.200; SE: 2.061(3.422); SE_mask: 1.609(2.438)
+accept H0 with p_value: 0.984
+Ratio is 0.200; SE: 2.061(3.422); SE_mask: 2.204(3.452)
+accept H0 with p_value: 0.279
+Ratio is 0.200; SE: 2.061(3.422); SE_mask: 33.044(72.196)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 2.061(3.422); SE_mask: 33.044(72.196)
+reject H0 with p_value: 0.000
+mean Y: 3.147
+Ratio is 0.200; SE: 1.842(3.369); SE_mask: 1.400(1.826)
+accept H0 with p_value: 0.989
+Ratio is 0.200; SE: 1.842(3.369); SE_mask: 1.932(3.162)
+accept H0 with p_value: 0.348
+Ratio is 0.200; SE: 1.842(3.369); SE_mask: 2.759(4.460)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.842(3.369); SE_mask: 2.493(3.908)
+reject H0 with p_value: 0.006
+mean Y: 3.278
+Ratio is 0.200; SE: 1.683(2.403); SE_mask: 1.546(2.213)
+accept H0 with p_value: 0.799
+Ratio is 0.200; SE: 1.683(2.403); SE_mask: 1.947(3.328)
+accept H0 with p_value: 0.098
+Ratio is 0.200; SE: 1.683(2.403); SE_mask: 2.429(3.925)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.683(2.403); SE_mask: 2.634(4.218)
+reject H0 with p_value: 0.000
+mean Y: 3.290
+Ratio is 0.200; SE: 1.730(2.573); SE_mask: 1.518(2.483)
+accept H0 with p_value: 0.882
+Ratio is 0.200; SE: 1.730(2.573); SE_mask: 1.976(3.434)
+accept H0 with p_value: 0.125
+Ratio is 0.200; SE: 1.730(2.573); SE_mask: 2.949(5.070)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.730(2.573); SE_mask: 2.637(4.832)
+reject H0 with p_value: 0.000
+mean Y: 3.263
+Ratio is 0.200; SE: 1.894(2.921); SE_mask: 1.274(1.912)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 1.894(2.921); SE_mask: 2.145(4.217)
+accept H0 with p_value: 0.164
+Ratio is 0.200; SE: 1.894(2.921); SE_mask: 2.488(4.640)
+reject H0 with p_value: 0.015
+Ratio is 0.200; SE: 1.894(2.921); SE_mask: 2.728(5.253)
+reject H0 with p_value: 0.003
+mean Y: 3.472
+Ratio is 0.200; SE: 1.647(2.291); SE_mask: 1.419(2.036)
+accept H0 with p_value: 0.932
+Ratio is 0.200; SE: 1.647(2.291); SE_mask: 29.291(64.845)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.647(2.291); SE_mask: 2.448(3.713)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.647(2.291); SE_mask: 2.666(3.991)
+reject H0 with p_value: 0.000
+mean Y: 3.206
+Ratio is 0.200; SE: 1.810(2.625); SE_mask: 1.479(2.109)
+accept H0 with p_value: 0.975
+Ratio is 0.200; SE: 1.810(2.625); SE_mask: 2.279(3.791)
+reject H0 with p_value: 0.021
+Ratio is 0.200; SE: 1.810(2.625); SE_mask: 2.642(4.581)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.810(2.625); SE_mask: 2.753(4.597)
+reject H0 with p_value: 0.000
+mean Y: 3.376
+Ratio is 0.200; SE: 2.246(3.368); SE_mask: 1.464(2.036)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 2.246(3.368); SE_mask: 2.288(3.798)
+accept H0 with p_value: 0.435
+Ratio is 0.200; SE: 2.246(3.368); SE_mask: 2.712(4.258)
+reject H0 with p_value: 0.043
+Ratio is 0.200; SE: 2.246(3.368); SE_mask: 2.626(4.319)
+accept H0 with p_value: 0.083
+mean Y: 3.146
+Ratio is 0.200; SE: 1.635(3.112); SE_mask: 1.670(2.370)
+accept H0 with p_value: 0.430
+Ratio is 0.200; SE: 1.635(3.112); SE_mask: 2.661(4.311)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.635(3.112); SE_mask: 2.865(4.199)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.635(3.112); SE_mask: 2.926(4.427)
+reject H0 with p_value: 0.000
+mean Y: 3.322
+Ratio is 0.200; SE: 1.704(2.436); SE_mask: 1.390(2.017)
+accept H0 with p_value: 0.976
+Ratio is 0.200; SE: 1.704(2.436); SE_mask: 2.274(3.710)
+reject H0 with p_value: 0.005
+Ratio is 0.200; SE: 1.704(2.436); SE_mask: 2.798(4.526)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.704(2.436); SE_mask: 3.149(5.795)
+reject H0 with p_value: 0.000
+mean Y: 3.377
+Ratio is 0.200; SE: 1.641(2.575); SE_mask: 1.617(2.483)
+accept H0 with p_value: 0.553
+Ratio is 0.200; SE: 1.641(2.575); SE_mask: 1.991(2.995)
+reject H0 with p_value: 0.038
+Ratio is 0.200; SE: 1.641(2.575); SE_mask: 3.017(5.212)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.641(2.575); SE_mask: 2.654(4.003)
+reject H0 with p_value: 0.000
+mean Y: 3.408
+Ratio is 0.200; SE: 1.853(2.819); SE_mask: 1.265(1.846)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 1.853(2.819); SE_mask: 2.087(3.034)
+accept H0 with p_value: 0.129
+Ratio is 0.200; SE: 1.853(2.819); SE_mask: 2.556(4.734)
+reject H0 with p_value: 0.005
+Ratio is 0.200; SE: 1.853(2.819); SE_mask: 2.600(4.617)
+reject H0 with p_value: 0.003
+mean Y: 3.371
+Ratio is 0.200; SE: 1.911(2.901); SE_mask: 1.331(2.128)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 1.911(2.901); SE_mask: 2.306(3.641)
+reject H0 with p_value: 0.045
+Ratio is 0.200; SE: 1.911(2.901); SE_mask: 2.502(4.012)
+reject H0 with p_value: 0.008
+Ratio is 0.200; SE: 1.911(2.901); SE_mask: 2.962(5.345)
+reject H0 with p_value: 0.000
+mean Y: 3.334
+Ratio is 0.200; SE: 1.730(2.793); SE_mask: 1.503(2.607)
+accept H0 with p_value: 0.882
+Ratio is 0.200; SE: 1.730(2.793); SE_mask: 2.195(3.635)
+reject H0 with p_value: 0.021
+Ratio is 0.200; SE: 1.730(2.793); SE_mask: 2.932(6.360)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.730(2.793); SE_mask: 2.624(5.002)
+reject H0 with p_value: 0.001
+mean Y: 3.319
+Ratio is 0.200; SE: 1.665(2.703); SE_mask: 1.434(2.082)
+accept H0 with p_value: 0.911
+Ratio is 0.200; SE: 1.665(2.703); SE_mask: 2.165(3.578)
+reject H0 with p_value: 0.013
+Ratio is 0.200; SE: 1.665(2.703); SE_mask: 2.718(4.610)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.665(2.703); SE_mask: 2.687(4.605)
+reject H0 with p_value: 0.000
+mean Y: 3.289
+Ratio is 0.200; SE: 1.805(2.738); SE_mask: 1.775(2.747)
+accept H0 with p_value: 0.562
+Ratio is 0.200; SE: 1.805(2.738); SE_mask: 2.302(3.730)
+reject H0 with p_value: 0.016
+Ratio is 0.200; SE: 1.805(2.738); SE_mask: 2.934(5.353)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.805(2.738); SE_mask: 2.612(4.939)
+reject H0 with p_value: 0.002
+mean Y: 3.451
+Ratio is 0.200; SE: 1.765(2.833); SE_mask: 1.387(2.016)
+accept H0 with p_value: 0.985
+Ratio is 0.200; SE: 1.765(2.833); SE_mask: 2.068(3.369)
+accept H0 with p_value: 0.084
+Ratio is 0.200; SE: 1.765(2.833); SE_mask: 2.579(4.081)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.765(2.833); SE_mask: 2.990(5.415)
+reject H0 with p_value: 0.000
+mean Y: 3.097
+Ratio is 0.200; SE: 1.957(2.944); SE_mask: 1.599(2.635)
+accept H0 with p_value: 0.965
+Ratio is 0.200; SE: 1.957(2.944); SE_mask: 2.365(4.767)
+accept H0 with p_value: 0.073
+Ratio is 0.200; SE: 1.957(2.944); SE_mask: 2.961(4.533)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.957(2.944); SE_mask: 2.927(5.115)
+reject H0 with p_value: 0.001
+mean Y: 3.395
+Ratio is 0.200; SE: 1.630(2.518); SE_mask: 1.530(2.286)
+accept H0 with p_value: 0.723
+Ratio is 0.200; SE: 1.630(2.518); SE_mask: 2.055(3.296)
+reject H0 with p_value: 0.020
+Ratio is 0.200; SE: 1.630(2.518); SE_mask: 2.883(4.707)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.630(2.518); SE_mask: 3.276(7.709)
+reject H0 with p_value: 0.000
+mean Y: 3.147
+Ratio is 0.200; SE: 1.667(2.330); SE_mask: 1.764(3.069)
+accept H0 with p_value: 0.307
+Ratio is 0.200; SE: 1.667(2.330); SE_mask: 2.054(3.435)
+reject H0 with p_value: 0.031
+Ratio is 0.200; SE: 1.667(2.330); SE_mask: 2.442(3.710)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.667(2.330); SE_mask: 2.770(5.061)
+reject H0 with p_value: 0.000
+mean Y: 3.362
+Ratio is 0.200; SE: 1.862(2.696); SE_mask: 1.435(1.876)
+accept H0 with p_value: 0.995
+Ratio is 0.200; SE: 1.862(2.696); SE_mask: 2.031(3.228)
+accept H0 with p_value: 0.211
+Ratio is 0.200; SE: 1.862(2.696); SE_mask: 3.277(5.055)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.862(2.696); SE_mask: 2.614(4.054)
+reject H0 with p_value: 0.001
+mean Y: 3.372
+Ratio is 0.200; SE: 1.901(2.904); SE_mask: 1.369(2.061)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 1.901(2.904); SE_mask: 2.355(3.757)
+reject H0 with p_value: 0.028
+Ratio is 0.200; SE: 1.901(2.904); SE_mask: 3.029(5.844)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.901(2.904); SE_mask: 2.954(4.556)
+reject H0 with p_value: 0.000
+mean Y: 3.463
+Ratio is 0.200; SE: 1.701(2.622); SE_mask: 1.326(1.947)
+accept H0 with p_value: 0.989
+Ratio is 0.200; SE: 1.701(2.622); SE_mask: 2.041(3.295)
+accept H0 with p_value: 0.053
+Ratio is 0.200; SE: 1.701(2.622); SE_mask: 2.389(4.263)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.701(2.622); SE_mask: 2.754(4.908)
+reject H0 with p_value: 0.000
+mean Y: 3.303
+Ratio is 0.200; SE: 1.777(2.580); SE_mask: 1.465(2.311)
+accept H0 with p_value: 0.964
+Ratio is 0.200; SE: 1.777(2.580); SE_mask: 2.099(3.185)
+accept H0 with p_value: 0.058
+Ratio is 0.200; SE: 1.777(2.580); SE_mask: 2.862(4.466)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.777(2.580); SE_mask: 2.638(4.915)
+reject H0 with p_value: 0.001
+mean Y: 3.166
+Ratio is 0.200; SE: 1.870(3.001); SE_mask: 1.442(2.307)
+accept H0 with p_value: 0.988
+Ratio is 0.200; SE: 1.870(3.001); SE_mask: 2.099(3.635)
+accept H0 with p_value: 0.166
+Ratio is 0.200; SE: 1.870(3.001); SE_mask: 2.343(3.569)
+reject H0 with p_value: 0.021
+Ratio is 0.200; SE: 1.870(3.001); SE_mask: 2.546(3.869)
+reject H0 with p_value: 0.003
+mean Y: 3.200
+Ratio is 0.200; SE: 1.668(2.610); SE_mask: 1.444(1.900)
+accept H0 with p_value: 0.918
+Ratio is 0.200; SE: 1.668(2.610); SE_mask: 2.238(3.541)
+reject H0 with p_value: 0.005
+Ratio is 0.200; SE: 1.668(2.610); SE_mask: 2.336(3.638)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.668(2.610); SE_mask: 2.810(4.876)
+reject H0 with p_value: 0.000
+mean Y: 3.265
+Ratio is 0.200; SE: 1.710(2.524); SE_mask: 1.471(2.261)
+accept H0 with p_value: 0.921
+Ratio is 0.200; SE: 1.710(2.524); SE_mask: 2.110(3.748)
+reject H0 with p_value: 0.038
+Ratio is 0.200; SE: 1.710(2.524); SE_mask: 2.314(4.269)
+reject H0 with p_value: 0.007
+Ratio is 0.200; SE: 1.710(2.524); SE_mask: 2.640(4.341)
+reject H0 with p_value: 0.000
+mean Y: 3.389
+Ratio is 0.200; SE: 1.620(2.252); SE_mask: 1.670(2.159)
+accept H0 with p_value: 0.374
+Ratio is 0.200; SE: 1.620(2.252); SE_mask: 2.504(3.998)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.620(2.252); SE_mask: 2.950(4.815)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.620(2.252); SE_mask: 2.782(4.665)
+reject H0 with p_value: 0.000
+mean Y: 3.178
+Ratio is 0.200; SE: 1.623(2.352); SE_mask: 1.409(1.885)
+accept H0 with p_value: 0.922
+Ratio is 0.200; SE: 1.623(2.352); SE_mask: 2.121(3.109)
+reject H0 with p_value: 0.005
+Ratio is 0.200; SE: 1.623(2.352); SE_mask: 2.691(4.274)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.623(2.352); SE_mask: 2.651(4.407)
+reject H0 with p_value: 0.000
+mean Y: 3.217
+Ratio is 0.200; SE: 1.647(2.375); SE_mask: 1.538(2.120)
+accept H0 with p_value: 0.753
+Ratio is 0.200; SE: 1.647(2.375); SE_mask: 2.499(4.017)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.647(2.375); SE_mask: 2.432(4.081)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.647(2.375); SE_mask: 2.969(4.709)
+reject H0 with p_value: 0.000
+mean Y: 3.277
+Ratio is 0.200; SE: 1.567(2.439); SE_mask: 1.664(2.325)
+accept H0 with p_value: 0.283
+Ratio is 0.200; SE: 1.567(2.439); SE_mask: 2.233(3.780)
+reject H0 with p_value: 0.002
+Ratio is 0.200; SE: 1.567(2.439); SE_mask: 3.205(5.906)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.567(2.439); SE_mask: 3.253(5.323)
+reject H0 with p_value: 0.000
+mean Y: 3.139
+Ratio is 0.200; SE: 1.569(2.187); SE_mask: 1.422(2.350)
+accept H0 with p_value: 0.819
+Ratio is 0.200; SE: 1.569(2.187); SE_mask: 2.502(4.647)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.569(2.187); SE_mask: 2.734(5.117)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.569(2.187); SE_mask: 2.957(4.755)
+reject H0 with p_value: 0.000
+mean Y: 3.432
+Ratio is 0.200; SE: 1.966(2.843); SE_mask: 1.572(2.190)
+accept H0 with p_value: 0.986
+Ratio is 0.200; SE: 1.966(2.843); SE_mask: 2.113(2.954)
+accept H0 with p_value: 0.238
+Ratio is 0.200; SE: 1.966(2.843); SE_mask: 2.971(4.786)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.966(2.843); SE_mask: 2.832(4.153)
+reject H0 with p_value: 0.000
+mean Y: 3.118
+Ratio is 0.200; SE: 1.808(2.672); SE_mask: 1.609(2.303)
+accept H0 with p_value: 0.871
+Ratio is 0.200; SE: 1.808(2.672); SE_mask: 2.486(4.024)
+reject H0 with p_value: 0.003
+Ratio is 0.200; SE: 1.808(2.672); SE_mask: 2.340(3.597)
+reject H0 with p_value: 0.009
+Ratio is 0.200; SE: 1.808(2.672); SE_mask: 2.688(4.353)
+reject H0 with p_value: 0.000
+mean Y: 3.399
+Ratio is 0.200; SE: 1.840(2.890); SE_mask: 1.598(2.338)
+accept H0 with p_value: 0.903
+Ratio is 0.200; SE: 1.840(2.890); SE_mask: 2.327(3.745)
+reject H0 with p_value: 0.020
+Ratio is 0.200; SE: 1.840(2.890); SE_mask: 3.432(6.168)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.840(2.890); SE_mask: 2.553(4.558)
+reject H0 with p_value: 0.004
+mean Y: 3.423
+Ratio is 0.200; SE: 2.035(3.107); SE_mask: 1.342(2.097)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 2.035(3.107); SE_mask: 1.768(3.025)
+accept H0 with p_value: 0.892
+Ratio is 0.200; SE: 2.035(3.107); SE_mask: 2.156(3.173)
+accept H0 with p_value: 0.294
+Ratio is 0.200; SE: 2.035(3.107); SE_mask: 2.476(4.445)
+accept H0 with p_value: 0.052
+mean Y: 3.212
+Ratio is 0.200; SE: 1.925(3.642); SE_mask: 1.339(2.218)
+accept H0 with p_value: 0.997
+Ratio is 0.200; SE: 1.925(3.642); SE_mask: 2.156(3.870)
+accept H0 with p_value: 0.192
+Ratio is 0.200; SE: 1.925(3.642); SE_mask: 2.851(5.070)
+reject H0 with p_value: 0.002
+Ratio is 0.200; SE: 1.925(3.642); SE_mask: 2.848(5.481)
+reject H0 with p_value: 0.003
+mean Y: 3.229
+Ratio is 0.200; SE: 2.122(3.956); SE_mask: 1.436(2.058)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 2.122(3.956); SE_mask: 2.281(3.702)
+accept H0 with p_value: 0.279
+Ratio is 0.200; SE: 2.122(3.956); SE_mask: 2.892(5.311)
+reject H0 with p_value: 0.010
+Ratio is 0.200; SE: 2.122(3.956); SE_mask: 2.679(4.362)
+reject H0 with p_value: 0.029
+mean Y: 3.386
+Ratio is 0.200; SE: 1.941(2.667); SE_mask: 1.329(2.052)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 1.941(2.667); SE_mask: 1.920(3.118)
+accept H0 with p_value: 0.543
+Ratio is 0.200; SE: 1.941(2.667); SE_mask: 2.957(5.181)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.941(2.667); SE_mask: 2.488(4.405)
+reject H0 with p_value: 0.017
+mean Y: 3.303
+Ratio is 0.200; SE: 1.884(2.861); SE_mask: 1.571(2.216)
+accept H0 with p_value: 0.958
+Ratio is 0.200; SE: 1.884(2.861); SE_mask: 2.556(4.249)
+reject H0 with p_value: 0.004
+Ratio is 0.200; SE: 1.884(2.861); SE_mask: 2.937(5.198)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.884(2.861); SE_mask: 3.126(5.947)
+reject H0 with p_value: 0.000
+mean Y: 3.109
+Ratio is 0.200; SE: 1.820(3.121); SE_mask: 1.705(2.506)
+accept H0 with p_value: 0.717
+Ratio is 0.200; SE: 1.820(3.121); SE_mask: 2.343(3.665)
+reject H0 with p_value: 0.015
+Ratio is 0.200; SE: 1.820(3.121); SE_mask: 2.834(5.746)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.820(3.121); SE_mask: 2.731(4.293)
+reject H0 with p_value: 0.000
+mean Y: 3.207
+Ratio is 0.200; SE: 1.679(3.447); SE_mask: 1.424(2.244)
+accept H0 with p_value: 0.893
+Ratio is 0.200; SE: 1.679(3.447); SE_mask: 2.051(3.489)
+accept H0 with p_value: 0.065
+Ratio is 0.200; SE: 1.679(3.447); SE_mask: 2.620(4.773)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.679(3.447); SE_mask: 2.567(4.473)
+reject H0 with p_value: 0.001
+mean Y: 3.447
+Ratio is 0.200; SE: 1.844(2.683); SE_mask: 1.336(1.808)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 1.844(2.683); SE_mask: 2.314(4.131)
+reject H0 with p_value: 0.028
+Ratio is 0.200; SE: 1.844(2.683); SE_mask: 2.224(3.830)
+accept H0 with p_value: 0.052
+Ratio is 0.200; SE: 1.844(2.683); SE_mask: 3.016(5.167)
+reject H0 with p_value: 0.000
+mean Y: 3.271
+Ratio is 0.200; SE: 1.965(2.931); SE_mask: 1.509(2.116)
+accept H0 with p_value: 0.994
+Ratio is 0.200; SE: 1.965(2.931); SE_mask: 2.070(3.148)
+accept H0 with p_value: 0.313
+Ratio is 0.200; SE: 1.965(2.931); SE_mask: 2.615(4.258)
+reject H0 with p_value: 0.006
+Ratio is 0.200; SE: 1.965(2.931); SE_mask: 3.133(5.475)
+reject H0 with p_value: 0.000
+mean Y: 3.246
+Ratio is 0.200; SE: 1.639(2.586); SE_mask: 1.596(2.287)
+accept H0 with p_value: 0.599
+Ratio is 0.200; SE: 1.639(2.586); SE_mask: 2.422(3.564)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.639(2.586); SE_mask: 2.589(3.931)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.639(2.586); SE_mask: 3.208(6.186)
+reject H0 with p_value: 0.000
+mean Y: 3.253
+Ratio is 0.200; SE: 1.811(3.274); SE_mask: 1.447(2.102)
+accept H0 with p_value: 0.969
+Ratio is 0.200; SE: 1.811(3.274); SE_mask: 2.135(3.310)
+accept H0 with p_value: 0.082
+Ratio is 0.200; SE: 1.811(3.274); SE_mask: 2.404(4.027)
+reject H0 with p_value: 0.011
+Ratio is 0.200; SE: 1.811(3.274); SE_mask: 2.614(4.600)
+reject H0 with p_value: 0.002
+mean Y: 3.261
+Ratio is 0.200; SE: 1.840(3.089); SE_mask: 1.467(2.595)
+accept H0 with p_value: 0.968
+Ratio is 0.200; SE: 1.840(3.089); SE_mask: 2.679(4.798)
+reject H0 with p_value: 0.002
+Ratio is 0.200; SE: 1.840(3.089); SE_mask: 2.378(3.980)
+reject H0 with p_value: 0.016
+Ratio is 0.200; SE: 1.840(3.089); SE_mask: 2.667(4.675)
+reject H0 with p_value: 0.002
+mean Y: 3.397
+Ratio is 0.200; SE: 1.737(2.781); SE_mask: 1.777(2.571)
+accept H0 with p_value: 0.415
+Ratio is 0.200; SE: 1.737(2.781); SE_mask: 2.577(4.057)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.737(2.781); SE_mask: 2.828(5.042)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.737(2.781); SE_mask: 2.878(4.713)
+reject H0 with p_value: 0.000
+mean Y: 3.372
+Ratio is 0.200; SE: 1.887(2.690); SE_mask: 1.371(1.773)
+accept H0 with p_value: 0.999
+Ratio is 0.200; SE: 1.887(2.690); SE_mask: 2.063(2.771)
+accept H0 with p_value: 0.181
+Ratio is 0.200; SE: 1.887(2.690); SE_mask: 2.738(4.492)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.887(2.690); SE_mask: 2.532(4.384)
+reject H0 with p_value: 0.006
+mean Y: 3.249
+Ratio is 0.200; SE: 1.860(2.858); SE_mask: 1.551(2.334)
+accept H0 with p_value: 0.953
+Ratio is 0.200; SE: 1.860(2.858); SE_mask: 2.256(4.175)
+accept H0 with p_value: 0.059
+Ratio is 0.200; SE: 1.860(2.858); SE_mask: 3.063(5.585)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.860(2.858); SE_mask: 3.355(5.335)
+reject H0 with p_value: 0.000
+mean Y: 3.249
+Ratio is 0.200; SE: 1.544(2.365); SE_mask: 1.384(2.397)
+accept H0 with p_value: 0.829
+Ratio is 0.200; SE: 1.544(2.365); SE_mask: 2.108(3.656)
+reject H0 with p_value: 0.005
+Ratio is 0.200; SE: 1.544(2.365); SE_mask: 28.122(57.830)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.544(2.365); SE_mask: 2.517(4.329)
+reject H0 with p_value: 0.000
+mean Y: 3.242
+Ratio is 0.200; SE: 1.651(2.261); SE_mask: 1.532(2.425)
+accept H0 with p_value: 0.763
+Ratio is 0.200; SE: 1.651(2.261); SE_mask: 1.981(3.263)
+reject H0 with p_value: 0.048
+Ratio is 0.200; SE: 1.651(2.261); SE_mask: 2.900(5.213)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.651(2.261); SE_mask: 2.833(4.713)
+reject H0 with p_value: 0.000
+mean Y: 3.213
+Ratio is 0.200; SE: 2.040(3.406); SE_mask: 1.316(1.724)
+accept H0 with p_value: 1.000
+Ratio is 0.200; SE: 2.040(3.406); SE_mask: 2.313(3.739)
+accept H0 with p_value: 0.140
+Ratio is 0.200; SE: 2.040(3.406); SE_mask: 2.503(4.094)
+reject H0 with p_value: 0.041
+Ratio is 0.200; SE: 2.040(3.406); SE_mask: 2.671(4.740)
+reject H0 with p_value: 0.015
+mean Y: 3.346
+Ratio is 0.200; SE: 1.943(3.332); SE_mask: 1.648(2.586)
+accept H0 with p_value: 0.919
+Ratio is 0.200; SE: 1.943(3.332); SE_mask: 2.199(3.951)
+accept H0 with p_value: 0.161
+Ratio is 0.200; SE: 1.943(3.332); SE_mask: 2.591(4.022)
+reject H0 with p_value: 0.007
+Ratio is 0.200; SE: 1.943(3.332); SE_mask: 3.083(5.214)
+reject H0 with p_value: 0.000
+mean Y: 3.266
+Ratio is 0.200; SE: 1.814(2.945); SE_mask: 1.542(2.370)
+accept H0 with p_value: 0.925
+Ratio is 0.200; SE: 1.814(2.945); SE_mask: 2.151(3.529)
+accept H0 with p_value: 0.071
+Ratio is 0.200; SE: 1.814(2.945); SE_mask: 2.672(4.773)
+reject H0 with p_value: 0.001
+Ratio is 0.200; SE: 1.814(2.945); SE_mask: 2.595(4.414)
+reject H0 with p_value: 0.002
+mean Y: 3.243
+Ratio is 0.200; SE: 1.654(2.504); SE_mask: 1.429(2.117)
+accept H0 with p_value: 0.915
+Ratio is 0.200; SE: 1.654(2.504); SE_mask: 1.992(2.920)
+reject H0 with p_value: 0.040
+Ratio is 0.200; SE: 1.654(2.504); SE_mask: 2.794(4.610)
+reject H0 with p_value: 0.000
+Ratio is 0.200; SE: 1.654(2.504); SE_mask: 2.584(4.355)
+reject H0 with p_value: 0.000
+Ratio: 0.200; Type 1 error: 0.000
+Ratio: 0.200; CASE 1: Power: 0.530
+Ratio: 0.200; CASE 2: Power: 0.970
+Ratio: 0.200; CASE 3: Power: 0.970
+Ratio: 0.200; training sample: 1200; MSE: 1.798, MSE_mask: 1.499
+mean Y: 3.167
+Ratio is 0.300; SE: 2.115(3.272); SE_mask: 1.687(2.551)
+accept H0 with p_value: 0.994
+Ratio is 0.300; SE: 2.115(3.272); SE_mask: 2.453(3.866)
+accept H0 with p_value: 0.051
+Ratio is 0.300; SE: 2.115(3.272); SE_mask: 3.123(5.929)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.115(3.272); SE_mask: 3.215(5.597)
+reject H0 with p_value: 0.000
+mean Y: 3.393
+Ratio is 0.300; SE: 2.268(3.577); SE_mask: 1.763(2.689)
+accept H0 with p_value: 0.997
+Ratio is 0.300; SE: 2.268(3.577); SE_mask: 2.391(4.144)
+accept H0 with p_value: 0.290
+Ratio is 0.300; SE: 2.268(3.577); SE_mask: 3.271(5.311)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.268(3.577); SE_mask: 3.232(5.511)
+reject H0 with p_value: 0.000
+mean Y: 3.446
+Ratio is 0.300; SE: 2.102(3.697); SE_mask: 1.548(2.248)
+accept H0 with p_value: 0.999
+Ratio is 0.300; SE: 2.102(3.697); SE_mask: 2.323(3.805)
+accept H0 with p_value: 0.153
+Ratio is 0.300; SE: 2.102(3.697); SE_mask: 2.868(5.003)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.102(3.697); SE_mask: 2.972(5.452)
+reject H0 with p_value: 0.001
+mean Y: 3.237
+Ratio is 0.300; SE: 2.374(3.907); SE_mask: 1.767(2.888)
+accept H0 with p_value: 0.999
+Ratio is 0.300; SE: 2.374(3.907); SE_mask: 2.571(3.812)
+accept H0 with p_value: 0.189
+Ratio is 0.300; SE: 2.374(3.907); SE_mask: 3.139(5.191)
+reject H0 with p_value: 0.002
+Ratio is 0.300; SE: 2.374(3.907); SE_mask: 3.207(5.675)
+reject H0 with p_value: 0.002
+mean Y: 3.241
+Ratio is 0.300; SE: 1.939(2.861); SE_mask: 1.695(2.625)
+accept H0 with p_value: 0.938
+Ratio is 0.300; SE: 1.939(2.861); SE_mask: 2.518(3.778)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.939(2.861); SE_mask: 2.961(4.821)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.939(2.861); SE_mask: 3.117(5.487)
+reject H0 with p_value: 0.000
+mean Y: 3.209
+Ratio is 0.300; SE: 1.921(3.379); SE_mask: 1.738(2.463)
+accept H0 with p_value: 0.858
+Ratio is 0.300; SE: 1.921(3.379); SE_mask: 2.148(3.708)
+accept H0 with p_value: 0.133
+Ratio is 0.300; SE: 1.921(3.379); SE_mask: 3.232(5.480)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.921(3.379); SE_mask: 3.022(5.760)
+reject H0 with p_value: 0.000
+mean Y: 3.241
+Ratio is 0.300; SE: 2.134(3.296); SE_mask: 1.854(3.328)
+accept H0 with p_value: 0.928
+Ratio is 0.300; SE: 2.134(3.296); SE_mask: 2.871(4.808)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.134(3.296); SE_mask: 3.120(5.352)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.134(3.296); SE_mask: 3.634(7.134)
+reject H0 with p_value: 0.000
+mean Y: 3.290
+Ratio is 0.300; SE: 1.964(3.031); SE_mask: 1.665(2.385)
+accept H0 with p_value: 0.971
+Ratio is 0.300; SE: 1.964(3.031); SE_mask: 2.165(3.214)
+accept H0 with p_value: 0.132
+Ratio is 0.300; SE: 1.964(3.031); SE_mask: 3.979(6.890)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.964(3.031); SE_mask: 3.012(5.036)
+reject H0 with p_value: 0.000
+mean Y: 3.191
+Ratio is 0.300; SE: 1.985(3.118); SE_mask: 1.707(2.575)
+accept H0 with p_value: 0.954
+Ratio is 0.300; SE: 1.985(3.118); SE_mask: 2.389(4.153)
+reject H0 with p_value: 0.029
+Ratio is 0.300; SE: 1.985(3.118); SE_mask: 3.103(4.941)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.985(3.118); SE_mask: 2.793(5.182)
+reject H0 with p_value: 0.001
+mean Y: 3.242
+Ratio is 0.300; SE: 1.780(2.628); SE_mask: 1.653(2.637)
+accept H0 with p_value: 0.798
+Ratio is 0.300; SE: 1.780(2.628); SE_mask: 2.342(4.277)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 1.780(2.628); SE_mask: 2.785(4.675)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.780(2.628); SE_mask: 2.431(4.761)
+reject H0 with p_value: 0.002
+mean Y: 3.241
+Ratio is 0.300; SE: 2.142(3.465); SE_mask: 1.796(2.792)
+accept H0 with p_value: 0.972
+Ratio is 0.300; SE: 2.142(3.465); SE_mask: 2.238(3.402)
+accept H0 with p_value: 0.314
+Ratio is 0.300; SE: 2.142(3.465); SE_mask: 2.915(4.820)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.142(3.465); SE_mask: 3.147(5.050)
+reject H0 with p_value: 0.000
+mean Y: 3.174
+Ratio is 0.300; SE: 1.902(3.022); SE_mask: 1.843(2.820)
+accept H0 with p_value: 0.637
+Ratio is 0.300; SE: 1.902(3.022); SE_mask: 2.684(4.463)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.902(3.022); SE_mask: 3.094(5.761)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.902(3.022); SE_mask: 3.223(5.537)
+reject H0 with p_value: 0.000
+mean Y: 3.283
+Ratio is 0.300; SE: 2.245(3.517); SE_mask: 1.792(2.831)
+accept H0 with p_value: 0.993
+Ratio is 0.300; SE: 2.245(3.517); SE_mask: 2.554(4.099)
+accept H0 with p_value: 0.081
+Ratio is 0.300; SE: 2.245(3.517); SE_mask: 3.085(5.058)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.245(3.517); SE_mask: 29.922(60.698)
+reject H0 with p_value: 0.000
+mean Y: 3.383
+Ratio is 0.300; SE: 2.350(3.723); SE_mask: 2.077(3.731)
+accept H0 with p_value: 0.898
+Ratio is 0.300; SE: 2.350(3.723); SE_mask: 2.582(3.946)
+accept H0 with p_value: 0.148
+Ratio is 0.300; SE: 2.350(3.723); SE_mask: 3.493(5.672)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.350(3.723); SE_mask: 3.175(5.226)
+reject H0 with p_value: 0.001
+mean Y: 3.476
+Ratio is 0.300; SE: 2.344(3.629); SE_mask: 1.824(2.846)
+accept H0 with p_value: 0.997
+Ratio is 0.300; SE: 2.344(3.629); SE_mask: 2.544(4.405)
+accept H0 with p_value: 0.196
+Ratio is 0.300; SE: 2.344(3.629); SE_mask: 3.339(5.219)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.344(3.629); SE_mask: 3.419(5.647)
+reject H0 with p_value: 0.000
+mean Y: 3.322
+Ratio is 0.300; SE: 2.033(2.861); SE_mask: 1.839(2.940)
+accept H0 with p_value: 0.878
+Ratio is 0.300; SE: 2.033(2.861); SE_mask: 2.485(4.253)
+reject H0 with p_value: 0.015
+Ratio is 0.300; SE: 2.033(2.861); SE_mask: 3.457(6.507)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.033(2.861); SE_mask: 3.114(5.423)
+reject H0 with p_value: 0.000
+mean Y: 3.323
+Ratio is 0.300; SE: 2.225(3.644); SE_mask: 1.572(2.433)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.225(3.644); SE_mask: 2.304(3.759)
+accept H0 with p_value: 0.355
+Ratio is 0.300; SE: 2.225(3.644); SE_mask: 2.997(5.541)
+reject H0 with p_value: 0.002
+Ratio is 0.300; SE: 2.225(3.644); SE_mask: 2.766(4.638)
+reject H0 with p_value: 0.012
+mean Y: 3.215
+Ratio is 0.300; SE: 1.929(3.374); SE_mask: 1.561(2.452)
+accept H0 with p_value: 0.985
+Ratio is 0.300; SE: 1.929(3.374); SE_mask: 2.271(3.643)
+reject H0 with p_value: 0.045
+Ratio is 0.300; SE: 1.929(3.374); SE_mask: 2.484(4.685)
+reject H0 with p_value: 0.009
+Ratio is 0.300; SE: 1.929(3.374); SE_mask: 2.475(4.493)
+reject H0 with p_value: 0.009
+mean Y: 3.444
+Ratio is 0.300; SE: 2.212(3.797); SE_mask: 1.729(2.501)
+accept H0 with p_value: 0.995
+Ratio is 0.300; SE: 2.212(3.797); SE_mask: 2.553(4.358)
+accept H0 with p_value: 0.075
+Ratio is 0.300; SE: 2.212(3.797); SE_mask: 3.252(5.473)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.212(3.797); SE_mask: 2.736(4.313)
+reject H0 with p_value: 0.013
+mean Y: 3.284
+Ratio is 0.300; SE: 2.426(3.631); SE_mask: 1.911(3.036)
+accept H0 with p_value: 0.996
+Ratio is 0.300; SE: 2.426(3.631); SE_mask: 2.391(3.903)
+accept H0 with p_value: 0.564
+Ratio is 0.300; SE: 2.426(3.631); SE_mask: 3.226(5.092)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.426(3.631); SE_mask: 2.697(4.990)
+accept H0 with p_value: 0.141
+mean Y: 3.421
+Ratio is 0.300; SE: 2.086(3.366); SE_mask: 1.431(1.975)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.086(3.366); SE_mask: 2.349(4.190)
+accept H0 with p_value: 0.116
+Ratio is 0.300; SE: 2.086(3.366); SE_mask: 2.777(4.918)
+reject H0 with p_value: 0.002
+Ratio is 0.300; SE: 2.086(3.366); SE_mask: 2.952(5.545)
+reject H0 with p_value: 0.001
+mean Y: 3.491
+Ratio is 0.300; SE: 2.010(3.108); SE_mask: 1.576(2.435)
+accept H0 with p_value: 0.996
+Ratio is 0.300; SE: 2.010(3.108); SE_mask: 2.408(4.204)
+reject H0 with p_value: 0.031
+Ratio is 0.300; SE: 2.010(3.108); SE_mask: 2.995(6.077)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.010(3.108); SE_mask: 2.878(5.163)
+reject H0 with p_value: 0.000
+mean Y: 3.305
+Ratio is 0.300; SE: 2.182(3.556); SE_mask: 1.821(2.550)
+accept H0 with p_value: 0.978
+Ratio is 0.300; SE: 2.182(3.556); SE_mask: 2.451(3.881)
+accept H0 with p_value: 0.106
+Ratio is 0.300; SE: 2.182(3.556); SE_mask: 2.903(4.764)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.182(3.556); SE_mask: 3.435(7.155)
+reject H0 with p_value: 0.000
+mean Y: 3.237
+Ratio is 0.300; SE: 2.170(3.518); SE_mask: 1.672(2.423)
+accept H0 with p_value: 0.998
+Ratio is 0.300; SE: 2.170(3.518); SE_mask: 2.533(4.266)
+accept H0 with p_value: 0.054
+Ratio is 0.300; SE: 2.170(3.518); SE_mask: 2.979(5.488)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.170(3.518); SE_mask: 2.883(5.095)
+reject H0 with p_value: 0.002
+mean Y: 3.356
+Ratio is 0.300; SE: 1.764(2.647); SE_mask: 1.817(2.869)
+accept H0 with p_value: 0.370
+Ratio is 0.300; SE: 1.764(2.647); SE_mask: 2.686(4.918)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.764(2.647); SE_mask: 3.103(5.315)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.764(2.647); SE_mask: 3.239(5.557)
+reject H0 with p_value: 0.000
+mean Y: 3.313
+Ratio is 0.300; SE: 2.148(3.357); SE_mask: 1.615(2.552)
+accept H0 with p_value: 0.999
+Ratio is 0.300; SE: 2.148(3.357); SE_mask: 2.197(4.080)
+accept H0 with p_value: 0.409
+Ratio is 0.300; SE: 2.148(3.357); SE_mask: 2.903(4.934)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.148(3.357); SE_mask: 32.005(71.395)
+reject H0 with p_value: 0.000
+mean Y: 3.457
+Ratio is 0.300; SE: 2.099(2.848); SE_mask: 1.860(2.853)
+accept H0 with p_value: 0.926
+Ratio is 0.300; SE: 2.099(2.848); SE_mask: 2.273(3.630)
+accept H0 with p_value: 0.177
+Ratio is 0.300; SE: 2.099(2.848); SE_mask: 2.982(5.055)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.099(2.848); SE_mask: 3.269(5.675)
+reject H0 with p_value: 0.000
+mean Y: 3.117
+Ratio is 0.300; SE: 2.586(4.170); SE_mask: 1.841(2.917)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.586(4.170); SE_mask: 2.324(4.183)
+accept H0 with p_value: 0.861
+Ratio is 0.300; SE: 2.586(4.170); SE_mask: 2.877(4.871)
+accept H0 with p_value: 0.133
+Ratio is 0.300; SE: 2.586(4.170); SE_mask: 2.934(5.699)
+accept H0 with p_value: 0.114
+mean Y: 3.358
+Ratio is 0.300; SE: 2.023(3.433); SE_mask: 1.544(2.302)
+accept H0 with p_value: 0.998
+Ratio is 0.300; SE: 2.023(3.433); SE_mask: 2.242(3.687)
+accept H0 with p_value: 0.144
+Ratio is 0.300; SE: 2.023(3.433); SE_mask: 2.899(5.015)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.023(3.433); SE_mask: 3.035(5.300)
+reject H0 with p_value: 0.000
+mean Y: 3.218
+Ratio is 0.300; SE: 2.493(3.905); SE_mask: 1.719(2.704)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.493(3.905); SE_mask: 2.399(3.648)
+accept H0 with p_value: 0.667
+Ratio is 0.300; SE: 2.493(3.905); SE_mask: 3.307(5.195)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.493(3.905); SE_mask: 3.026(5.211)
+reject H0 with p_value: 0.022
+mean Y: 3.106
+Ratio is 0.300; SE: 1.932(3.142); SE_mask: 2.016(3.553)
+accept H0 with p_value: 0.332
+Ratio is 0.300; SE: 1.932(3.142); SE_mask: 2.483(3.977)
+reject H0 with p_value: 0.004
+Ratio is 0.300; SE: 1.932(3.142); SE_mask: 2.826(4.697)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.932(3.142); SE_mask: 2.826(5.354)
+reject H0 with p_value: 0.000
+mean Y: 3.205
+Ratio is 0.300; SE: 2.327(3.836); SE_mask: 1.659(2.283)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.327(3.836); SE_mask: 2.276(3.654)
+accept H0 with p_value: 0.594
+Ratio is 0.300; SE: 2.327(3.836); SE_mask: 2.891(4.967)
+reject H0 with p_value: 0.014
+Ratio is 0.300; SE: 2.327(3.836); SE_mask: 3.087(5.559)
+reject H0 with p_value: 0.003
+mean Y: 3.444
+Ratio is 0.300; SE: 2.003(3.004); SE_mask: 1.715(2.786)
+accept H0 with p_value: 0.957
+Ratio is 0.300; SE: 2.003(3.004); SE_mask: 2.204(3.884)
+accept H0 with p_value: 0.158
+Ratio is 0.300; SE: 2.003(3.004); SE_mask: 3.150(5.859)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.003(3.004); SE_mask: 2.609(4.400)
+reject H0 with p_value: 0.003
+mean Y: 3.181
+Ratio is 0.300; SE: 2.183(3.555); SE_mask: 1.803(2.775)
+accept H0 with p_value: 0.980
+Ratio is 0.300; SE: 2.183(3.555); SE_mask: 2.459(4.023)
+accept H0 with p_value: 0.104
+Ratio is 0.300; SE: 2.183(3.555); SE_mask: 2.928(4.802)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.183(3.555); SE_mask: 3.519(5.688)
+reject H0 with p_value: 0.000
+mean Y: 3.403
+Ratio is 0.300; SE: 2.219(3.274); SE_mask: 1.785(2.716)
+accept H0 with p_value: 0.994
+Ratio is 0.300; SE: 2.219(3.274); SE_mask: 2.524(4.039)
+accept H0 with p_value: 0.076
+Ratio is 0.300; SE: 2.219(3.274); SE_mask: 3.180(5.573)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.219(3.274); SE_mask: 3.085(4.888)
+reject H0 with p_value: 0.000
+mean Y: 3.262
+Ratio is 0.300; SE: 1.744(2.805); SE_mask: 1.598(2.379)
+accept H0 with p_value: 0.835
+Ratio is 0.300; SE: 1.744(2.805); SE_mask: 2.176(3.573)
+reject H0 with p_value: 0.010
+Ratio is 0.300; SE: 1.744(2.805); SE_mask: 2.739(4.224)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.744(2.805); SE_mask: 2.717(4.785)
+reject H0 with p_value: 0.000
+mean Y: 3.489
+Ratio is 0.300; SE: 1.938(2.970); SE_mask: 1.650(2.343)
+accept H0 with p_value: 0.969
+Ratio is 0.300; SE: 1.938(2.970); SE_mask: 2.472(3.981)
+reject H0 with p_value: 0.004
+Ratio is 0.300; SE: 1.938(2.970); SE_mask: 2.962(4.519)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.938(2.970); SE_mask: 3.198(5.550)
+reject H0 with p_value: 0.000
+mean Y: 3.195
+Ratio is 0.300; SE: 2.142(3.231); SE_mask: 1.852(2.850)
+accept H0 with p_value: 0.951
+Ratio is 0.300; SE: 2.142(3.231); SE_mask: 2.266(3.832)
+accept H0 with p_value: 0.272
+Ratio is 0.300; SE: 2.142(3.231); SE_mask: 2.911(4.774)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.142(3.231); SE_mask: 3.062(5.328)
+reject H0 with p_value: 0.000
+mean Y: 3.206
+Ratio is 0.300; SE: 2.204(3.433); SE_mask: 1.607(2.448)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.204(3.433); SE_mask: 2.205(3.624)
+accept H0 with p_value: 0.497
+Ratio is 0.300; SE: 2.204(3.433); SE_mask: 3.158(6.018)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.204(3.433); SE_mask: 3.095(5.427)
+reject H0 with p_value: 0.000
+mean Y: 3.196
+Ratio is 0.300; SE: 1.918(3.029); SE_mask: 1.555(2.373)
+accept H0 with p_value: 0.990
+Ratio is 0.300; SE: 1.918(3.029); SE_mask: 2.276(3.700)
+reject H0 with p_value: 0.033
+Ratio is 0.300; SE: 1.918(3.029); SE_mask: 2.684(4.964)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.918(3.029); SE_mask: 2.592(4.333)
+reject H0 with p_value: 0.001
+mean Y: 3.280
+Ratio is 0.300; SE: 2.260(3.501); SE_mask: 1.668(2.492)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.260(3.501); SE_mask: 2.357(3.584)
+accept H0 with p_value: 0.318
+Ratio is 0.300; SE: 2.260(3.501); SE_mask: 2.841(4.927)
+reject H0 with p_value: 0.009
+Ratio is 0.300; SE: 2.260(3.501); SE_mask: 2.826(4.778)
+reject H0 with p_value: 0.010
+mean Y: 3.307
+Ratio is 0.300; SE: 1.794(2.656); SE_mask: 1.587(2.527)
+accept H0 with p_value: 0.916
+Ratio is 0.300; SE: 1.794(2.656); SE_mask: 2.050(3.457)
+accept H0 with p_value: 0.075
+Ratio is 0.300; SE: 1.794(2.656); SE_mask: 2.805(4.652)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.794(2.656); SE_mask: 2.461(4.396)
+reject H0 with p_value: 0.001
+mean Y: 3.359
+Ratio is 0.300; SE: 1.741(2.614); SE_mask: 1.665(2.481)
+accept H0 with p_value: 0.699
+Ratio is 0.300; SE: 1.741(2.614); SE_mask: 2.322(3.512)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.741(2.614); SE_mask: 2.647(4.002)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.741(2.614); SE_mask: 2.922(4.606)
+reject H0 with p_value: 0.000
+mean Y: 3.244
+Ratio is 0.300; SE: 1.743(2.725); SE_mask: 1.535(2.376)
+accept H0 with p_value: 0.921
+Ratio is 0.300; SE: 1.743(2.725); SE_mask: 2.521(3.857)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.743(2.725); SE_mask: 3.083(5.686)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.743(2.725); SE_mask: 3.152(5.557)
+reject H0 with p_value: 0.000
+mean Y: 3.231
+Ratio is 0.300; SE: 1.933(3.015); SE_mask: 1.442(2.121)
+accept H0 with p_value: 0.999
+Ratio is 0.300; SE: 1.933(3.015); SE_mask: 2.276(3.488)
+reject H0 with p_value: 0.034
+Ratio is 0.300; SE: 1.933(3.015); SE_mask: 2.618(4.225)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.933(3.015); SE_mask: 2.607(4.979)
+reject H0 with p_value: 0.002
+mean Y: 3.314
+Ratio is 0.300; SE: 2.140(3.420); SE_mask: 1.700(2.623)
+accept H0 with p_value: 0.994
+Ratio is 0.300; SE: 2.140(3.420); SE_mask: 2.352(4.047)
+accept H0 with p_value: 0.164
+Ratio is 0.300; SE: 2.140(3.420); SE_mask: 2.993(5.298)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.140(3.420); SE_mask: 2.771(4.895)
+reject H0 with p_value: 0.005
+mean Y: 3.483
+Ratio is 0.300; SE: 1.885(2.921); SE_mask: 1.526(2.247)
+accept H0 with p_value: 0.991
+Ratio is 0.300; SE: 1.885(2.921); SE_mask: 2.122(3.298)
+accept H0 with p_value: 0.094
+Ratio is 0.300; SE: 1.885(2.921); SE_mask: 29.152(58.711)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.885(2.921); SE_mask: 2.965(4.789)
+reject H0 with p_value: 0.000
+mean Y: 3.267
+Ratio is 0.300; SE: 2.060(3.437); SE_mask: 1.480(2.257)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.060(3.437); SE_mask: 2.573(4.612)
+reject H0 with p_value: 0.014
+Ratio is 0.300; SE: 2.060(3.437); SE_mask: 2.789(4.725)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.060(3.437); SE_mask: 2.847(4.689)
+reject H0 with p_value: 0.000
+mean Y: 3.199
+Ratio is 0.300; SE: 2.063(3.141); SE_mask: 1.821(2.718)
+accept H0 with p_value: 0.923
+Ratio is 0.300; SE: 2.063(3.141); SE_mask: 2.616(4.255)
+reject H0 with p_value: 0.005
+Ratio is 0.300; SE: 2.063(3.141); SE_mask: 3.684(6.914)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.063(3.141); SE_mask: 3.213(6.028)
+reject H0 with p_value: 0.000
+mean Y: 3.179
+Ratio is 0.300; SE: 1.741(2.612); SE_mask: 1.548(2.131)
+accept H0 with p_value: 0.919
+Ratio is 0.300; SE: 1.741(2.612); SE_mask: 2.361(4.012)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.741(2.612); SE_mask: 2.470(3.834)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.741(2.612); SE_mask: 2.748(4.529)
+reject H0 with p_value: 0.000
+mean Y: 3.161
+Ratio is 0.300; SE: 2.274(3.761); SE_mask: 1.472(2.207)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.274(3.761); SE_mask: 2.475(4.324)
+accept H0 with p_value: 0.195
+Ratio is 0.300; SE: 2.274(3.761); SE_mask: 3.315(6.759)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.274(3.761); SE_mask: 2.893(5.318)
+reject H0 with p_value: 0.010
+mean Y: 3.320
+Ratio is 0.300; SE: 2.114(3.517); SE_mask: 1.674(2.772)
+accept H0 with p_value: 0.992
+Ratio is 0.300; SE: 2.114(3.517); SE_mask: 2.334(3.964)
+accept H0 with p_value: 0.154
+Ratio is 0.300; SE: 2.114(3.517); SE_mask: 2.556(4.257)
+reject H0 with p_value: 0.025
+Ratio is 0.300; SE: 2.114(3.517); SE_mask: 2.949(5.299)
+reject H0 with p_value: 0.001
+mean Y: 3.372
+Ratio is 0.300; SE: 2.157(3.150); SE_mask: 1.803(2.691)
+accept H0 with p_value: 0.982
+Ratio is 0.300; SE: 2.157(3.150); SE_mask: 2.690(4.203)
+reject H0 with p_value: 0.006
+Ratio is 0.300; SE: 2.157(3.150); SE_mask: 2.726(5.210)
+reject H0 with p_value: 0.011
+Ratio is 0.300; SE: 2.157(3.150); SE_mask: 2.847(4.847)
+reject H0 with p_value: 0.002
+mean Y: 3.229
+Ratio is 0.300; SE: 1.843(2.886); SE_mask: 1.714(2.579)
+accept H0 with p_value: 0.794
+Ratio is 0.300; SE: 1.843(2.886); SE_mask: 2.483(4.306)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.843(2.886); SE_mask: 2.672(4.868)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.843(2.886); SE_mask: 2.825(4.603)
+reject H0 with p_value: 0.000
+mean Y: 3.126
+Ratio is 0.300; SE: 2.446(3.961); SE_mask: 1.763(3.116)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.446(3.961); SE_mask: 2.290(3.526)
+accept H0 with p_value: 0.765
+Ratio is 0.300; SE: 2.446(3.961); SE_mask: 2.894(4.961)
+reject H0 with p_value: 0.042
+Ratio is 0.300; SE: 2.446(3.961); SE_mask: 2.979(5.620)
+reject H0 with p_value: 0.029
+mean Y: 3.128
+Ratio is 0.300; SE: 1.955(2.903); SE_mask: 1.626(2.465)
+accept H0 with p_value: 0.983
+Ratio is 0.300; SE: 1.955(2.903); SE_mask: 2.305(4.075)
+reject H0 with p_value: 0.043
+Ratio is 0.300; SE: 1.955(2.903); SE_mask: 2.673(4.659)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.955(2.903); SE_mask: 2.883(5.231)
+reject H0 with p_value: 0.000
+mean Y: 3.070
+Ratio is 0.300; SE: 2.028(3.137); SE_mask: 1.743(2.648)
+accept H0 with p_value: 0.955
+Ratio is 0.300; SE: 2.028(3.137); SE_mask: 2.130(3.180)
+accept H0 with p_value: 0.288
+Ratio is 0.300; SE: 2.028(3.137); SE_mask: 2.693(4.483)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.028(3.137); SE_mask: 2.887(4.959)
+reject H0 with p_value: 0.000
+mean Y: 3.483
+Ratio is 0.300; SE: 2.114(3.234); SE_mask: 1.623(2.620)
+accept H0 with p_value: 0.998
+Ratio is 0.300; SE: 2.114(3.234); SE_mask: 2.169(3.845)
+accept H0 with p_value: 0.394
+Ratio is 0.300; SE: 2.114(3.234); SE_mask: 2.898(4.710)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.114(3.234); SE_mask: 2.882(5.375)
+reject H0 with p_value: 0.001
+mean Y: 3.384
+Ratio is 0.300; SE: 2.182(3.691); SE_mask: 1.555(2.223)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.182(3.691); SE_mask: 2.252(3.735)
+accept H0 with p_value: 0.371
+Ratio is 0.300; SE: 2.182(3.691); SE_mask: 2.748(4.529)
+reject H0 with p_value: 0.009
+Ratio is 0.300; SE: 2.182(3.691); SE_mask: 2.716(4.852)
+reject H0 with p_value: 0.016
+mean Y: 3.269
+Ratio is 0.300; SE: 1.877(2.753); SE_mask: 1.535(2.222)
+accept H0 with p_value: 0.991
+Ratio is 0.300; SE: 1.877(2.753); SE_mask: 2.119(3.799)
+accept H0 with p_value: 0.104
+Ratio is 0.300; SE: 1.877(2.753); SE_mask: 2.652(4.919)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.877(2.753); SE_mask: 2.718(4.844)
+reject H0 with p_value: 0.000
+mean Y: 3.440
+Ratio is 0.300; SE: 1.897(3.050); SE_mask: 1.768(2.971)
+accept H0 with p_value: 0.771
+Ratio is 0.300; SE: 1.897(3.050); SE_mask: 2.395(3.930)
+reject H0 with p_value: 0.007
+Ratio is 0.300; SE: 1.897(3.050); SE_mask: 3.108(5.798)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.897(3.050); SE_mask: 2.527(4.617)
+reject H0 with p_value: 0.003
+mean Y: 3.307
+Ratio is 0.300; SE: 31.338(66.533); SE_mask: 1.883(3.051)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 31.338(66.533); SE_mask: 2.303(3.682)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 31.338(66.533); SE_mask: 3.115(5.408)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 31.338(66.533); SE_mask: 2.941(5.424)
+accept H0 with p_value: 1.000
+mean Y: 3.287
+Ratio is 0.300; SE: 2.166(3.326); SE_mask: 1.530(2.272)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.166(3.326); SE_mask: 2.124(3.399)
+accept H0 with p_value: 0.585
+Ratio is 0.300; SE: 2.166(3.326); SE_mask: 2.965(5.326)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.166(3.326); SE_mask: 3.012(5.025)
+reject H0 with p_value: 0.000
+mean Y: 3.262
+Ratio is 0.300; SE: 2.039(3.135); SE_mask: 1.854(2.960)
+accept H0 with p_value: 0.854
+Ratio is 0.300; SE: 2.039(3.135); SE_mask: 2.833(5.050)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.039(3.135); SE_mask: 3.058(5.360)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.039(3.135); SE_mask: 3.405(6.225)
+reject H0 with p_value: 0.000
+mean Y: 3.304
+Ratio is 0.300; SE: 1.877(2.908); SE_mask: 1.594(2.375)
+accept H0 with p_value: 0.967
+Ratio is 0.300; SE: 1.877(2.908); SE_mask: 2.200(3.538)
+reject H0 with p_value: 0.042
+Ratio is 0.300; SE: 1.877(2.908); SE_mask: 2.547(4.383)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 1.877(2.908); SE_mask: 2.681(4.561)
+reject H0 with p_value: 0.000
+mean Y: 3.317
+Ratio is 0.300; SE: 2.161(3.491); SE_mask: 1.839(2.882)
+accept H0 with p_value: 0.959
+Ratio is 0.300; SE: 2.161(3.491); SE_mask: 2.745(4.744)
+reject H0 with p_value: 0.008
+Ratio is 0.300; SE: 2.161(3.491); SE_mask: 3.030(6.568)
+reject H0 with p_value: 0.002
+Ratio is 0.300; SE: 2.161(3.491); SE_mask: 3.033(6.095)
+reject H0 with p_value: 0.001
+mean Y: 3.312
+Ratio is 0.300; SE: 2.414(3.866); SE_mask: 1.985(3.061)
+accept H0 with p_value: 0.983
+Ratio is 0.300; SE: 2.414(3.866); SE_mask: 2.632(4.111)
+accept H0 with p_value: 0.172
+Ratio is 0.300; SE: 2.414(3.866); SE_mask: 3.480(5.756)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.414(3.866); SE_mask: 2.915(5.047)
+reject H0 with p_value: 0.027
+mean Y: 3.362
+Ratio is 0.300; SE: 1.992(3.218); SE_mask: 1.611(2.453)
+accept H0 with p_value: 0.989
+Ratio is 0.300; SE: 1.992(3.218); SE_mask: 2.429(4.343)
+reject H0 with p_value: 0.024
+Ratio is 0.300; SE: 1.992(3.218); SE_mask: 2.528(3.977)
+reject H0 with p_value: 0.005
+Ratio is 0.300; SE: 1.992(3.218); SE_mask: 2.986(5.193)
+reject H0 with p_value: 0.000
+mean Y: 3.320
+Ratio is 0.300; SE: 30.963(61.610); SE_mask: 1.811(3.013)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 30.963(61.610); SE_mask: 2.546(4.364)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 30.963(61.610); SE_mask: 3.046(4.951)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 30.963(61.610); SE_mask: 3.128(5.407)
+accept H0 with p_value: 1.000
+mean Y: 3.452
+Ratio is 0.300; SE: 2.103(3.372); SE_mask: 1.532(2.136)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.103(3.372); SE_mask: 2.666(4.764)
+reject H0 with p_value: 0.009
+Ratio is 0.300; SE: 2.103(3.372); SE_mask: 3.230(5.321)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.103(3.372); SE_mask: 2.894(5.096)
+reject H0 with p_value: 0.001
+mean Y: 3.269
+Ratio is 0.300; SE: 2.118(3.332); SE_mask: 1.698(2.836)
+accept H0 with p_value: 0.991
+Ratio is 0.300; SE: 2.118(3.332); SE_mask: 2.369(3.974)
+accept H0 with p_value: 0.118
+Ratio is 0.300; SE: 2.118(3.332); SE_mask: 3.288(5.817)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.118(3.332); SE_mask: 2.994(4.759)
+reject H0 with p_value: 0.000
+mean Y: 3.251
+Ratio is 0.300; SE: 2.219(3.494); SE_mask: 1.737(2.608)
+accept H0 with p_value: 0.997
+Ratio is 0.300; SE: 2.219(3.494); SE_mask: 2.225(3.405)
+accept H0 with p_value: 0.489
+Ratio is 0.300; SE: 2.219(3.494); SE_mask: 3.800(6.204)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.219(3.494); SE_mask: 2.658(5.131)
+reject H0 with p_value: 0.042
+mean Y: 3.357
+Ratio is 0.300; SE: 2.456(4.095); SE_mask: 1.909(2.869)
+accept H0 with p_value: 0.996
+Ratio is 0.300; SE: 2.456(4.095); SE_mask: 2.641(4.452)
+accept H0 with p_value: 0.226
+Ratio is 0.300; SE: 2.456(4.095); SE_mask: 3.425(6.100)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.456(4.095); SE_mask: 3.040(5.486)
+reject H0 with p_value: 0.018
+mean Y: 3.438
+Ratio is 0.300; SE: 1.924(2.873); SE_mask: 1.587(2.196)
+accept H0 with p_value: 0.989
+Ratio is 0.300; SE: 1.924(2.873); SE_mask: 2.402(3.882)
+reject H0 with p_value: 0.008
+Ratio is 0.300; SE: 1.924(2.873); SE_mask: 2.675(4.039)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.924(2.873); SE_mask: 2.803(4.514)
+reject H0 with p_value: 0.000
+mean Y: 3.264
+Ratio is 0.300; SE: 2.173(3.401); SE_mask: 1.732(2.544)
+accept H0 with p_value: 0.995
+Ratio is 0.300; SE: 2.173(3.401); SE_mask: 2.374(3.997)
+accept H0 with p_value: 0.174
+Ratio is 0.300; SE: 2.173(3.401); SE_mask: 2.999(4.868)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.173(3.401); SE_mask: 3.240(5.768)
+reject H0 with p_value: 0.000
+mean Y: 3.278
+Ratio is 0.300; SE: 2.181(3.226); SE_mask: 1.847(2.900)
+accept H0 with p_value: 0.970
+Ratio is 0.300; SE: 2.181(3.226); SE_mask: 2.639(4.786)
+reject H0 with p_value: 0.026
+Ratio is 0.300; SE: 2.181(3.226); SE_mask: 3.001(4.850)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.181(3.226); SE_mask: 3.249(5.899)
+reject H0 with p_value: 0.000
+mean Y: 3.317
+Ratio is 0.300; SE: 2.119(3.491); SE_mask: 1.677(2.634)
+accept H0 with p_value: 0.993
+Ratio is 0.300; SE: 2.119(3.491); SE_mask: 2.046(3.448)
+accept H0 with p_value: 0.643
+Ratio is 0.300; SE: 2.119(3.491); SE_mask: 2.890(5.193)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.119(3.491); SE_mask: 2.710(5.077)
+reject H0 with p_value: 0.009
+mean Y: 3.373
+Ratio is 0.300; SE: 2.101(3.237); SE_mask: 1.709(2.434)
+accept H0 with p_value: 0.991
+Ratio is 0.300; SE: 2.101(3.237); SE_mask: 2.812(5.269)
+reject H0 with p_value: 0.002
+Ratio is 0.300; SE: 2.101(3.237); SE_mask: 3.261(5.925)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.101(3.237); SE_mask: 3.402(6.354)
+reject H0 with p_value: 0.000
+mean Y: 3.308
+Ratio is 0.300; SE: 2.316(3.955); SE_mask: 1.906(2.812)
+accept H0 with p_value: 0.981
+Ratio is 0.300; SE: 2.316(3.955); SE_mask: 2.765(4.441)
+reject H0 with p_value: 0.032
+Ratio is 0.300; SE: 2.316(3.955); SE_mask: 3.502(5.569)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.316(3.955); SE_mask: 3.222(5.870)
+reject H0 with p_value: 0.001
+mean Y: 3.312
+Ratio is 0.300; SE: 1.840(2.793); SE_mask: 1.921(2.837)
+accept H0 with p_value: 0.309
+Ratio is 0.300; SE: 1.840(2.793); SE_mask: 2.754(4.598)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.840(2.793); SE_mask: 32.339(69.285)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.840(2.793); SE_mask: 3.021(5.511)
+reject H0 with p_value: 0.000
+mean Y: 3.241
+Ratio is 0.300; SE: 2.059(3.082); SE_mask: 1.800(2.686)
+accept H0 with p_value: 0.940
+Ratio is 0.300; SE: 2.059(3.082); SE_mask: 2.577(4.380)
+reject H0 with p_value: 0.009
+Ratio is 0.300; SE: 2.059(3.082); SE_mask: 2.422(3.639)
+reject H0 with p_value: 0.031
+Ratio is 0.300; SE: 2.059(3.082); SE_mask: 3.210(5.825)
+reject H0 with p_value: 0.000
+mean Y: 3.316
+Ratio is 0.300; SE: 2.028(3.085); SE_mask: 1.539(2.222)
+accept H0 with p_value: 0.999
+Ratio is 0.300; SE: 2.028(3.085); SE_mask: 2.501(4.337)
+reject H0 with p_value: 0.015
+Ratio is 0.300; SE: 2.028(3.085); SE_mask: 2.782(4.613)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.028(3.085); SE_mask: 3.197(5.552)
+reject H0 with p_value: 0.000
+mean Y: 3.501
+Ratio is 0.300; SE: 1.970(3.034); SE_mask: 1.507(2.099)
+accept H0 with p_value: 0.999
+Ratio is 0.300; SE: 1.970(3.034); SE_mask: 2.575(4.427)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 1.970(3.034); SE_mask: 3.000(5.108)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.970(3.034); SE_mask: 2.907(5.274)
+reject H0 with p_value: 0.000
+mean Y: 3.291
+Ratio is 0.300; SE: 2.143(3.366); SE_mask: 1.649(2.831)
+accept H0 with p_value: 0.997
+Ratio is 0.300; SE: 2.143(3.366); SE_mask: 2.083(3.383)
+accept H0 with p_value: 0.621
+Ratio is 0.300; SE: 2.143(3.366); SE_mask: 3.016(4.942)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.143(3.366); SE_mask: 3.065(5.346)
+reject H0 with p_value: 0.000
+mean Y: 3.473
+Ratio is 0.300; SE: 1.970(3.157); SE_mask: 1.851(3.037)
+accept H0 with p_value: 0.747
+Ratio is 0.300; SE: 1.970(3.157); SE_mask: 2.576(4.423)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 1.970(3.157); SE_mask: 3.416(6.523)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.970(3.157); SE_mask: 2.848(4.657)
+reject H0 with p_value: 0.000
+mean Y: 3.375
+Ratio is 0.300; SE: 2.307(3.888); SE_mask: 1.791(2.938)
+accept H0 with p_value: 0.995
+Ratio is 0.300; SE: 2.307(3.888); SE_mask: 2.591(4.477)
+accept H0 with p_value: 0.120
+Ratio is 0.300; SE: 2.307(3.888); SE_mask: 2.824(4.778)
+reject H0 with p_value: 0.020
+Ratio is 0.300; SE: 2.307(3.888); SE_mask: 3.275(5.550)
+reject H0 with p_value: 0.000
+mean Y: 3.189
+Ratio is 0.300; SE: 2.739(4.687); SE_mask: 1.918(2.928)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.739(4.687); SE_mask: 2.419(4.275)
+accept H0 with p_value: 0.891
+Ratio is 0.300; SE: 2.739(4.687); SE_mask: 2.963(5.238)
+accept H0 with p_value: 0.218
+Ratio is 0.300; SE: 2.739(4.687); SE_mask: 2.816(4.894)
+accept H0 with p_value: 0.390
+mean Y: 3.179
+Ratio is 0.300; SE: 2.101(3.350); SE_mask: 1.534(2.290)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.101(3.350); SE_mask: 2.121(3.582)
+accept H0 with p_value: 0.461
+Ratio is 0.300; SE: 2.101(3.350); SE_mask: 2.723(4.520)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 2.101(3.350); SE_mask: 3.154(5.323)
+reject H0 with p_value: 0.000
+mean Y: 3.166
+Ratio is 0.300; SE: 2.073(3.461); SE_mask: 1.733(2.704)
+accept H0 with p_value: 0.971
+Ratio is 0.300; SE: 2.073(3.461); SE_mask: 2.287(4.177)
+accept H0 with p_value: 0.167
+Ratio is 0.300; SE: 2.073(3.461); SE_mask: 3.179(5.542)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.073(3.461); SE_mask: 2.940(4.573)
+reject H0 with p_value: 0.000
+mean Y: 3.196
+Ratio is 0.300; SE: 2.236(3.387); SE_mask: 1.657(2.398)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.236(3.387); SE_mask: 2.352(4.639)
+accept H0 with p_value: 0.311
+Ratio is 0.300; SE: 2.236(3.387); SE_mask: 2.789(4.505)
+reject H0 with p_value: 0.008
+Ratio is 0.300; SE: 2.236(3.387); SE_mask: 2.917(5.386)
+reject H0 with p_value: 0.004
+mean Y: 3.335
+Ratio is 0.300; SE: 2.133(3.258); SE_mask: 1.860(2.759)
+accept H0 with p_value: 0.942
+Ratio is 0.300; SE: 2.133(3.258); SE_mask: 2.337(3.719)
+accept H0 with p_value: 0.157
+Ratio is 0.300; SE: 2.133(3.258); SE_mask: 2.934(5.535)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.133(3.258); SE_mask: 2.671(4.646)
+reject H0 with p_value: 0.010
+mean Y: 3.430
+Ratio is 0.300; SE: 2.237(3.678); SE_mask: 1.748(2.842)
+accept H0 with p_value: 0.995
+Ratio is 0.300; SE: 2.237(3.678); SE_mask: 2.560(4.715)
+accept H0 with p_value: 0.093
+Ratio is 0.300; SE: 2.237(3.678); SE_mask: 3.179(4.966)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.237(3.678); SE_mask: 3.376(6.008)
+reject H0 with p_value: 0.000
+mean Y: 3.315
+Ratio is 0.300; SE: 2.017(3.114); SE_mask: 1.666(2.478)
+accept H0 with p_value: 0.985
+Ratio is 0.300; SE: 2.017(3.114); SE_mask: 2.496(3.942)
+reject H0 with p_value: 0.010
+Ratio is 0.300; SE: 2.017(3.114); SE_mask: 2.603(4.366)
+reject H0 with p_value: 0.004
+Ratio is 0.300; SE: 2.017(3.114); SE_mask: 3.208(5.431)
+reject H0 with p_value: 0.000
+mean Y: 3.303
+Ratio is 0.300; SE: 2.122(3.298); SE_mask: 1.796(2.653)
+accept H0 with p_value: 0.971
+Ratio is 0.300; SE: 2.122(3.298); SE_mask: 2.563(4.293)
+reject H0 with p_value: 0.023
+Ratio is 0.300; SE: 2.122(3.298); SE_mask: 2.797(4.894)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 2.122(3.298); SE_mask: 3.116(6.386)
+reject H0 with p_value: 0.000
+mean Y: 3.145
+Ratio is 0.300; SE: 2.049(3.570); SE_mask: 1.822(2.984)
+accept H0 with p_value: 0.883
+Ratio is 0.300; SE: 2.049(3.570); SE_mask: 2.252(3.829)
+accept H0 with p_value: 0.170
+Ratio is 0.300; SE: 2.049(3.570); SE_mask: 2.757(5.277)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 2.049(3.570); SE_mask: 2.975(4.968)
+reject H0 with p_value: 0.000
+mean Y: 3.418
+Ratio is 0.300; SE: 2.160(2.931); SE_mask: 1.781(2.550)
+accept H0 with p_value: 0.991
+Ratio is 0.300; SE: 2.160(2.931); SE_mask: 2.455(4.109)
+accept H0 with p_value: 0.076
+Ratio is 0.300; SE: 2.160(2.931); SE_mask: 2.804(4.825)
+reject H0 with p_value: 0.003
+Ratio is 0.300; SE: 2.160(2.931); SE_mask: 2.974(5.206)
+reject H0 with p_value: 0.000
+mean Y: 3.308
+Ratio is 0.300; SE: 2.182(3.544); SE_mask: 1.989(3.272)
+accept H0 with p_value: 0.837
+Ratio is 0.300; SE: 2.182(3.544); SE_mask: 3.023(4.843)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.182(3.544); SE_mask: 3.285(5.559)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 2.182(3.544); SE_mask: 3.164(5.446)
+reject H0 with p_value: 0.000
+mean Y: 3.286
+Ratio is 0.300; SE: 2.077(3.157); SE_mask: 1.530(2.089)
+accept H0 with p_value: 1.000
+Ratio is 0.300; SE: 2.077(3.157); SE_mask: 2.211(3.512)
+accept H0 with p_value: 0.245
+Ratio is 0.300; SE: 2.077(3.157); SE_mask: 2.813(5.422)
+reject H0 with p_value: 0.002
+Ratio is 0.300; SE: 2.077(3.157); SE_mask: 2.702(4.726)
+reject H0 with p_value: 0.004
+mean Y: 3.287
+Ratio is 0.300; SE: 1.904(2.981); SE_mask: 1.653(2.416)
+accept H0 with p_value: 0.946
+Ratio is 0.300; SE: 1.904(2.981); SE_mask: 2.009(3.121)
+accept H0 with p_value: 0.277
+Ratio is 0.300; SE: 1.904(2.981); SE_mask: 2.938(4.803)
+reject H0 with p_value: 0.000
+Ratio is 0.300; SE: 1.904(2.981); SE_mask: 3.117(4.682)
+reject H0 with p_value: 0.000
+mean Y: 3.340
+Ratio is 0.300; SE: 2.066(3.331); SE_mask: 1.633(2.141)
+accept H0 with p_value: 0.996
+Ratio is 0.300; SE: 2.066(3.331); SE_mask: 2.802(4.441)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.066(3.331); SE_mask: 2.781(4.786)
+reject H0 with p_value: 0.001
+Ratio is 0.300; SE: 2.066(3.331); SE_mask: 3.034(4.969)
+reject H0 with p_value: 0.000
+Ratio: 0.300; Type 1 error: 0.000
+Ratio: 0.300; CASE 1: Power: 0.410
+Ratio: 0.300; CASE 2: Power: 0.960
+Ratio: 0.300; CASE 3: Power: 0.950
+Ratio: 0.300; training sample: 800; MSE: 2.679, MSE_mask: 1.712
+mean Y: 3.305
+Ratio is 0.400; SE: 3.103(5.487); SE_mask: 2.596(4.233)
+accept H0 with p_value: 0.981
+Ratio is 0.400; SE: 3.103(5.487); SE_mask: 2.843(4.603)
+accept H0 with p_value: 0.847
+Ratio is 0.400; SE: 3.103(5.487); SE_mask: 3.399(6.044)
+accept H0 with p_value: 0.153
+Ratio is 0.400; SE: 3.103(5.487); SE_mask: 3.535(6.424)
+accept H0 with p_value: 0.074
+mean Y: 3.214
+Ratio is 0.400; SE: 4.082(8.068); SE_mask: 3.339(6.490)
+accept H0 with p_value: 0.979
+Ratio is 0.400; SE: 4.082(8.068); SE_mask: 3.883(7.332)
+accept H0 with p_value: 0.697
+Ratio is 0.400; SE: 4.082(8.068); SE_mask: 4.259(7.865)
+accept H0 with p_value: 0.328
+Ratio is 0.400; SE: 4.082(8.068); SE_mask: 4.198(9.511)
+accept H0 with p_value: 0.396
+mean Y: 3.190
+Ratio is 0.400; SE: 3.863(7.060); SE_mask: 3.422(6.104)
+accept H0 with p_value: 0.909
+Ratio is 0.400; SE: 3.863(7.060); SE_mask: 3.844(7.308)
+accept H0 with p_value: 0.521
+Ratio is 0.400; SE: 3.863(7.060); SE_mask: 4.739(8.960)
+reject H0 with p_value: 0.015
+Ratio is 0.400; SE: 3.863(7.060); SE_mask: 4.761(9.988)
+reject H0 with p_value: 0.019
+mean Y: 3.324
+Ratio is 0.400; SE: 4.017(7.484); SE_mask: 2.743(4.630)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.017(7.484); SE_mask: 3.228(5.316)
+accept H0 with p_value: 0.992
+Ratio is 0.400; SE: 4.017(7.484); SE_mask: 4.472(8.476)
+accept H0 with p_value: 0.127
+Ratio is 0.400; SE: 4.017(7.484); SE_mask: 4.486(7.948)
+accept H0 with p_value: 0.112
+mean Y: 3.279
+Ratio is 0.400; SE: 3.410(6.228); SE_mask: 2.915(5.058)
+accept H0 with p_value: 0.960
+Ratio is 0.400; SE: 3.410(6.228); SE_mask: 4.072(7.780)
+reject H0 with p_value: 0.030
+Ratio is 0.400; SE: 3.410(6.228); SE_mask: 4.362(8.913)
+reject H0 with p_value: 0.007
+Ratio is 0.400; SE: 3.410(6.228); SE_mask: 3.756(6.342)
+accept H0 with p_value: 0.136
+mean Y: 3.323
+Ratio is 0.400; SE: 2.803(4.812); SE_mask: 3.330(5.897)
+reject H0 with p_value: 0.025
+Ratio is 0.400; SE: 2.803(4.812); SE_mask: 3.753(6.723)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 2.803(4.812); SE_mask: 3.671(6.540)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 2.803(4.812); SE_mask: 4.117(7.851)
+reject H0 with p_value: 0.000
+mean Y: 3.322
+Ratio is 0.400; SE: 3.754(6.134); SE_mask: 2.563(4.326)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.754(6.134); SE_mask: 3.449(6.197)
+accept H0 with p_value: 0.839
+Ratio is 0.400; SE: 3.754(6.134); SE_mask: 3.842(6.498)
+accept H0 with p_value: 0.390
+Ratio is 0.400; SE: 3.754(6.134); SE_mask: 3.392(5.986)
+accept H0 with p_value: 0.884
+mean Y: 3.244
+Ratio is 0.400; SE: 3.836(6.864); SE_mask: 3.061(4.986)
+accept H0 with p_value: 0.995
+Ratio is 0.400; SE: 3.836(6.864); SE_mask: 3.627(6.267)
+accept H0 with p_value: 0.737
+Ratio is 0.400; SE: 3.836(6.864); SE_mask: 4.280(6.816)
+accept H0 with p_value: 0.097
+Ratio is 0.400; SE: 3.836(6.864); SE_mask: 4.740(8.134)
+reject H0 with p_value: 0.008
+mean Y: 3.239
+Ratio is 0.400; SE: 3.382(6.247); SE_mask: 2.989(5.195)
+accept H0 with p_value: 0.914
+Ratio is 0.400; SE: 3.382(6.247); SE_mask: 3.255(5.987)
+accept H0 with p_value: 0.660
+Ratio is 0.400; SE: 3.382(6.247); SE_mask: 3.860(7.639)
+accept H0 with p_value: 0.085
+Ratio is 0.400; SE: 3.382(6.247); SE_mask: 3.851(7.160)
+accept H0 with p_value: 0.081
+mean Y: 3.480
+Ratio is 0.400; SE: 3.444(5.976); SE_mask: 2.953(4.790)
+accept H0 with p_value: 0.965
+Ratio is 0.400; SE: 3.444(5.976); SE_mask: 3.931(7.761)
+accept H0 with p_value: 0.080
+Ratio is 0.400; SE: 3.444(5.976); SE_mask: 4.107(7.565)
+reject H0 with p_value: 0.026
+Ratio is 0.400; SE: 3.444(5.976); SE_mask: 4.144(7.719)
+reject H0 with p_value: 0.021
+mean Y: 3.288
+Ratio is 0.400; SE: 3.979(7.100); SE_mask: 2.726(4.745)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.979(7.100); SE_mask: 3.860(7.221)
+accept H0 with p_value: 0.630
+Ratio is 0.400; SE: 3.979(7.100); SE_mask: 4.277(8.621)
+accept H0 with p_value: 0.225
+Ratio is 0.400; SE: 3.979(7.100); SE_mask: 4.135(7.632)
+accept H0 with p_value: 0.336
+mean Y: 3.345
+Ratio is 0.400; SE: 3.897(6.736); SE_mask: 3.074(5.532)
+accept H0 with p_value: 0.996
+Ratio is 0.400; SE: 3.897(6.736); SE_mask: 3.948(7.287)
+accept H0 with p_value: 0.442
+Ratio is 0.400; SE: 3.897(6.736); SE_mask: 4.949(9.371)
+reject H0 with p_value: 0.005
+Ratio is 0.400; SE: 3.897(6.736); SE_mask: 4.041(7.050)
+accept H0 with p_value: 0.338
+mean Y: 3.146
+Ratio is 0.400; SE: 3.599(7.050); SE_mask: 2.748(4.421)
+accept H0 with p_value: 0.998
+Ratio is 0.400; SE: 3.599(7.050); SE_mask: 3.339(6.061)
+accept H0 with p_value: 0.785
+Ratio is 0.400; SE: 3.599(7.050); SE_mask: 3.758(6.183)
+accept H0 with p_value: 0.315
+Ratio is 0.400; SE: 3.599(7.050); SE_mask: 3.372(5.805)
+accept H0 with p_value: 0.759
+mean Y: 3.514
+Ratio is 0.400; SE: 3.220(5.881); SE_mask: 2.808(4.670)
+accept H0 with p_value: 0.940
+Ratio is 0.400; SE: 3.220(5.881); SE_mask: 3.269(5.735)
+accept H0 with p_value: 0.432
+Ratio is 0.400; SE: 3.220(5.881); SE_mask: 4.357(7.902)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 3.220(5.881); SE_mask: 3.802(7.019)
+reject H0 with p_value: 0.036
+mean Y: 3.299
+Ratio is 0.400; SE: 3.239(5.672); SE_mask: 2.495(4.054)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 3.239(5.672); SE_mask: 3.174(5.314)
+accept H0 with p_value: 0.594
+Ratio is 0.400; SE: 3.239(5.672); SE_mask: 3.424(5.934)
+accept H0 with p_value: 0.263
+Ratio is 0.400; SE: 3.239(5.672); SE_mask: 3.746(7.024)
+accept H0 with p_value: 0.056
+mean Y: 3.285
+Ratio is 0.400; SE: 3.368(5.935); SE_mask: 2.417(3.947)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.368(5.935); SE_mask: 3.257(5.150)
+accept H0 with p_value: 0.654
+Ratio is 0.400; SE: 3.368(5.935); SE_mask: 4.401(7.297)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 3.368(5.935); SE_mask: 3.829(6.499)
+accept H0 with p_value: 0.069
+mean Y: 3.349
+Ratio is 0.400; SE: 3.576(6.346); SE_mask: 2.376(3.685)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.576(6.346); SE_mask: 3.204(5.340)
+accept H0 with p_value: 0.898
+Ratio is 0.400; SE: 3.576(6.346); SE_mask: 3.296(5.574)
+accept H0 with p_value: 0.826
+Ratio is 0.400; SE: 3.576(6.346); SE_mask: 3.571(6.569)
+accept H0 with p_value: 0.506
+mean Y: 3.433
+Ratio is 0.400; SE: 3.720(7.054); SE_mask: 2.204(3.598)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.720(7.054); SE_mask: 3.491(6.151)
+accept H0 with p_value: 0.756
+Ratio is 0.400; SE: 3.720(7.054); SE_mask: 4.095(8.069)
+accept H0 with p_value: 0.161
+Ratio is 0.400; SE: 3.720(7.054); SE_mask: 3.502(5.724)
+accept H0 with p_value: 0.751
+mean Y: 3.238
+Ratio is 0.400; SE: 4.162(9.351); SE_mask: 3.435(6.274)
+accept H0 with p_value: 0.966
+Ratio is 0.400; SE: 4.162(9.351); SE_mask: 3.656(6.649)
+accept H0 with p_value: 0.894
+Ratio is 0.400; SE: 4.162(9.351); SE_mask: 4.234(7.507)
+accept H0 with p_value: 0.432
+Ratio is 0.400; SE: 4.162(9.351); SE_mask: 4.651(9.450)
+accept H0 with p_value: 0.149
+mean Y: 3.357
+Ratio is 0.400; SE: 4.013(7.214); SE_mask: 3.154(5.615)
+accept H0 with p_value: 0.996
+Ratio is 0.400; SE: 4.013(7.214); SE_mask: 3.649(5.978)
+accept H0 with p_value: 0.864
+Ratio is 0.400; SE: 4.013(7.214); SE_mask: 4.295(7.733)
+accept H0 with p_value: 0.226
+Ratio is 0.400; SE: 4.013(7.214); SE_mask: 4.547(7.511)
+accept H0 with p_value: 0.074
+mean Y: 3.283
+Ratio is 0.400; SE: 3.908(6.841); SE_mask: 2.241(3.578)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.908(6.841); SE_mask: 3.226(5.258)
+accept H0 with p_value: 0.987
+Ratio is 0.400; SE: 3.908(6.841); SE_mask: 3.883(7.068)
+accept H0 with p_value: 0.529
+Ratio is 0.400; SE: 3.908(6.841); SE_mask: 3.733(6.753)
+accept H0 with p_value: 0.696
+mean Y: 3.297
+Ratio is 0.400; SE: 3.385(7.042); SE_mask: 3.196(5.741)
+accept H0 with p_value: 0.721
+Ratio is 0.400; SE: 3.385(7.042); SE_mask: 3.615(6.778)
+accept H0 with p_value: 0.252
+Ratio is 0.400; SE: 3.385(7.042); SE_mask: 4.399(7.557)
+reject H0 with p_value: 0.003
+Ratio is 0.400; SE: 3.385(7.042); SE_mask: 4.529(8.322)
+reject H0 with p_value: 0.001
+mean Y: 3.165
+Ratio is 0.400; SE: 3.564(6.321); SE_mask: 2.559(4.978)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.564(6.321); SE_mask: 3.608(7.032)
+accept H0 with p_value: 0.449
+Ratio is 0.400; SE: 3.564(6.321); SE_mask: 4.426(9.137)
+reject H0 with p_value: 0.014
+Ratio is 0.400; SE: 3.564(6.321); SE_mask: 4.463(9.040)
+reject H0 with p_value: 0.011
+mean Y: 3.284
+Ratio is 0.400; SE: 3.775(7.006); SE_mask: 2.528(4.122)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.775(7.006); SE_mask: 3.174(5.431)
+accept H0 with p_value: 0.973
+Ratio is 0.400; SE: 3.775(7.006); SE_mask: 3.656(6.718)
+accept H0 with p_value: 0.636
+Ratio is 0.400; SE: 3.775(7.006); SE_mask: 3.647(6.308)
+accept H0 with p_value: 0.650
+mean Y: 3.222
+Ratio is 0.400; SE: 4.548(9.056); SE_mask: 2.985(5.204)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.548(9.056); SE_mask: 4.113(7.078)
+accept H0 with p_value: 0.858
+Ratio is 0.400; SE: 4.548(9.056); SE_mask: 3.857(6.472)
+accept H0 with p_value: 0.961
+Ratio is 0.400; SE: 4.548(9.056); SE_mask: 4.520(7.676)
+accept H0 with p_value: 0.527
+mean Y: 3.498
+Ratio is 0.400; SE: 3.906(7.106); SE_mask: 2.496(4.437)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.906(7.106); SE_mask: 3.563(6.210)
+accept H0 with p_value: 0.848
+Ratio is 0.400; SE: 3.906(7.106); SE_mask: 4.304(7.295)
+accept H0 with p_value: 0.135
+Ratio is 0.400; SE: 3.906(7.106); SE_mask: 4.267(8.012)
+accept H0 with p_value: 0.171
+mean Y: 3.287
+Ratio is 0.400; SE: 3.835(7.115); SE_mask: 3.228(5.479)
+accept H0 with p_value: 0.972
+Ratio is 0.400; SE: 3.835(7.115); SE_mask: 3.909(7.525)
+accept H0 with p_value: 0.420
+Ratio is 0.400; SE: 3.835(7.115); SE_mask: 4.708(9.888)
+reject H0 with p_value: 0.021
+Ratio is 0.400; SE: 3.835(7.115); SE_mask: 4.233(7.921)
+accept H0 with p_value: 0.145
+mean Y: 3.351
+Ratio is 0.400; SE: 3.927(7.797); SE_mask: 3.268(5.646)
+accept H0 with p_value: 0.973
+Ratio is 0.400; SE: 3.927(7.797); SE_mask: 3.813(7.252)
+accept H0 with p_value: 0.618
+Ratio is 0.400; SE: 3.927(7.797); SE_mask: 4.208(7.380)
+accept H0 with p_value: 0.229
+Ratio is 0.400; SE: 3.927(7.797); SE_mask: 3.758(6.609)
+accept H0 with p_value: 0.680
+mean Y: 3.349
+Ratio is 0.400; SE: 3.418(7.133); SE_mask: 2.907(4.765)
+accept H0 with p_value: 0.954
+Ratio is 0.400; SE: 3.418(7.133); SE_mask: 3.291(5.819)
+accept H0 with p_value: 0.651
+Ratio is 0.400; SE: 3.418(7.133); SE_mask: 3.926(6.767)
+accept H0 with p_value: 0.072
+Ratio is 0.400; SE: 3.418(7.133); SE_mask: 4.185(7.757)
+reject H0 with p_value: 0.020
+mean Y: 3.228
+Ratio is 0.400; SE: 3.755(7.109); SE_mask: 2.492(4.423)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.755(7.109); SE_mask: 3.371(6.209)
+accept H0 with p_value: 0.875
+Ratio is 0.400; SE: 3.755(7.109); SE_mask: 4.033(7.318)
+accept H0 with p_value: 0.220
+Ratio is 0.400; SE: 3.755(7.109); SE_mask: 4.279(8.165)
+accept H0 with p_value: 0.086
+mean Y: 3.239
+Ratio is 0.400; SE: 3.227(5.520); SE_mask: 2.828(4.638)
+accept H0 with p_value: 0.941
+Ratio is 0.400; SE: 3.227(5.520); SE_mask: 3.342(5.970)
+accept H0 with p_value: 0.345
+Ratio is 0.400; SE: 3.227(5.520); SE_mask: 3.980(6.821)
+reject H0 with p_value: 0.008
+Ratio is 0.400; SE: 3.227(5.520); SE_mask: 3.675(6.312)
+accept H0 with p_value: 0.065
+mean Y: 3.197
+Ratio is 0.400; SE: 28.780(60.442); SE_mask: 3.100(5.319)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 28.780(60.442); SE_mask: 3.246(6.231)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 28.780(60.442); SE_mask: 29.182(61.520)
+accept H0 with p_value: 0.448
+Ratio is 0.400; SE: 28.780(60.442); SE_mask: 3.629(5.883)
+accept H0 with p_value: 1.000
+mean Y: 3.278
+Ratio is 0.400; SE: 3.377(6.208); SE_mask: 2.673(5.336)
+accept H0 with p_value: 0.992
+Ratio is 0.400; SE: 3.377(6.208); SE_mask: 3.552(7.352)
+accept H0 with p_value: 0.303
+Ratio is 0.400; SE: 3.377(6.208); SE_mask: 3.611(7.886)
+accept H0 with p_value: 0.254
+Ratio is 0.400; SE: 3.377(6.208); SE_mask: 3.825(7.232)
+accept H0 with p_value: 0.091
+mean Y: 3.269
+Ratio is 0.400; SE: 3.877(7.576); SE_mask: 2.959(5.277)
+accept H0 with p_value: 0.998
+Ratio is 0.400; SE: 3.877(7.576); SE_mask: 3.524(6.032)
+accept H0 with p_value: 0.849
+Ratio is 0.400; SE: 3.877(7.576); SE_mask: 3.886(6.857)
+accept H0 with p_value: 0.490
+Ratio is 0.400; SE: 3.877(7.576); SE_mask: 4.081(7.028)
+accept H0 with p_value: 0.288
+mean Y: 3.325
+Ratio is 0.400; SE: 3.806(7.502); SE_mask: 2.791(4.777)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 3.806(7.502); SE_mask: 3.581(6.389)
+accept H0 with p_value: 0.741
+Ratio is 0.400; SE: 3.806(7.502); SE_mask: 3.633(6.397)
+accept H0 with p_value: 0.690
+Ratio is 0.400; SE: 3.806(7.502); SE_mask: 3.856(6.879)
+accept H0 with p_value: 0.445
+mean Y: 3.396
+Ratio is 0.400; SE: 3.173(5.802); SE_mask: 2.300(3.967)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.173(5.802); SE_mask: 2.818(4.854)
+accept H0 with p_value: 0.908
+Ratio is 0.400; SE: 3.173(5.802); SE_mask: 3.504(6.012)
+accept H0 with p_value: 0.132
+Ratio is 0.400; SE: 3.173(5.802); SE_mask: 4.336(7.583)
+reject H0 with p_value: 0.000
+mean Y: 3.370
+Ratio is 0.400; SE: 4.361(9.127); SE_mask: 3.800(6.868)
+accept H0 with p_value: 0.918
+Ratio is 0.400; SE: 4.361(9.127); SE_mask: 3.849(7.483)
+accept H0 with p_value: 0.890
+Ratio is 0.400; SE: 4.361(9.127); SE_mask: 5.011(9.659)
+accept H0 with p_value: 0.083
+Ratio is 0.400; SE: 4.361(9.127); SE_mask: 4.947(9.527)
+accept H0 with p_value: 0.104
+mean Y: 3.266
+Ratio is 0.400; SE: 3.210(6.165); SE_mask: 2.980(5.374)
+accept H0 with p_value: 0.786
+Ratio is 0.400; SE: 3.210(6.165); SE_mask: 3.339(5.417)
+accept H0 with p_value: 0.328
+Ratio is 0.400; SE: 3.210(6.165); SE_mask: 4.026(7.005)
+reject H0 with p_value: 0.007
+Ratio is 0.400; SE: 3.210(6.165); SE_mask: 4.725(8.376)
+reject H0 with p_value: 0.000
+mean Y: 3.230
+Ratio is 0.400; SE: 4.751(8.949); SE_mask: 2.892(5.296)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.751(8.949); SE_mask: 3.683(6.080)
+accept H0 with p_value: 0.997
+Ratio is 0.400; SE: 4.751(8.949); SE_mask: 3.938(7.417)
+accept H0 with p_value: 0.976
+Ratio is 0.400; SE: 4.751(8.949); SE_mask: 4.316(8.381)
+accept H0 with p_value: 0.842
+mean Y: 3.230
+Ratio is 0.400; SE: 3.563(5.968); SE_mask: 3.122(5.444)
+accept H0 with p_value: 0.939
+Ratio is 0.400; SE: 3.563(5.968); SE_mask: 3.102(5.730)
+accept H0 with p_value: 0.943
+Ratio is 0.400; SE: 3.563(5.968); SE_mask: 3.925(8.029)
+accept H0 with p_value: 0.153
+Ratio is 0.400; SE: 3.563(5.968); SE_mask: 3.900(7.024)
+accept H0 with p_value: 0.151
+mean Y: 3.323
+Ratio is 0.400; SE: 3.247(5.417); SE_mask: 3.023(5.580)
+accept H0 with p_value: 0.792
+Ratio is 0.400; SE: 3.247(5.417); SE_mask: 3.902(7.477)
+reject H0 with p_value: 0.022
+Ratio is 0.400; SE: 3.247(5.417); SE_mask: 4.378(8.144)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 3.247(5.417); SE_mask: 3.771(6.691)
+reject H0 with p_value: 0.043
+mean Y: 3.274
+Ratio is 0.400; SE: 4.008(7.896); SE_mask: 2.785(4.563)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.008(7.896); SE_mask: 3.375(5.648)
+accept H0 with p_value: 0.967
+Ratio is 0.400; SE: 4.008(7.896); SE_mask: 4.139(7.255)
+accept H0 with p_value: 0.364
+Ratio is 0.400; SE: 4.008(7.896); SE_mask: 4.027(7.367)
+accept H0 with p_value: 0.480
+mean Y: 3.288
+Ratio is 0.400; SE: 3.654(6.113); SE_mask: 2.650(4.612)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.654(6.113); SE_mask: 3.377(6.467)
+accept H0 with p_value: 0.810
+Ratio is 0.400; SE: 3.654(6.113); SE_mask: 4.332(8.322)
+reject H0 with p_value: 0.031
+Ratio is 0.400; SE: 3.654(6.113); SE_mask: 3.034(5.648)
+accept H0 with p_value: 0.982
+mean Y: 3.347
+Ratio is 0.400; SE: 3.443(5.462); SE_mask: 2.656(4.195)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 3.443(5.462); SE_mask: 3.434(6.576)
+accept H0 with p_value: 0.512
+Ratio is 0.400; SE: 3.443(5.462); SE_mask: 4.149(7.482)
+reject H0 with p_value: 0.016
+Ratio is 0.400; SE: 3.443(5.462); SE_mask: 3.625(6.092)
+accept H0 with p_value: 0.264
+mean Y: 3.308
+Ratio is 0.400; SE: 3.620(6.716); SE_mask: 1.946(3.059)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.620(6.716); SE_mask: 2.900(4.851)
+accept H0 with p_value: 0.993
+Ratio is 0.400; SE: 3.620(6.716); SE_mask: 3.669(7.265)
+accept H0 with p_value: 0.444
+Ratio is 0.400; SE: 3.620(6.716); SE_mask: 3.578(7.318)
+accept H0 with p_value: 0.547
+mean Y: 3.252
+Ratio is 0.400; SE: 4.616(9.040); SE_mask: 3.422(7.019)
+accept H0 with p_value: 0.998
+Ratio is 0.400; SE: 4.616(9.040); SE_mask: 3.687(6.632)
+accept H0 with p_value: 0.990
+Ratio is 0.400; SE: 4.616(9.040); SE_mask: 4.661(9.789)
+accept H0 with p_value: 0.462
+Ratio is 0.400; SE: 4.616(9.040); SE_mask: 4.293(7.683)
+accept H0 with p_value: 0.780
+mean Y: 3.305
+Ratio is 0.400; SE: 3.556(6.784); SE_mask: 2.667(4.557)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 3.556(6.784); SE_mask: 3.300(5.536)
+accept H0 with p_value: 0.795
+Ratio is 0.400; SE: 3.556(6.784); SE_mask: 4.016(6.982)
+accept H0 with p_value: 0.090
+Ratio is 0.400; SE: 3.556(6.784); SE_mask: 3.478(6.813)
+accept H0 with p_value: 0.591
+mean Y: 3.380
+Ratio is 0.400; SE: 4.334(8.601); SE_mask: 2.720(4.868)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.334(8.601); SE_mask: 3.548(6.677)
+accept H0 with p_value: 0.979
+Ratio is 0.400; SE: 4.334(8.601); SE_mask: 3.892(7.528)
+accept H0 with p_value: 0.863
+Ratio is 0.400; SE: 4.334(8.601); SE_mask: 4.057(7.846)
+accept H0 with p_value: 0.749
+mean Y: 3.391
+Ratio is 0.400; SE: 4.056(6.977); SE_mask: 2.696(4.229)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.056(6.977); SE_mask: 3.054(5.532)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 4.056(6.977); SE_mask: 4.211(7.784)
+accept H0 with p_value: 0.338
+Ratio is 0.400; SE: 4.056(6.977); SE_mask: 3.975(6.845)
+accept H0 with p_value: 0.593
+mean Y: 3.418
+Ratio is 0.400; SE: 4.157(7.446); SE_mask: 32.168(67.822)
+reject H0 with p_value: 0.000
+Ratio is 0.400; SE: 4.157(7.446); SE_mask: 4.676(7.933)
+accept H0 with p_value: 0.089
+Ratio is 0.400; SE: 4.157(7.446); SE_mask: 4.973(8.866)
+reject H0 with p_value: 0.023
+Ratio is 0.400; SE: 4.157(7.446); SE_mask: 4.641(8.123)
+accept H0 with p_value: 0.107
+mean Y: 3.309
+Ratio is 0.400; SE: 31.682(63.644); SE_mask: 2.540(4.191)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 31.682(63.644); SE_mask: 3.414(6.402)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 31.682(63.644); SE_mask: 3.748(7.880)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 31.682(63.644); SE_mask: 3.214(5.173)
+accept H0 with p_value: 1.000
+mean Y: 3.174
+Ratio is 0.400; SE: 3.349(6.581); SE_mask: 2.779(5.184)
+accept H0 with p_value: 0.973
+Ratio is 0.400; SE: 3.349(6.581); SE_mask: 3.352(5.877)
+accept H0 with p_value: 0.496
+Ratio is 0.400; SE: 3.349(6.581); SE_mask: 4.215(8.254)
+reject H0 with p_value: 0.010
+Ratio is 0.400; SE: 3.349(6.581); SE_mask: 3.744(6.984)
+accept H0 with p_value: 0.122
+mean Y: 3.296
+Ratio is 0.400; SE: 4.216(7.970); SE_mask: 2.675(4.432)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.216(7.970); SE_mask: 3.098(5.099)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.216(7.970); SE_mask: 3.469(6.412)
+accept H0 with p_value: 0.980
+Ratio is 0.400; SE: 4.216(7.970); SE_mask: 3.856(6.483)
+accept H0 with p_value: 0.839
+mean Y: 3.253
+Ratio is 0.400; SE: 3.624(7.335); SE_mask: 3.561(6.904)
+accept H0 with p_value: 0.570
+Ratio is 0.400; SE: 3.624(7.335); SE_mask: 3.498(6.140)
+accept H0 with p_value: 0.646
+Ratio is 0.400; SE: 3.624(7.335); SE_mask: 4.206(7.413)
+accept H0 with p_value: 0.057
+Ratio is 0.400; SE: 3.624(7.335); SE_mask: 4.687(8.642)
+reject H0 with p_value: 0.004
+mean Y: 3.228
+Ratio is 0.400; SE: 3.538(6.616); SE_mask: 2.543(4.101)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.538(6.616); SE_mask: 2.987(5.582)
+accept H0 with p_value: 0.964
+Ratio is 0.400; SE: 3.538(6.616); SE_mask: 3.814(7.252)
+accept H0 with p_value: 0.214
+Ratio is 0.400; SE: 3.538(6.616); SE_mask: 3.053(4.909)
+accept H0 with p_value: 0.952
+mean Y: 3.309
+Ratio is 0.400; SE: 3.295(5.779); SE_mask: 2.530(4.533)
+accept H0 with p_value: 0.998
+Ratio is 0.400; SE: 3.295(5.779); SE_mask: 3.346(6.669)
+accept H0 with p_value: 0.435
+Ratio is 0.400; SE: 3.295(5.779); SE_mask: 3.560(6.717)
+accept H0 with p_value: 0.199
+Ratio is 0.400; SE: 3.295(5.779); SE_mask: 3.497(5.603)
+accept H0 with p_value: 0.239
+mean Y: 3.211
+Ratio is 0.400; SE: 3.099(5.308); SE_mask: 2.790(4.515)
+accept H0 with p_value: 0.895
+Ratio is 0.400; SE: 3.099(5.308); SE_mask: 3.918(7.002)
+reject H0 with p_value: 0.004
+Ratio is 0.400; SE: 3.099(5.308); SE_mask: 29.117(61.089)
+reject H0 with p_value: 0.000
+Ratio is 0.400; SE: 3.099(5.308); SE_mask: 4.257(7.775)
+reject H0 with p_value: 0.000
+mean Y: 3.254
+Ratio is 0.400; SE: 5.074(10.273); SE_mask: 3.094(5.924)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 5.074(10.273); SE_mask: 3.587(7.356)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 5.074(10.273); SE_mask: 4.546(9.017)
+accept H0 with p_value: 0.862
+Ratio is 0.400; SE: 5.074(10.273); SE_mask: 3.930(7.369)
+accept H0 with p_value: 0.995
+mean Y: 3.342
+Ratio is 0.400; SE: 3.643(5.882); SE_mask: 2.702(4.348)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.643(5.882); SE_mask: 3.372(5.851)
+accept H0 with p_value: 0.822
+Ratio is 0.400; SE: 3.643(5.882); SE_mask: 4.167(7.501)
+accept H0 with p_value: 0.060
+Ratio is 0.400; SE: 3.643(5.882); SE_mask: 3.876(7.381)
+accept H0 with p_value: 0.242
+mean Y: 3.163
+Ratio is 0.400; SE: 3.987(7.285); SE_mask: 3.003(5.633)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 3.987(7.285); SE_mask: 3.820(7.433)
+accept H0 with p_value: 0.675
+Ratio is 0.400; SE: 3.987(7.285); SE_mask: 4.201(7.583)
+accept H0 with p_value: 0.283
+Ratio is 0.400; SE: 3.987(7.285); SE_mask: 4.122(8.539)
+accept H0 with p_value: 0.367
+mean Y: 3.445
+Ratio is 0.400; SE: 3.886(6.988); SE_mask: 2.646(3.979)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.886(6.988); SE_mask: 3.896(6.399)
+accept H0 with p_value: 0.487
+Ratio is 0.400; SE: 3.886(6.988); SE_mask: 4.096(7.911)
+accept H0 with p_value: 0.287
+Ratio is 0.400; SE: 3.886(6.988); SE_mask: 3.753(5.936)
+accept H0 with p_value: 0.659
+mean Y: 3.168
+Ratio is 0.400; SE: 3.434(6.060); SE_mask: 3.097(5.130)
+accept H0 with p_value: 0.885
+Ratio is 0.400; SE: 3.434(6.060); SE_mask: 3.459(6.706)
+accept H0 with p_value: 0.468
+Ratio is 0.400; SE: 3.434(6.060); SE_mask: 30.508(62.127)
+reject H0 with p_value: 0.000
+Ratio is 0.400; SE: 3.434(6.060); SE_mask: 4.310(8.060)
+reject H0 with p_value: 0.007
+mean Y: 3.177
+Ratio is 0.400; SE: 2.954(4.498); SE_mask: 2.529(4.054)
+accept H0 with p_value: 0.976
+Ratio is 0.400; SE: 2.954(4.498); SE_mask: 3.041(4.802)
+accept H0 with p_value: 0.353
+Ratio is 0.400; SE: 2.954(4.498); SE_mask: 3.847(6.400)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 2.954(4.498); SE_mask: 3.274(5.822)
+accept H0 with p_value: 0.109
+mean Y: 3.122
+Ratio is 0.400; SE: 4.148(8.347); SE_mask: 3.909(7.450)
+accept H0 with p_value: 0.728
+Ratio is 0.400; SE: 4.148(8.347); SE_mask: 4.485(9.472)
+accept H0 with p_value: 0.225
+Ratio is 0.400; SE: 4.148(8.347); SE_mask: 5.192(10.893)
+reject H0 with p_value: 0.016
+Ratio is 0.400; SE: 4.148(8.347); SE_mask: 4.284(7.696)
+accept H0 with p_value: 0.367
+mean Y: 3.236
+Ratio is 0.400; SE: 4.424(8.976); SE_mask: 3.560(6.068)
+accept H0 with p_value: 0.988
+Ratio is 0.400; SE: 4.424(8.976); SE_mask: 4.201(7.710)
+accept H0 with p_value: 0.703
+Ratio is 0.400; SE: 4.424(8.976); SE_mask: 4.576(7.575)
+accept H0 with p_value: 0.357
+Ratio is 0.400; SE: 4.424(8.976); SE_mask: 4.425(7.858)
+accept H0 with p_value: 0.499
+mean Y: 3.287
+Ratio is 0.400; SE: 3.963(7.272); SE_mask: 3.237(5.810)
+accept H0 with p_value: 0.986
+Ratio is 0.400; SE: 3.963(7.272); SE_mask: 3.591(6.822)
+accept H0 with p_value: 0.854
+Ratio is 0.400; SE: 3.963(7.272); SE_mask: 4.062(7.791)
+accept H0 with p_value: 0.396
+Ratio is 0.400; SE: 3.963(7.272); SE_mask: 4.285(9.090)
+accept H0 with p_value: 0.216
+mean Y: 3.259
+Ratio is 0.400; SE: 3.399(6.094); SE_mask: 2.888(4.884)
+accept H0 with p_value: 0.968
+Ratio is 0.400; SE: 3.399(6.094); SE_mask: 3.529(6.258)
+accept H0 with p_value: 0.337
+Ratio is 0.400; SE: 3.399(6.094); SE_mask: 4.244(8.098)
+reject H0 with p_value: 0.009
+Ratio is 0.400; SE: 3.399(6.094); SE_mask: 4.301(8.632)
+reject H0 with p_value: 0.008
+mean Y: 3.319
+Ratio is 0.400; SE: 3.282(5.804); SE_mask: 2.809(4.962)
+accept H0 with p_value: 0.960
+Ratio is 0.400; SE: 3.282(5.804); SE_mask: 3.057(5.244)
+accept H0 with p_value: 0.792
+Ratio is 0.400; SE: 3.282(5.804); SE_mask: 4.961(10.870)
+reject H0 with p_value: 0.000
+Ratio is 0.400; SE: 3.282(5.804); SE_mask: 4.147(7.332)
+reject H0 with p_value: 0.004
+mean Y: 3.227
+Ratio is 0.400; SE: 3.448(6.279); SE_mask: 2.404(4.108)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.448(6.279); SE_mask: 3.118(5.153)
+accept H0 with p_value: 0.875
+Ratio is 0.400; SE: 3.448(6.279); SE_mask: 3.383(5.558)
+accept H0 with p_value: 0.587
+Ratio is 0.400; SE: 3.448(6.279); SE_mask: 3.991(7.641)
+accept H0 with p_value: 0.060
+mean Y: 3.402
+Ratio is 0.400; SE: 3.336(5.660); SE_mask: 2.513(4.014)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.336(5.660); SE_mask: 3.209(4.837)
+accept H0 with p_value: 0.685
+Ratio is 0.400; SE: 3.336(5.660); SE_mask: 4.048(6.890)
+reject H0 with p_value: 0.012
+Ratio is 0.400; SE: 3.336(5.660); SE_mask: 4.077(7.588)
+reject H0 with p_value: 0.013
+mean Y: 3.346
+Ratio is 0.400; SE: 3.342(7.419); SE_mask: 3.099(5.039)
+accept H0 with p_value: 0.779
+Ratio is 0.400; SE: 3.342(7.419); SE_mask: 3.812(6.923)
+accept H0 with p_value: 0.095
+Ratio is 0.400; SE: 3.342(7.419); SE_mask: 4.845(8.761)
+reject H0 with p_value: 0.000
+Ratio is 0.400; SE: 3.342(7.419); SE_mask: 4.799(9.119)
+reject H0 with p_value: 0.000
+mean Y: 3.146
+Ratio is 0.400; SE: 3.311(6.153); SE_mask: 2.418(3.874)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.311(6.153); SE_mask: 3.641(6.614)
+accept H0 with p_value: 0.151
+Ratio is 0.400; SE: 3.311(6.153); SE_mask: 4.203(7.068)
+reject H0 with p_value: 0.004
+Ratio is 0.400; SE: 3.311(6.153); SE_mask: 4.066(7.545)
+reject H0 with p_value: 0.014
+mean Y: 3.241
+Ratio is 0.400; SE: 3.948(7.038); SE_mask: 3.897(7.593)
+accept H0 with p_value: 0.556
+Ratio is 0.400; SE: 3.948(7.038); SE_mask: 4.211(8.210)
+accept H0 with p_value: 0.246
+Ratio is 0.400; SE: 3.948(7.038); SE_mask: 4.418(7.707)
+accept H0 with p_value: 0.102
+Ratio is 0.400; SE: 3.948(7.038); SE_mask: 4.467(8.967)
+accept H0 with p_value: 0.099
+mean Y: 3.218
+Ratio is 0.400; SE: 3.475(6.201); SE_mask: 2.935(4.884)
+accept H0 with p_value: 0.973
+Ratio is 0.400; SE: 3.475(6.201); SE_mask: 3.632(7.416)
+accept H0 with p_value: 0.323
+Ratio is 0.400; SE: 3.475(6.201); SE_mask: 4.239(8.809)
+reject H0 with p_value: 0.022
+Ratio is 0.400; SE: 3.475(6.201); SE_mask: 4.455(7.800)
+reject H0 with p_value: 0.003
+mean Y: 3.308
+Ratio is 0.400; SE: 4.340(9.146); SE_mask: 3.117(5.409)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 4.340(9.146); SE_mask: 3.686(6.629)
+accept H0 with p_value: 0.949
+Ratio is 0.400; SE: 4.340(9.146); SE_mask: 3.824(7.070)
+accept H0 with p_value: 0.897
+Ratio is 0.400; SE: 4.340(9.146); SE_mask: 4.095(7.481)
+accept H0 with p_value: 0.721
+mean Y: 3.424
+Ratio is 0.400; SE: 3.859(6.489); SE_mask: 3.145(4.693)
+accept H0 with p_value: 0.994
+Ratio is 0.400; SE: 3.859(6.489); SE_mask: 4.180(6.609)
+accept H0 with p_value: 0.164
+Ratio is 0.400; SE: 3.859(6.489); SE_mask: 4.730(8.486)
+reject H0 with p_value: 0.011
+Ratio is 0.400; SE: 3.859(6.489); SE_mask: 4.203(7.418)
+accept H0 with p_value: 0.162
+mean Y: 3.312
+Ratio is 0.400; SE: 3.631(7.409); SE_mask: 2.647(4.077)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.631(7.409); SE_mask: 2.998(5.533)
+accept H0 with p_value: 0.974
+Ratio is 0.400; SE: 3.631(7.409); SE_mask: 3.991(7.227)
+accept H0 with p_value: 0.163
+Ratio is 0.400; SE: 3.631(7.409); SE_mask: 3.747(5.928)
+accept H0 with p_value: 0.366
+mean Y: 3.193
+Ratio is 0.400; SE: 3.082(5.845); SE_mask: 2.315(3.928)
+accept H0 with p_value: 0.999
+Ratio is 0.400; SE: 3.082(5.845); SE_mask: 3.196(6.074)
+accept H0 with p_value: 0.352
+Ratio is 0.400; SE: 3.082(5.845); SE_mask: 3.806(6.465)
+reject H0 with p_value: 0.009
+Ratio is 0.400; SE: 3.082(5.845); SE_mask: 3.837(7.485)
+reject H0 with p_value: 0.012
+mean Y: 3.234
+Ratio is 0.400; SE: 3.594(6.396); SE_mask: 3.359(5.870)
+accept H0 with p_value: 0.777
+Ratio is 0.400; SE: 3.594(6.396); SE_mask: 3.952(7.032)
+accept H0 with p_value: 0.143
+Ratio is 0.400; SE: 3.594(6.396); SE_mask: 4.299(7.555)
+reject H0 with p_value: 0.022
+Ratio is 0.400; SE: 3.594(6.396); SE_mask: 4.645(8.627)
+reject H0 with p_value: 0.003
+mean Y: 3.235
+Ratio is 0.400; SE: 3.271(5.742); SE_mask: 2.995(4.719)
+accept H0 with p_value: 0.854
+Ratio is 0.400; SE: 3.271(5.742); SE_mask: 3.595(5.869)
+accept H0 with p_value: 0.132
+Ratio is 0.400; SE: 3.271(5.742); SE_mask: 4.166(7.803)
+reject H0 with p_value: 0.005
+Ratio is 0.400; SE: 3.271(5.742); SE_mask: 3.685(6.673)
+accept H0 with p_value: 0.092
+mean Y: 3.226
+Ratio is 0.400; SE: 3.667(7.673); SE_mask: 3.065(5.479)
+accept H0 with p_value: 0.965
+Ratio is 0.400; SE: 3.667(7.673); SE_mask: 3.319(5.831)
+accept H0 with p_value: 0.847
+Ratio is 0.400; SE: 3.667(7.673); SE_mask: 3.978(7.470)
+accept H0 with p_value: 0.206
+Ratio is 0.400; SE: 3.667(7.673); SE_mask: 4.108(8.122)
+accept H0 with p_value: 0.132
+mean Y: 3.413
+Ratio is 0.400; SE: 3.166(5.393); SE_mask: 3.091(5.599)
+accept H0 with p_value: 0.607
+Ratio is 0.400; SE: 3.166(5.393); SE_mask: 3.672(7.564)
+accept H0 with p_value: 0.062
+Ratio is 0.400; SE: 3.166(5.393); SE_mask: 4.037(7.122)
+reject H0 with p_value: 0.003
+Ratio is 0.400; SE: 3.166(5.393); SE_mask: 3.735(6.986)
+reject H0 with p_value: 0.034
+mean Y: 3.261
+Ratio is 0.400; SE: 3.090(6.268); SE_mask: 2.833(4.977)
+accept H0 with p_value: 0.818
+Ratio is 0.400; SE: 3.090(6.268); SE_mask: 3.415(6.078)
+accept H0 with p_value: 0.146
+Ratio is 0.400; SE: 3.090(6.268); SE_mask: 4.162(7.848)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 3.090(6.268); SE_mask: 3.787(6.556)
+reject H0 with p_value: 0.015
+mean Y: 3.244
+Ratio is 0.400; SE: 3.301(6.825); SE_mask: 2.812(4.675)
+accept H0 with p_value: 0.953
+Ratio is 0.400; SE: 3.301(6.825); SE_mask: 3.309(6.057)
+accept H0 with p_value: 0.491
+Ratio is 0.400; SE: 3.301(6.825); SE_mask: 3.943(7.288)
+reject H0 with p_value: 0.035
+Ratio is 0.400; SE: 3.301(6.825); SE_mask: 3.778(7.409)
+accept H0 with p_value: 0.091
+mean Y: 3.227
+Ratio is 0.400; SE: 3.187(5.235); SE_mask: 2.701(4.327)
+accept H0 with p_value: 0.979
+Ratio is 0.400; SE: 3.187(5.235); SE_mask: 4.030(8.142)
+reject H0 with p_value: 0.007
+Ratio is 0.400; SE: 3.187(5.235); SE_mask: 3.560(6.412)
+accept H0 with p_value: 0.101
+Ratio is 0.400; SE: 3.187(5.235); SE_mask: 3.914(6.774)
+reject H0 with p_value: 0.008
+mean Y: 3.275
+Ratio is 0.400; SE: 2.884(4.712); SE_mask: 2.525(3.895)
+accept H0 with p_value: 0.952
+Ratio is 0.400; SE: 2.884(4.712); SE_mask: 3.069(5.235)
+accept H0 with p_value: 0.228
+Ratio is 0.400; SE: 2.884(4.712); SE_mask: 3.235(5.808)
+accept H0 with p_value: 0.092
+Ratio is 0.400; SE: 2.884(4.712); SE_mask: 4.013(7.718)
+reject H0 with p_value: 0.000
+mean Y: 3.296
+Ratio is 0.400; SE: 2.676(4.640); SE_mask: 2.773(4.974)
+accept H0 with p_value: 0.344
+Ratio is 0.400; SE: 2.676(4.640); SE_mask: 3.530(5.720)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 2.676(4.640); SE_mask: 4.068(7.943)
+reject H0 with p_value: 0.000
+Ratio is 0.400; SE: 2.676(4.640); SE_mask: 3.983(7.488)
+reject H0 with p_value: 0.000
+mean Y: 3.348
+Ratio is 0.400; SE: 3.436(6.255); SE_mask: 2.766(4.316)
+accept H0 with p_value: 0.994
+Ratio is 0.400; SE: 3.436(6.255); SE_mask: 3.845(6.465)
+accept H0 with p_value: 0.099
+Ratio is 0.400; SE: 3.436(6.255); SE_mask: 4.406(6.979)
+reject H0 with p_value: 0.002
+Ratio is 0.400; SE: 3.436(6.255); SE_mask: 3.773(6.464)
+accept H0 with p_value: 0.145
+mean Y: 3.303
+Ratio is 0.400; SE: 3.595(6.836); SE_mask: 2.505(4.412)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.595(6.836); SE_mask: 3.322(5.652)
+accept H0 with p_value: 0.809
+Ratio is 0.400; SE: 3.595(6.836); SE_mask: 3.994(7.807)
+accept H0 with p_value: 0.139
+Ratio is 0.400; SE: 3.595(6.836); SE_mask: 4.405(8.934)
+reject H0 with p_value: 0.021
+mean Y: 3.205
+Ratio is 0.400; SE: 4.284(8.003); SE_mask: 3.148(5.259)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.284(8.003); SE_mask: 3.344(5.876)
+accept H0 with p_value: 0.996
+Ratio is 0.400; SE: 4.284(8.003); SE_mask: 3.750(7.134)
+accept H0 with p_value: 0.921
+Ratio is 0.400; SE: 4.284(8.003); SE_mask: 4.361(7.873)
+accept H0 with p_value: 0.423
+mean Y: 3.272
+Ratio is 0.400; SE: 3.384(5.646); SE_mask: 2.646(4.415)
+accept H0 with p_value: 0.998
+Ratio is 0.400; SE: 3.384(5.646); SE_mask: 3.463(6.421)
+accept H0 with p_value: 0.398
+Ratio is 0.400; SE: 3.384(5.646); SE_mask: 3.738(6.712)
+accept H0 with p_value: 0.127
+Ratio is 0.400; SE: 3.384(5.646); SE_mask: 4.169(8.002)
+reject H0 with p_value: 0.012
+mean Y: 3.237
+Ratio is 0.400; SE: 3.564(7.026); SE_mask: 2.545(3.828)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.564(7.026); SE_mask: 3.582(6.284)
+accept H0 with p_value: 0.479
+Ratio is 0.400; SE: 3.564(7.026); SE_mask: 3.991(6.769)
+accept H0 with p_value: 0.108
+Ratio is 0.400; SE: 3.564(7.026); SE_mask: 4.781(8.530)
+reject H0 with p_value: 0.001
+mean Y: 3.193
+Ratio is 0.400; SE: 3.891(7.275); SE_mask: 2.528(4.578)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.891(7.275); SE_mask: 3.597(6.429)
+accept H0 with p_value: 0.804
+Ratio is 0.400; SE: 3.891(7.275); SE_mask: 3.209(6.189)
+accept H0 with p_value: 0.978
+Ratio is 0.400; SE: 3.891(7.275); SE_mask: 3.852(6.702)
+accept H0 with p_value: 0.544
+mean Y: 3.296
+Ratio is 0.400; SE: 3.883(7.608); SE_mask: 2.994(5.290)
+accept H0 with p_value: 0.997
+Ratio is 0.400; SE: 3.883(7.608); SE_mask: 3.455(6.147)
+accept H0 with p_value: 0.892
+Ratio is 0.400; SE: 3.883(7.608); SE_mask: 4.155(8.787)
+accept H0 with p_value: 0.254
+Ratio is 0.400; SE: 3.883(7.608); SE_mask: 4.221(8.013)
+accept H0 with p_value: 0.194
+mean Y: 3.244
+Ratio is 0.400; SE: 4.165(8.275); SE_mask: 2.762(5.328)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.165(8.275); SE_mask: 3.460(6.151)
+accept H0 with p_value: 0.974
+Ratio is 0.400; SE: 4.165(8.275); SE_mask: 4.452(8.875)
+accept H0 with p_value: 0.252
+Ratio is 0.400; SE: 4.165(8.275); SE_mask: 3.561(6.446)
+accept H0 with p_value: 0.948
+mean Y: 3.257
+Ratio is 0.400; SE: 3.358(6.494); SE_mask: 2.702(4.760)
+accept H0 with p_value: 0.989
+Ratio is 0.400; SE: 3.358(6.494); SE_mask: 3.261(5.865)
+accept H0 with p_value: 0.622
+Ratio is 0.400; SE: 3.358(6.494); SE_mask: 4.006(7.863)
+reject H0 with p_value: 0.036
+Ratio is 0.400; SE: 3.358(6.494); SE_mask: 3.169(5.102)
+accept H0 with p_value: 0.741
+mean Y: 3.232
+Ratio is 0.400; SE: 4.067(7.991); SE_mask: 2.648(5.524)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 4.067(7.991); SE_mask: 3.524(7.036)
+accept H0 with p_value: 0.925
+Ratio is 0.400; SE: 4.067(7.991); SE_mask: 4.294(8.872)
+accept H0 with p_value: 0.295
+Ratio is 0.400; SE: 4.067(7.991); SE_mask: 4.195(7.922)
+accept H0 with p_value: 0.373
+mean Y: 3.177
+Ratio is 0.400; SE: 3.147(5.357); SE_mask: 2.986(4.422)
+accept H0 with p_value: 0.744
+Ratio is 0.400; SE: 3.147(5.357); SE_mask: 3.733(6.413)
+reject H0 with p_value: 0.024
+Ratio is 0.400; SE: 3.147(5.357); SE_mask: 4.051(6.709)
+reject H0 with p_value: 0.001
+Ratio is 0.400; SE: 3.147(5.357); SE_mask: 4.241(6.968)
+reject H0 with p_value: 0.000
+mean Y: 3.239
+Ratio is 0.400; SE: 26.706(51.118); SE_mask: 2.429(3.736)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 26.706(51.118); SE_mask: 3.705(7.350)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 26.706(51.118); SE_mask: 3.388(6.043)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 26.706(51.118); SE_mask: 3.186(5.279)
+accept H0 with p_value: 1.000
+mean Y: 3.350
+Ratio is 0.400; SE: 3.167(5.565); SE_mask: 2.233(3.407)
+accept H0 with p_value: 1.000
+Ratio is 0.400; SE: 3.167(5.565); SE_mask: 3.336(5.886)
+accept H0 with p_value: 0.278
+Ratio is 0.400; SE: 3.167(5.565); SE_mask: 3.409(6.060)
+accept H0 with p_value: 0.203
+Ratio is 0.400; SE: 3.167(5.565); SE_mask: 3.849(7.272)
+reject H0 with p_value: 0.018
+Ratio: 0.400; Type 1 error: 0.020
+Ratio: 0.400; CASE 1: Power: 0.070
+Ratio: 0.400; CASE 2: Power: 0.380
+Ratio: 0.400; CASE 3: Power: 0.320
+Ratio: 0.400; training sample: 400; MSE: 4.416, MSE_mask: 3.138

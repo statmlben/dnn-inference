@@ -5,6 +5,16 @@ from scipy.stats import norm
 from functools import partial
 import numpy as np
 from keras.constraints import Constraint
+from sklearn.linear_model import LinearRegression
+from scipy.optimize import brentq
+from sklearn.model_selection import train_test_split
+from keras.callbacks import EarlyStopping
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+import warnings
+import keras.backend as K
+
 
 array32 = partial(np.array, dtype=np.float32)
 
@@ -26,7 +36,7 @@ def gen_X(n, p, pho, x_max=1., distribution='uniform'):
 		for i in range(p):
 			for j in range(p):
 				cov[i,j] = pho**(abs(i-j))
-		X = np.random.multivariate_normal(np.zeros(p)*x_max, cov, n)
+		X = x_max*np.random.multivariate_normal(np.zeros(p), cov, n)
 	return X
 
 def gen_W(p, d, L, tau, K0=5):
@@ -63,15 +73,216 @@ def relu(x):
 def group_norm(W, p=2, q=1):
 	return np.sum((np.sum(np.abs(W)**p, axis=1))**(q/p))**(1/q)
 
+class DeepT(object):
+	def __init__(self, inf_cov, model, model_mask, alpha=.05, verbose=0):
+		self.inf_cov = inf_cov
+		self.model = model
+		self.model_mask = model_mask
+		self.alpha = alpha
 
-# class MaxGroupNorm(Constraint):
-# 	def __init__(self, max_value=1.):
-# 		self.max_value = max_value
+	def reset_model(self):
+		session = K.get_session()
+		for layer in self.model.layers: 
+			if hasattr(layer, 'kernel_initializer'):
+				layer.kernel.initializer.run(session=session)
+		for layer in self.model_mask.layers: 
+			if hasattr(layer, 'kernel_initializer'):
+				layer.kernel.initializer.run(session=session)
 
-# 	def __call__(self, w):		
-# 		norms = K.sum(K.sqrt(K.sum(K.square(w), axis=1, keepdims=True)))
-# 		desired = K.clip(norms, 0, self.max_value)
-# 		return w * (desired / (K.epsilon() + norms))
+	## can be extent to @abstractmethod
+	def mask_cov(self, X, k=0, type_='vector'):
+		if type_ == 'vector':
+			Z = X.copy()
+			Z[:,self.inf_cov[k]]= 0.
+		return Z
 
-# 	def get_config(self):
-# 		return {'max_value': self.max_value}
+	def perm_cov(self, X, k=0, type_='vector'):
+		if type_ == 'vector':
+			Z = X.copy()
+			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
+		return Z
+
+	def noise_cov(self, X, k=0, type_='vector'):
+		if type_ == 'vector':
+			Z = X.copy()
+			Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
+		return Z
+
+	def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, method_='perm', verbose=0):
+		if method_=='noise':
+			for ratio_tmp in reversed(ratio_grid):
+				found = 0
+				self.reset_model()
+				m_tmp = int(len(X)*ratio_tmp)
+				n_tmp = len(X) - 2*m_tmp
+				# split data
+				X_perm = self.noise_cov(X, k)
+				X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=42)
+				# training for full model
+				history = self.model.fit(x=X_train, y=y_train, **fit_params)
+				# training for mask model
+				Z_train = self.mask_cov(X_train, k)
+				history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
+				## evaluate the performance
+				P_value = []
+				for t in range(num_perm):
+					# permutate testing sample
+					X_test_perm = self.noise_cov(X_test, k)
+					# split two sample
+					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test_perm, y_test, train_size=m_tmp, random_state=42)
+					Z_inf = self.mask_cov(X_inf_mask, k)
+					# evaluation
+					pred_y = self.model.predict(X_inf).flatten()
+					pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+					SE_tmp = (pred_y - y_inf)**2
+					SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
+					Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean())
+					p_value_tmp = norm.cdf(Lambda_tmp)
+					P_value.append(p_value_tmp)
+				P_value = np.array(P_value)
+				## compute the type 1 error
+				Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+				if verbose==1:
+					print('Type 1 error: %.3f; inference sample ratio: %.3f' %(Err1, ratio_tmp))
+				if Err1 < self.alpha:
+					found = 1
+					break
+			if found==0:
+				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
+			if m_tmp < min_inf:
+				warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
+				m_tmp = min_inf
+				n_tmp = len(X) - 2*m_tmp
+			return n_tmp, m_tmp
+		
+		if method_ == 'perm':
+			for ratio_tmp in reversed(ratio_grid):
+				found = 0
+				self.reset_model()
+				m_tmp = int(len(X)*ratio_tmp)
+				n_tmp = len(X) - 2*m_tmp
+				# split data
+				X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=42)
+				# permutate training sample
+				y_train_perm = np.random.permutation(y_train)
+				# training for full model
+				history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
+				# training for mask model
+				Z_train = self.mask_cov(X_train, k)
+				history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
+				## evaluate the performance
+				P_value = []
+				for t in range(num_perm):
+					# permutate testing sample
+					y_test_perm = np.random.permutation(y_test)
+					# split two sample
+					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
+					Z_inf = self.mask_cov(X_inf_mask, k)
+					# evaluation
+					pred_y = self.model.predict(X_inf).flatten()
+					pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+					SE_tmp = (pred_y - y_inf)**2
+					SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
+					Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean() )
+					p_value_tmp = norm.cdf(Lambda_tmp)
+					P_value.append(p_value_tmp)
+				P_value = np.array(P_value)
+				## compute the type 1 error
+				Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+				if verbose==1:
+					print('Type 1 error: %.3f; inference sample ratio: %.3f' %(Err1, ratio_tmp))
+				if Err1 < self.alpha:
+					found = 1
+					break
+			if found==0:
+				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
+			if m_tmp < min_inf:
+				warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
+				m_tmp = min_inf
+				n_tmp = len(X) - 2*m_tmp
+			return n_tmp, m_tmp
+
+
+	# def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, verbose=0):
+	# 	found = 0
+	# 	for ratio_tmp in reversed(ratio_grid):
+	# 		self.reset_model()
+	# 		m_tmp = int(len(X)*ratio_tmp)
+	# 		n_tmp = len(X) - 2*m_tmp
+	# 		# split data
+	# 		X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=42)
+	# 		# permutate training sample
+	# 		y_train_perm = np.random.permutation(y_train)
+	# 		# training for full model
+	# 		history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
+	# 		# training for mask model
+	# 		Z_train = self.mask_cov(X_train, k)
+	# 		history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
+	# 		## evaluate the performance
+	# 		P_value = []
+	# 		for t in range(num_perm):
+	# 			# permutate testing sample
+	# 			y_test_perm = np.random.permutation(y_test)
+	# 			# split two sample
+	# 			X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
+	# 			Z_inf = self.mask_cov(X_inf_mask, k)
+	# 			# evaluation
+	# 			pred_y = self.model.predict(X_inf).flatten()
+	# 			pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+	# 			SE_tmp = (pred_y - y_inf)**2
+	# 			SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
+	# 			Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean() )
+	# 			p_value_tmp = norm.cdf(Lambda_tmp)
+	# 			P_value.append(p_value_tmp)
+	# 		P_value = np.array(P_value)
+	# 		## compute the type 1 error
+	# 		Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+	# 		if verbose==1:
+	# 			print('Type 1 error: %.3f; inference sample ratio: %.3f' %(Err1, ratio_tmp))
+	# 		if Err1 < self.alpha:
+	# 			found = 1
+	# 			break
+	# 	if found==0:
+	# 		warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
+	# 	if m_tmp < min_inf:
+	# 		warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
+	# 		m_tmp = min_inf
+	# 		n_tmp = len(X) - 2*m_tmp
+	# 	return n_tmp, m_tmp
+
+
+	def testing(self, X, y, pred_size=None, inf_size=None, fit_params={}, split_params={}):
+		P_value = []
+		for k in range(len(self.inf_cov)):
+			if (pred_size == None) or (inf_size == None):
+				n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
+				print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
+			else:
+				n, m = pred_size, inf_size
+			self.reset_model()
+			X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=42)
+			X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test, train_size=m, random_state=42)
+			## prediction and inference in full model
+			history = self.model.fit(X_train, y_train, **fit_params)
+			pred_y = self.model.predict(X_inf).flatten()
+			SE = (pred_y - y_inf)**2
+			# prediction and inference in mask model
+			Z_train = self.mask_cov(X_train, k)
+			history_mask = self.model_mask.fit(Z_train, y_train, **fit_params)
+			
+			Z_inf = self.mask_cov(X_inf_mask, k)
+			pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+			SE_mask = (pred_y_mask - y_inf_mask)**2
+			## compute p-value
+			Lambda = np.sqrt(m) * ( SE.std()**2 + SE_mask.std()**2 )**(-1/2)*( SE.mean() - SE_mask.mean())
+			p_value_tmp = norm.cdf(Lambda)
+			if p_value_tmp < self.alpha:
+				print('reject H0 with p_value: %.3f' %p_value_tmp)
+			else:
+				print('accept H0 with p_value: %.3f' %p_value_tmp)
+
+			P_value.append(p_value_tmp)
+		return P_value
+
+
+

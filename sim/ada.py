@@ -1,0 +1,91 @@
+import numpy as np
+import pandas as pd
+from numpy import linalg as LA
+import funs
+from functools import partial
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.callbacks import EarlyStopping
+from keras.constraints import Constraint
+import keras.backend as K
+from keras.constraints import max_norm
+from sklearn.model_selection import train_test_split
+from keras.optimizers import Adam, SGD
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+array32 = partial(np.array, dtype=np.float32)
+
+np.random.seed(0)
+
+p, L0, d0 = 100, 3, 128
+tau, x_max = 2., 1.
+m = 500
+verbose = 0
+# n = int(x_max*m*p*np.log(d0)*(L0**3)*((1/tau)**(2*L0)))
+# n = int(n / 100)
+n = 1000
+n_params = p*d0 + (L0-2)*d0**2 + d0
+print('the number of training sample: %d; number of parameters: %d' %(n, n_params))
+
+# specify model
+
+P_value = []
+
+for i in range(100):
+	K.clear_session()
+
+	def Reg_model(p, d, L=3, optimizer=Adam(lr=.001)):
+		model = Sequential()
+		model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
+		for l in range(L-2):
+			model.add(Dense(d, use_bias=False, activation='relu'))
+			# model.add(Dense(d, use_bias=False, activation='relu', kernel_constraint=max_norm(1./tau)))
+		model.add(Dense(1, use_bias=False, activation='relu'))
+		model.compile(loss='mean_squared_error', optimizer=optimizer)
+		return model
+
+	## Generate data
+	K0 = 5
+	X = funs.gen_X(n=n+2*m, p=p, pho=.25, x_max=x_max, distribution='normal')
+	X0 = X.copy()
+	X0[:,:K0] = 0.
+	# W = funs.gen_W(p=p, d=d0, L=L0, tau=tau, K0=5)
+	y = funs.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
+	print('mean y: %.3f' %np.mean(y))
+	
+	# import matplotlib.pyplot as plt
+	# plt.hist(Y, bins=50)
+	# plt.show()
+
+	## Define the full model
+	d, L = d0, L0
+	model = Reg_model(p=p, d=d, L=L)
+	model_mask = Reg_model(p=p, d=d, L=L)
+	
+	## define fitting params
+	es = EarlyStopping(monitor='val_loss', mode='min', verbose=verbose, patience=20, restore_best_weights=True)
+	fit_params = {'callbacks':[es],
+				  'epochs':100,
+				  'validation_split':.1,
+				  'verbose':0}
+
+	split_params = {'num_perm':100,
+					'ratio_grid': [.05, .1, .2, .3],
+					'method_':'perm',
+					'min_inf':50,
+					'verbose': 1}
+
+	shiing = funs.DeepT(inf_cov=[range(0, 5), range(3, 8), range(45, 50), range(95, 100)], model=model, model_mask=model_mask)
+	
+	p_value_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
+	P_value.append(p_value_tmp)
+
+P_value=np.array(P_value)
+print('Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] < .05])/len(P_value)))
+
+for i in [1, 2, 3]:
+	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] < .05])/len(P_value)))
+
