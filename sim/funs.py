@@ -108,7 +108,7 @@ class DeepT(object):
 			Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, method_='perm', verbose=0):
+	def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, method_='perm_abs', verbose=0):
 		if method_=='noise':
 			for ratio_tmp in reversed(ratio_grid):
 				found = 0
@@ -155,9 +155,10 @@ class DeepT(object):
 				n_tmp = len(X) - 2*m_tmp
 			return n_tmp, m_tmp
 		
-		if method_ == 'perm':
+		if method_ == 'perm_max':
+			candidate, Err1_lst, ratio_lst = [], [], []
+			found = 0
 			for ratio_tmp in reversed(ratio_grid):
-				found = 0
 				self.reset_model()
 				m_tmp = int(len(X)*ratio_tmp)
 				n_tmp = len(X) - 2*m_tmp
@@ -185,22 +186,91 @@ class DeepT(object):
 					SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
 					Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean() )
 					p_value_tmp = norm.cdf(Lambda_tmp)
+					# p_value_neg = norm.cdf(-Lambda_tmp)
 					P_value.append(p_value_tmp)
 				P_value = np.array(P_value)
 				## compute the type 1 error
 				Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+				Err1_lst.append(Err1)
+				ratio_lst.append(ratio_tmp)
 				if verbose==1:
-					print('Type 1 error: %.3f; inference sample ratio: %.3f' %(Err1, ratio_tmp))
-				if Err1 < self.alpha:
+					print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f' %(Err1, P_value.mean(), ratio_tmp))
+				if Err1 <= self.alpha:
 					found = 1
+					m_opt = m_tmp
+					n_opt = len(X) - 2*m_opt
 					break
+					
 			if found==0:
 				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
-			if m_tmp < min_inf:
+				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
+				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
+				n_opt = len(X) - 2*m_opt
+				
+			if m_opt < min_inf:
 				warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
-				m_tmp = min_inf
+				m_opt = min_inf
+				n_opt = len(X) - 2*m_opt
+			return n_opt, m_opt
+
+
+		if method_ == 'perm_abs':
+			candidate = []
+			found = 0
+			for ratio_tmp in reversed(ratio_grid):
+				self.reset_model()
+				m_tmp = int(len(X)*ratio_tmp)
 				n_tmp = len(X) - 2*m_tmp
-			return n_tmp, m_tmp
+				# split data
+				X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=42)
+				# permutate training sample
+				y_train_perm = np.random.permutation(y_train)
+				# training for full model
+				history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
+				# training for mask model
+				Z_train = self.mask_cov(X_train, k)
+				history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
+				## evaluate the performance
+				P_value = []
+				for t in range(num_perm):
+					# permutate testing sample
+					y_test_perm = np.random.permutation(y_test)
+					# split two sample
+					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
+					Z_inf = self.mask_cov(X_inf_mask, k)
+					# evaluation
+					pred_y = self.model.predict(X_inf).flatten()
+					pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+					SE_tmp = (pred_y - y_inf)**2
+					SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
+					Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean() )
+					p_value_tmp = norm.cdf(Lambda_tmp)
+					# p_value_neg = norm.cdf(-Lambda_tmp)
+					P_value.append(p_value_tmp)
+				P_value = np.array(P_value)
+				## compute the type 1 error
+				Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+
+				if verbose==1:
+					print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f' %(Err1, P_value.mean(), ratio_tmp))
+				if Err1 <= self.alpha:
+					found = 1
+					candidate.append([m_tmp, np.abs(P_value.mean()-.5)])
+			
+			if found == 1:
+				candidate = np.array(candidate)
+				m_opt = int(candidate[np.argmin(candidate[:,1]),0])
+				n_opt = len(X) - 2*m_opt
+			else:
+				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
+				m_opt=min_inf
+				n_opt = len(X) - 2*m_opt
+
+			if m_opt < min_inf:
+				warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
+				m_opt = min_inf
+				n_opt = len(X) - 2*m_opt
+			return n_opt, m_opt
 
 
 	# def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, verbose=0):
@@ -275,14 +345,15 @@ class DeepT(object):
 			SE_mask = (pred_y_mask - y_inf_mask)**2
 			## compute p-value
 			Lambda = np.sqrt(m) * ( SE.std()**2 + SE_mask.std()**2 )**(-1/2)*( SE.mean() - SE_mask.mean())
+			print('SE: %.3f(%.3f); SE_mask: %.3f(%.3f)' %(SE.mean(), SE.std(), SE_mask.mean(), SE_mask.std()))
 			p_value_tmp = norm.cdf(Lambda)
+
 			if p_value_tmp < self.alpha:
 				print('reject H0 with p_value: %.3f' %p_value_tmp)
 			else:
 				print('accept H0 with p_value: %.3f' %p_value_tmp)
 
 			P_value.append(p_value_tmp)
-		return P_value
-
+		return P_value, SE.mean()
 
 

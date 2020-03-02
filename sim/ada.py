@@ -21,20 +21,17 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0 = 100, 3, 128
-tau, x_max = 2., 1.
-m = 500
+tau, x_max = 2., .4
 verbose = 0
-# n = int(x_max*m*p*np.log(d0)*(L0**3)*((1/tau)**(2*L0)))
-# n = int(n / 100)
-n = 1000
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
-print('the number of training sample: %d; number of parameters: %d' %(n, n_params))
+print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 # specify model
 
-P_value = []
+P_value, SE_list = [], []
 
-for i in range(100):
+for i in range(1000):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.001)):
@@ -49,7 +46,7 @@ for i in range(100):
 
 	## Generate data
 	K0 = 5
-	X = funs.gen_X(n=n+2*m, p=p, pho=.25, x_max=x_max, distribution='normal')
+	X = funs.gen_X(n=N, p=p, pho=.25, x_max=x_max, distribution='normal')
 	X0 = X.copy()
 	X0[:,:K0] = 0.
 	# W = funs.gen_W(p=p, d=d0, L=L0, tau=tau, K0=5)
@@ -67,25 +64,28 @@ for i in range(100):
 	
 	## define fitting params
 	es = EarlyStopping(monitor='val_loss', mode='min', verbose=verbose, patience=20, restore_best_weights=True)
-	fit_params = {'callbacks':[es],
-				  'epochs':100,
-				  'validation_split':.1,
-				  'verbose':0}
+	
+	fit_params = {'callbacks': [es],
+				  'epochs': 100,
+				  'validation_split': .1,
+				  'verbose': 0}
 
-	split_params = {'num_perm':100,
-					'ratio_grid': [.05, .1, .2, .3],
-					'method_':'perm',
-					'min_inf':50,
+	split_params = {'num_perm': 100,
+					'ratio_grid': [.1, .2, .3, .4, .45],
+					'method_': 'perm_max',
+					'min_inf': 100,
 					'verbose': 1}
 
 	shiing = funs.DeepT(inf_cov=[range(0, 5), range(3, 8), range(45, 50), range(95, 100)], model=model, model_mask=model_mask)
 	
-	p_value_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
+	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
 	P_value.append(p_value_tmp)
+	SE_list.append(SE_tmp)
 
 P_value=np.array(P_value)
+SE_list=np.array(SE_list)
+print('MSE: %.3f(%.3f)' %(SE_list.mean(), SE_list.std()))
 print('Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] < .05])/len(P_value)))
 
 for i in [1, 2, 3]:
 	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] < .05])/len(P_value)))
-

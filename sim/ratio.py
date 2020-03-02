@@ -18,17 +18,17 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0 = 100, 3, 128
-tau, x_max = 2., 1.
-N = 2000
+tau, x_max = 2., .4
+N = 10000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
-for ratio in [.25]:
+for ratio in [.1, .2, .3, .4]:
 	P_value, SE_lst, SE_mask_lst, p_value_null = [], [], [], []
 	m = int(ratio*N)
 	n = N - 2*m
 
-	for i in range(100):
+	for i in range(1000):
 		K.clear_session()
 
 		def Reg_model(p, d, L=3, optimizer=Adam(lr=.001)):
@@ -48,7 +48,7 @@ for ratio in [.25]:
 		X0[:,:K0] = 0.
 		# W = funs.gen_W(p=p, d=d0, L=L0, tau=tau, K0=5)
 		Y = funs.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
-		print('mean Y: %.3f' %np.mean(Y))
+		# print('mean Y: %.3f' %np.mean(Y))
 
 		# import matplotlib.pyplot as plt
 		# plt.hist(Y, bins=50)
@@ -81,12 +81,12 @@ for ratio in [.25]:
 			SE, SE_mask = (pred_y - y_inf)**2, (pred_y_mask - y_inf_mask)**2
 			Lambda = np.sqrt(m) * ( SE.std()**2 + SE_mask.std()**2 )**(-1/2)*( SE.mean() - SE_mask.mean() )
 
-			print('Ratio is %.3f; SE: %.3f(%.3f); SE_mask: %.3f(%.3f)' %(ratio, SE.mean(), SE.std(), SE_mask.mean(), SE_mask.std()))
+			# print('Ratio is %.3f; SE: %.3f(%.3f); SE_mask: %.3f(%.3f)' %(ratio, SE.mean(), SE.std(), SE_mask.mean(), SE_mask.std()))
 			p_value_tmp = norm.cdf(Lambda)
-			if p_value_tmp < .05:
-				print('reject H0 with p_value: %.3f' %p_value_tmp)
-			else:
-				print('accept H0 with p_value: %.3f' %p_value_tmp)
+			# if p_value_tmp < .05:
+			# 	print('reject H0 with p_value: %.3f' %p_value_tmp)
+			# else:
+			# 	print('accept H0 with p_value: %.3f' %p_value_tmp)
 
 			p_value.append(p_value_tmp)
 			if inf_cov == range(0, 5):
@@ -102,35 +102,7 @@ for ratio in [.25]:
 	for i in [1,2,3]:
 		print('Ratio: %.3f; CASE %d: Power: %.3f' %(ratio, i, len(P_value[:,i][P_value[:,i] < .05])/len(P_value)))
 
-	print('Ratio: %.3f; training sample: %d; MSE: %.3f, MSE_mask: %.3f' %(ratio, n, SE_lst.mean(), SE_mask_lst.mean()))
+	print('Ratio: %.3f; training sample: %d; MSE: %.3f(%.3f), MSE_mask: %.3f(%.3f)' %(ratio, n, SE_lst.mean(), SE_lst.std(), SE_mask_lst.mean(), SE_mask_lst.std()))
 
 
-# Ratio: 0.100; P_value: 0.776; Type 1 error: 0.040
-# Ratio: 0.100; CASE 1: Power: 0.480
-# Ratio: 0.100; CASE 2: Power: 0.980
-# Ratio: 0.100; CASE 3: Power: 0.940
-# Ratio: 0.100; training sample: 1600; MSE: 1.592, MSE_mask: 2.365
 
-# Ratio: 0.200; P_value: 0.916; Type 1 error: 0.000
-# Ratio: 0.200; CASE 1: Power: 0.510
-# Ratio: 0.200; CASE 2: Power: 0.960
-# Ratio: 0.200; CASE 3: Power: 0.970
-# Ratio: 0.200; training sample: 1200; MSE: 2.304, MSE_mask: 1.434
-
-# Ratio: 0.250; P_value: 0.916; Type 1 error: 0.010
-# Ratio: 0.250; CASE 1: Power: 0.550
-# Ratio: 0.250; CASE 2: Power: 0.990
-# Ratio: 0.250; CASE 3: Power: 0.980
-# Ratio: 0.250; training sample: 1000; MSE: 1.851, MSE_mask: 1.749
-
-# Ratio: 0.300; Type 1 error: 0.020
-# Ratio: 0.300; CASE 1: Power: 0.370
-# Ratio: 0.300; CASE 2: Power: 0.940
-# Ratio: 0.300; CASE 3: Power: 0.950
-# Ratio: 0.300; training sample: 800; MSE: 2.371, MSE_mask: 2.197
-
-# Ratio: 0.400; Type 1 error: 0.020
-# Ratio: 0.400; CASE 1: Power: 0.090
-# Ratio: 0.400; CASE 2: Power: 0.520
-# Ratio: 0.400; CASE 3: Power: 0.460
-# Ratio: 0.400; training sample: 400; MSE: 3.578, MSE_mask: 2.576
