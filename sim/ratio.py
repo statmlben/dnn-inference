@@ -19,7 +19,7 @@ np.random.seed(0)
 
 p, L0, d0 = 100, 3, 128
 tau, x_max = 2., .4
-N = 10000
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -60,8 +60,8 @@ for ratio in [.1, .2, .3, .4]:
 		# fit model
 		d, L = d0, L0
 		model = Reg_model(p=p, d=d, L=L)
-		es = EarlyStopping(monitor='val_loss', mode='min', verbose=0, patience=20, restore_best_weights=True)
-		history = model.fit(X_train, y_train, epochs=100, validation_split=.1, verbose=0, callbacks=[es])
+		es = EarlyStopping(monitor='val_loss', mode='min', verbose=0, patience=50, restore_best_weights=True)
+		history = model.fit(X_train, y_train, epochs=100, validation_split=.2, verbose=0, callbacks=[es])
 
 		# generate hypothesis testing set
 		p_value = []
@@ -70,7 +70,7 @@ for ratio in [.1, .2, .3, .4]:
 			Z_train[:,inf_cov]= 0.
 
 			model_mask = Reg_model(p=p, d=d, L=L)
-			history_mask = model_mask.fit(Z_train, y_train, epochs=100, validation_split=.1, verbose=0, callbacks=[es])
+			history_mask = model_mask.fit(Z_train, y_train, epochs=100, validation_split=.2, verbose=0, callbacks=[es])
 
 			## Inference
 			from scipy.stats import norm

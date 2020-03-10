@@ -171,30 +171,42 @@ class DeepT(object):
 				# training for mask model
 				Z_train = self.mask_cov(X_train, k)
 				history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
+				
 				## evaluate the performance
 				P_value = []
+				Z_test = self.mask_cov(X_test, k)
+				pred_y = self.model.predict(X_test).flatten()
+				pred_y_mask = self.model_mask.predict(Z_test).flatten()
+				# print(len(pred_y), len(pred_y_mask))
+				
 				for t in range(num_perm):
 					# permutate testing sample
 					y_test_perm = np.random.permutation(y_test)
 					# split two sample
-					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
-					Z_inf = self.mask_cov(X_inf_mask, k)
+					ind_inf, ind_inf_mask = train_test_split(range(len(y_test_perm)), train_size=m_tmp, random_state=42)
+					# X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
+					# Z_inf = self.mask_cov(X_inf_mask, k)
 					# evaluation
-					pred_y = self.model.predict(X_inf).flatten()
-					pred_y_mask = self.model_mask.predict(Z_inf).flatten()
-					SE_tmp = (pred_y - y_inf)**2
-					SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
+					SE_tmp = (y_test_perm[ind_inf] - pred_y[ind_inf])**2
+					SE_mask_tmp = (y_test_perm[ind_inf_mask] - pred_y_mask[ind_inf_mask])**2
+					# pred_y = self.model.predict(X_inf).flatten()
+					# pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+					# SE_tmp = (pred_y - y_inf)**2
+					# SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
 					Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean() )
 					p_value_tmp = norm.cdf(Lambda_tmp)
 					# p_value_neg = norm.cdf(-Lambda_tmp)
 					P_value.append(p_value_tmp)
+				
 				P_value = np.array(P_value)
 				## compute the type 1 error
 				Err1 = len(P_value[P_value<self.alpha])/len(P_value)
 				Err1_lst.append(Err1)
 				ratio_lst.append(ratio_tmp)
+				
 				if verbose==1:
 					print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f' %(Err1, P_value.mean(), ratio_tmp))
+				
 				if Err1 <= self.alpha:
 					found = 1
 					m_opt = m_tmp
@@ -232,17 +244,25 @@ class DeepT(object):
 				history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
 				## evaluate the performance
 				P_value = []
+
+				Z_test = self.mask_cov(X_test, k)
+				pred_y = self.model.predict(X_test).flatten()
+				pred_y_mask = self.model_mask.predict(Z_test).flatten()
+				print(len(pred_y), len(pred_y_mask))
 				for t in range(num_perm):
 					# permutate testing sample
 					y_test_perm = np.random.permutation(y_test)
 					# split two sample
-					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
-					Z_inf = self.mask_cov(X_inf_mask, k)
+					ind_inf, ind_inf_mask = train_test_split(range(len(y_test_perm)), train_size=m_tmp, random_state=42)
+					# X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test_perm, train_size=m_tmp, random_state=42)
+					# Z_inf = self.mask_cov(X_inf_mask, k)
 					# evaluation
-					pred_y = self.model.predict(X_inf).flatten()
-					pred_y_mask = self.model_mask.predict(Z_inf).flatten()
-					SE_tmp = (pred_y - y_inf)**2
-					SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
+					SE_tmp = (y_test_perm[ind_inf] - pred_y[ind_inf])**2
+					SE_mask_tmp = (y_test_perm[ind_inf_mask] - pred_y_mask[ind_inf_mask])**2
+					# pred_y = self.model.predict(X_inf).flatten()
+					# pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+					# SE_tmp = (pred_y - y_inf)**2
+					# SE_mask_tmp = (pred_y_mask - y_inf_mask)**2
 					Lambda_tmp = np.sqrt(m_tmp) * ( SE_tmp.std()**2 + SE_mask_tmp.std()**2 )**(-1/2)*( SE_tmp.mean() - SE_mask_tmp.mean() )
 					p_value_tmp = norm.cdf(Lambda_tmp)
 					# p_value_neg = norm.cdf(-Lambda_tmp)

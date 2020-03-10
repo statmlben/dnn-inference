@@ -9,7 +9,7 @@ from keras.layers import Dense
 from keras.callbacks import EarlyStopping
 from keras.constraints import Constraint
 import keras.backend as K
-from keras.constraints import max_norm
+# from keras.constraints import x_max_norm
 from sklearn.model_selection import train_test_split
 from keras.optimizers import Adam, SGD
 import seaborn as sns
@@ -17,11 +17,10 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 array32 = partial(np.array, dtype=np.float32)
-
 np.random.seed(0)
 
 p, L0, d0 = 100, 3, 128
-tau, x_max = 2., .4
+tau, x_max, pho = 2., .4, .75
 verbose = 0
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
@@ -46,12 +45,12 @@ for i in range(1000):
 
 	## Generate data
 	K0 = 5
-	X = funs.gen_X(n=N, p=p, pho=.25, x_max=x_max, distribution='normal')
+	X = funs.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
 	X0 = X.copy()
 	X0[:,:K0] = 0.
 	# W = funs.gen_W(p=p, d=d0, L=L0, tau=tau, K0=5)
 	y = funs.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
-	print('mean y: %.3f' %np.mean(y))
+	# print('mean y: %.3f' %np.mean(y))
 	
 	# import matplotlib.pyplot as plt
 	# plt.hist(Y, bins=50)
@@ -63,15 +62,15 @@ for i in range(1000):
 	model_mask = Reg_model(p=p, d=d, L=L)
 	
 	## define fitting params
-	es = EarlyStopping(monitor='val_loss', mode='min', verbose=verbose, patience=20, restore_best_weights=True)
+	es = EarlyStopping(monitor='val_loss', mode='min', verbose=verbose, patience=50, restore_best_weights=True)
 	
 	fit_params = {'callbacks': [es],
 				  'epochs': 100,
-				  'validation_split': .1,
+				  'validation_split': .2,
 				  'verbose': 0}
 
 	split_params = {'num_perm': 100,
-					'ratio_grid': [.1, .2, .3, .4, .45],
+					'ratio_grid': [.1, .2, .3, .4],
 					'method_': 'perm_max',
 					'min_inf': 100,
 					'verbose': 1}
