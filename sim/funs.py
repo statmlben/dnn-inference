@@ -14,6 +14,7 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import warnings
 import keras.backend as K
+from keras.initializers import glorot_uniform
 
 
 array32 = partial(np.array, dtype=np.float32)
@@ -81,13 +82,25 @@ class DeepT(object):
 		self.alpha = alpha
 
 	def reset_model(self):
-		session = K.get_session()
-		for layer in self.model.layers: 
-			if hasattr(layer, 'kernel_initializer'):
-				layer.kernel.initializer.run(session=session)
-		for layer in self.model_mask.layers: 
-			if hasattr(layer, 'kernel_initializer'):
-				layer.kernel.initializer.run(session=session)
+		initial_weights = self.model.get_weights()
+		backend_name = K.backend()
+		if backend_name == 'tensorflow': 
+			k_eval = lambda placeholder: placeholder.eval(session=K.get_session())
+		elif backend_name == 'theano': 
+			k_eval = lambda placeholder: placeholder.eval()
+		else: 
+			raise ValueError("Unsupported backend")
+		new_weights = [k_eval(glorot_uniform()(w.shape)) for w in initial_weights]
+		self.model.set_weights(new_weights)
+
+	# def reset_model(self):
+	# 	session = K.get_session()
+	# 	for layer in self.model.layers: 
+	# 		if hasattr(layer, 'kernel_initializer'):
+	# 			layer.kernel.initializer.run(session=session)
+	# 	for layer in self.model_mask.layers: 
+	# 		if hasattr(layer, 'kernel_initializer'):
+	# 			layer.kernel.initializer.run(session=session)
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0, type_='vector'):
