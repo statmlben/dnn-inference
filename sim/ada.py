@@ -20,7 +20,7 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0 = 100, 3, 128
-tau, x_max, pho = 2., .4, .75
+tau, x_max, pho = 2., .4, 0.25
 verbose = 0
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
@@ -33,7 +33,7 @@ P_value, SE_list = [], []
 for i in range(1000):
 	K.clear_session()
 
-	def Reg_model(p, d, L=3, optimizer=Adam(lr=.001)):
+	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
 		model = Sequential()
 		model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
 		for l in range(L-2):
