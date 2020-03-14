@@ -95,22 +95,26 @@ class DeepT(object):
 	# 	self.model.set_weights(new_weights)
 
 	def reset_model(self):
-		for layer in self.model.layers:
-			if hasattr(layer, 'init'):
-				init = getattr(layer, 'init')
-				new_weights = init(layer.get_weights()[0].shape).get_value()
-				bias = shared_zeros(layer.get_weights()[1].shape).get_value()
-				layer.set_weights([new_weights, bias])
+		if int(tf.__version__[0]) == 2:
+			for layer in self.model.layers: 
+				if isinstance(layer, tf.keras.Model):
+					reset_weights(layer)
+					continue
+				for k, initializer in layer.__dict__.items():
+					if "initializer" not in k:
+						continue
+						# find the corresponding variable
+					var = getattr(layer, k.replace("_initializer", ""))
+					var.assign(initializer(var.shape, var.dtype))
+		if int(tf.__version__[0]) == 1:
+			session = K.get_session()
+			for layer in self.model.layers:
+				if hasattr(layer, 'kernel_initializer'):
+					layer.kernel.initializer.run(session=session)
+			for layer in self.model_mask.layers:
+				if hasattr(layer, 'kernel_initializer'):
+					layer.kernel.initializer.run(session=session)
 
-	# def reset_model(self):
-	# 	# session = K.get_session()
-	# 	session = tf.compat.v1.Session()
-	# 	for layer in self.model.layers:
-	# 		if hasattr(layer, 'kernel_initializer'):
-	# 			layer.kernel.initializer.run(session=session)
-	# 	for layer in self.model_mask.layers:
-	# 		if hasattr(layer, 'kernel_initializer'):
-	# 			layer.kernel.initializer.run(session=session)
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0, type_='vector'):
