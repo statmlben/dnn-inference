@@ -127,7 +127,11 @@ class DeepT(object):
 						var = getattr(init_container, 'recurrent_kernel')
 					else:
 						var = getattr(init_container, key.replace("_initializer", ""))
-					var.assign(initializer(var.shape, var.dtype))
+					
+					if var is None:
+						continue
+					else:
+						var.assign(initializer(var.shape, var.dtype))
 		
 		if int(tf.__version__[0]) == 1:
 			session = K.get_session()
@@ -158,7 +162,7 @@ class DeepT(object):
 			Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, method_='perm_abs', verbose=0):
+	def adaRatio(self, X, y, k=0, fit_params={}, num_perm=100, ratio_grid=[.1, .2, .3, .4], min_inf=50, method_='perm_max', verbose=0):
 		if method_=='noise':
 			for ratio_tmp in reversed(ratio_grid):
 				found = 0
@@ -262,7 +266,7 @@ class DeepT(object):
 					m_opt = m_tmp
 					n_opt = len(X) - 2*m_opt
 					break
-					
+
 			if found==0:
 				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
 				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)

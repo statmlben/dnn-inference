@@ -66,6 +66,7 @@ for i in range(1000):
 	
 	fit_params = {'callbacks': [es],
 				  'epochs': 100,
+				  'batch_size': 512,
 				  'validation_split': .2,
 				  'verbose': 0}
 
