@@ -16,6 +16,7 @@ import warnings
 import keras.backend as K
 from keras.initializers import glorot_uniform
 import tensorflow as tf
+from sklearn.model_selection import KFold
 
 
 array32 = partial(np.array, dtype=np.float32)
@@ -373,12 +374,13 @@ class DeepT(object):
 
 
 class PermT(object):
-	def __init__(self, inf_cov, model, model_mask, alpha=.05, verbose=0):
+	def __init__(self, inf_cov, model, model_perm, alpha=.05, num_folds=5, verbose=0):
 		self.inf_cov = inf_cov
 		self.model = model
 		self.model_perm = model_perm
 		self.alpha = alpha
 		self.num_perm = 100
+		self.num_folds = num_folds
 
 	def reset_model(self):
 		if int(tf.__version__[0]) == 2:
@@ -424,7 +426,7 @@ class PermT(object):
 			for layer in self.model.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
-			for layer in self.model_mask.layers:
+			for layer in self.model_perm.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
 
@@ -451,24 +453,34 @@ class PermT(object):
 	def testing(self, X, y, fit_params={}):
 		P_value = []
 		for k in range(len(self.inf_cov)):
+			kfold = KFold(n_splits=self.num_folds, shuffle=True)
 			self.reset_model()
-			print('%d-th inference; permutation testing' %k)
+			print('%d-th permutation inference' %k)
 			## prediction and inference in full model
-			history = self.model.fit(X, y, **fit_params)
-			pred_y = self.model.predict(X).flatten()
-			SE = (pred_y - y)**2
-			score = SE.copy()
+			score_cv = []
+			for train, test in kfold.split(X, y):
+				self.reset_model()
+				history = self.model.fit(X[train], y[train], **fit_params)
+				pred_y = self.model.predict(X[test]).flatten()
+				SE = (pred_y - y[test])**2
+				score_cv.append(SE.mean())
+			score = np.mean(score_cv)
 			# prediction and inference in mask model
 			score_perm = []
 			for l in range(self.num_perm):
+				score_perm_cv = []
 				Z = self.perm_cov(X, k)
-				history_perm = self.model_perm.fit(Z, y, **fit_params)
-				pred_y_perm = self.model_perm.predict(Z).flatten()
-				SE_perm = (pred_y_perm - y)**2
-				score_perm.append(SE_perm)
+				for train_perm, test_perm in kfold.split(Z, y):
+					self.reset_model()
+					history_perm = self.model_perm.fit(Z[train_perm], y[train_perm], **fit_params)
+					pred_y_perm = self.model_perm.predict(Z[test_perm]).flatten()
+					SE_perm = (pred_y_perm - y[test_perm])**2
+					score_perm_cv.append(SE_perm.mean())
+				score_perm.append(np.mean(score_perm_cv))
 			score_perm = np.array(score_perm)
 			## compute p-value
-			p_value_tmp = (np.sum(score_perm >= score) + 1.0) / (self.num_perm + 1)
+			print("perf score: %.3f, perf permutation score: %.3f(%.3f)" %(score, score_perm.mean(), score_perm.std()))
+			p_value_tmp = (np.sum(score_perm <= score) + 1.0) / (self.num_perm + 1)
 
 			if p_value_tmp < self.alpha:
 				print('reject H0 with p_value: %.3f' %p_value_tmp)

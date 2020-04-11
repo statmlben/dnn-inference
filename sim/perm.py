@@ -19,10 +19,10 @@ from sklearn.linear_model import LinearRegression
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-p, L0, d0, K0 = 100, 2, 256, 5
+p, L0, d0, K0 = 100, 2, 64, 5
 tau, x_max, pho = 2., .4, 0.25
 verbose = 0
-N = 6000
+N = 2000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -30,7 +30,7 @@ print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 P_value, SE_list = [], []
 
-for i in range(1000):
+for i in range(1):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
@@ -54,7 +54,7 @@ for i in range(1000):
 	## Define the full model
 	d, L = d0, L0
 	model = Reg_model(p=p, d=d, L=L)
-	model_mask = Reg_model(p=p, d=d, L=L)
+	model_perm = Reg_model(p=p, d=d, L=L)
 	
 	## define fitting params
 	es = EarlyStopping(monitor='val_loss', mode='min', verbose=verbose, patience=50, restore_best_weights=True)
@@ -65,15 +65,16 @@ for i in range(1000):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'num_perm': 100,
-					'ratio_grid': [.1, .2, .3, .4],
-					'method_': 'perm_max',
-					'min_inf': 100,
-					'verbose': 1}
+	# split_params = {'num_perm': 100,
+	# 				'ratio_grid': [.1, .2, .3, .4],
+	# 				'method_': 'perm_max',
+	# 				'min_inf': 100,
+	# 				'verbose': 1}
 
-	shiing = funs.DeepT(inf_cov=[range(0, K0), range(int(K0/2)+1, int(K0/2)+K0+1), range(int(p/2), int(p/2)+K0), range(p-K0, p)], model=model, model_mask=model_mask)
+	shiing = funs.PermT(inf_cov=[range(0, K0), range(int(K0/2)+1, int(K0/2)+K0+1), range(int(p/2), int(p/2)+K0), range(p-K0, p)], 
+						model=model, model_perm=model_perm)
 	
-	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
+	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params)
 	P_value.append(p_value_tmp)
 	SE_list.append(SE_tmp)
 
