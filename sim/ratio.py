@@ -19,7 +19,7 @@ np.random.seed(0)
 
 p, L0, d0 = 100, 3, 128
 tau, x_max = 2., .4
-N = 6000
+N = 2000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -31,7 +31,7 @@ for ratio in [.1, .2, .3, .4]:
 	for i in range(1000):
 		K.clear_session()
 
-		def Reg_model(p, d, L=3, optimizer=Adam(lr=.001)):
+		def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
 			model = Sequential()
 			model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
 			for l in range(L-2):

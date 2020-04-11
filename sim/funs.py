@@ -38,6 +38,7 @@ def gen_X(n, p, pho, x_max=1., distribution='uniform'):
 		for i in range(p):
 			for j in range(p):
 				cov[i,j] = pho**(abs(i-j))
+		np.fill_diagonal(cov, 1.)
 		X = x_max*np.random.multivariate_normal(np.zeros(p), cov, n)
 	return X
 

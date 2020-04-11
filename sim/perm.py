@@ -50,10 +50,6 @@ for i in range(1000):
 	# W = funs.gen_W(p=p, d=d0, L=L0, tau=tau, K0=5)
 	y = funs.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
 	# print('mean y: %.3f' %np.mean(y))
-	
-	# import matplotlib.pyplot as plt
-	# plt.hist(Y, bins=50)
-	# plt.show()
 
 	## Define the full model
 	d, L = d0, L0
