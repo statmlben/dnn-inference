@@ -19,7 +19,7 @@ from sklearn.linear_model import LinearRegression
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-p, L0, d0, K0 = 100, 2, 256, 5
+p, L0, d0, K0 = 100, 3, 128, 5
 tau, x_max, pho = 2., .4, 0.25
 verbose = 0
 N = 6000
@@ -30,7 +30,7 @@ print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 P_value, SE_list = [], []
 
-for i in range(1000):
+for i in range(100):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
@@ -69,9 +69,11 @@ for i in range(1000):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'num_perm': 100,
-					'ratio_grid': [.1, .2, .3, .4],
-					'method_': 'perm_max',
+	split_params = {'split': 'one-sample',
+					'perturb': 0.,
+					'num_perm': 100,
+					'ratio_grid': [.2, .4, .6, .8],
+					'perturb_grid': [.01, .1, 1.],
 					'min_inf': 100,
 					'verbose': 1}
 

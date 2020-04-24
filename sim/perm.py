@@ -17,16 +17,16 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 import os
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID" 
-os.environ["CUDA_VISIBLE_DEVICES"] = "4"
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID" 
+# os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-p, L0, d0, K0 = 100, 2, 64, 5
+p, L0, d0, K0 = 100, 3, 64, 5
 tau, x_max, pho = 2., .4, 0.25
 verbose = 0
-N = 6000
+N = 2000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -34,7 +34,7 @@ print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 P_value, SE_list = [], []
 
-for i in range(100):
+for i in range(10):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
