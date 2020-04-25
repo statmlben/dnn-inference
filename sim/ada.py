@@ -20,7 +20,7 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .4, 0.25
+tau, x_max, pho = 2., .2, 0.25
 verbose = 0
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
@@ -70,14 +70,16 @@ for i in range(100):
 				  'verbose': 0}
 
 	split_params = {'split': 'one-sample',
-					'perturb': 0.,
+					'perturb': None,
 					'num_perm': 100,
-					'ratio_grid': [.2, .4, .6, .8],
+					'ratio_grid': [.1, .3, .5],
 					'perturb_grid': [.01, .1, 1.],
 					'min_inf': 100,
+					'metric': 'min',
 					'verbose': 1}
 
-	shiing = funs.DeepT(inf_cov=[range(0, K0), range(int(K0/2)+1, int(K0/2)+K0+1), range(int(p/2), int(p/2)+K0), range(p-K0, p)], model=model, model_mask=model_mask)
+	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
+	shiing = funs.DeepT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
 	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
 	P_value.append(p_value_tmp)

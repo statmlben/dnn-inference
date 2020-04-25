@@ -24,9 +24,9 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0, K0 = 100, 3, 64, 5
-tau, x_max, pho = 2., .4, 0.25
+tau, x_max, pho = 2., .2, 0.25
 verbose = 0
-N = 2000
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -34,7 +34,7 @@ print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 P_value, SE_list = [], []
 
-for i in range(10):
+for i in range(1):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
@@ -75,7 +75,7 @@ for i in range(10):
 	# 				'min_inf': 100,
 	# 				'verbose': 1}
 
-	shiing = funs.PermT(inf_cov=[range(0, K0), range(int(K0/2)+1, int(K0/2)+K0+1), range(int(p/2), int(p/2)+K0), range(p-K0, p)], 
+	shiing = funs.PermT(inf_cov=[range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)], 
 						model=model, model_perm=model_perm)
 	
 	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params)
