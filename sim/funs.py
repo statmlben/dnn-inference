@@ -157,14 +157,18 @@ class DeepT(object):
 			Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.1, split='one-sample', num_perm=100, perturb_grid=[.01, .1, 1.], ratio_grid=[.1, .2, .3, .4], min_inf=50, metric='fuse', verbose=0):
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='one-sample', num_perm=100, perturb_grid=[.01, .1, 1.], ratio_grid=[.1, .2, .3, .4], min_inf=0, min_est=0, metric='fuse', verbose=0):
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
 		if split == 'two-sample':
 			for ratio_tmp in reversed(ratio_grid):
 				self.reset_model()
 				m_tmp = int(len(X)*ratio_tmp)
+				if m_tmp < min_inf:
+					continue
 				n_tmp = len(X) - 2*m_tmp
+				if n_tmp < min_est:
+					continue
 				# split data
 				X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=42)
 				# permutate training sample
@@ -212,19 +216,22 @@ class DeepT(object):
 				
 				if Err1 <= self.alpha:
 					found = 1
-					m_opt = m_tmp
+					if metric == 'fuse':
+						m_opt = m_tmp
+						n_opt = len(X) - 2*m_opt
+						break
+
+			if found == 1:
+				if metric == 'close':
+					Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
+					Err1_lst, ratio_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha]
+					m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 					n_opt = len(X) - 2*m_opt
-					break
 
 			if found==0:
 				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
 				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
-				n_opt = len(X) - 2*m_opt
-
-			if m_opt < min_inf:
-				warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
-				m_opt = min_inf
 				n_opt = len(X) - 2*m_opt
 			
 			return n_opt, m_opt
@@ -236,11 +243,15 @@ class DeepT(object):
 				## stop if current perturb is enough to control the type 1 error
 				if found == 1:
 					break
-				Err1_lst, ratio_lst = [], []
+				Err1_lst, ratio_lst, perturb_lst = [], [], []
 				for ratio_tmp in reversed(ratio_grid):
 					self.reset_model()
 					m_tmp = int(len(X)*ratio_tmp)
+					if m_tmp < min_inf:
+						continue
 					n_tmp = len(X) - m_tmp
+					if n_tmp < min_est:
+						continue
 					# split data
 					X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=42)
 					# permutate training sample
@@ -255,7 +266,6 @@ class DeepT(object):
 					history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
 					
 					## evaluate the performance
-					P_value = []
 					if self.change == 'mask':
 						Z_test = self.mask_cov(X_test, k)
 					if self.change == 'perm':
@@ -263,6 +273,7 @@ class DeepT(object):
 					pred_y = self.model.predict(X_test).flatten()
 					pred_y_mask = self.model_mask.predict(Z_test).flatten()
 					# print(len(pred_y), len(pred_y_mask))
+					P_value = []
 					for j in range(num_perm):
 						# permutate testing sample
 						y_test_perm = np.random.permutation(y_test)
@@ -280,7 +291,8 @@ class DeepT(object):
 					Err1 = len(P_value[P_value<self.alpha])/len(P_value)
 					Err1_lst.append(Err1)
 					ratio_lst.append(ratio_tmp)
-					
+					perturb_lst.append(perturb_tmp)
+				
 					if verbose==1:
 						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %.3f' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
 					
@@ -300,25 +312,19 @@ class DeepT(object):
 						perturb_opt = perturb_tmp
 						
 					if metric == 'close':
-						Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
-						Err1_lst, ratio_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst<= self.alpha]
+						Err1_lst, ratio_lst, perturb_lst = np.array(Err1_lst), np.array(ratio_lst), np.array(perturb_lst)
+						Err1_lst, ratio_lst, perturb_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha], perturb_lst[Err1_lst <= self.alpha]
 						Err1_lst = self.alpha - Err1_lst
 						m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 						n_opt = len(X) - m_opt
-						perturb_opt = perturb_tmp
+						perturb_opt = perturb_lst[np.argmin(Err1_lst)]
 
 			if found==0:
 				warnings.warn("No ratio and perturb_level can control the Type 1 error, pls increase the perturb_level and sample size, and inference sample ratio is set as the min of ratio_grid.")
 				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - m_opt
-				perturb_opt = perturb_tmp
-		
-			if m_opt < min_inf:
-				warnings.warn("The estimated inference sample is too small, pls increase the sample size, and inference sample is set as 100")
-				m_opt = min_inf
-				n_opt = len(X) - m_opt
-				perturb_opt = perturb_tmp
+				perturb_opt = perturb_lst[np.argmin(Err1_lst)]
 		
 			return n_opt, m_opt, perturb_opt
 
@@ -328,7 +334,7 @@ class DeepT(object):
 			if split_params['split'] == 'one-sample':
 				if (pred_size == None) or (inf_size == None):
 					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
-					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
+					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %.3f' %(k, n, m, perturb_level))
 				else:
 					n, m, perturb_level = pred_size, inf_size, split_params['perturb']
 			

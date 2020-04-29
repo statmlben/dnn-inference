@@ -71,14 +71,15 @@ for i in range(100):
 
 	split_params = {'split': 'one-sample',
 					'perturb': None,
-					'num_perm': 500,
-					'ratio_grid': [.2, .3, .4, .5, .6, .8],
-					'perturb_grid': [.001, .01, .1, 1.],
+					'num_perm': 1000,
+					'ratio_grid': [.4, .5, .6, .7, .8],
+					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
+					'min_est': 1000,
 					'metric': 'min',
 					'verbose': 1}
 
-	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
+	inf_cov = [range(0, int(K0/2)), range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
 	shiing = funs.DeepT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
 	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
@@ -88,34 +89,9 @@ for i in range(100):
 P_value=np.array(P_value)
 SE_list=np.array(SE_list)
 print('MSE: %.3f(%.3f)' %(SE_list.mean(), SE_list.std()))
-print('Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] < .05])/len(P_value)))
+print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= .05])/len(P_value)))
+print('CASE 1: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,1] <= .05])/len(P_value)))
 
-for i in [1, 2, 3]:
-	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] < .05])/len(P_value)))
-
-# 'min': [.3, .5, .7]
-# Type 1 error: 0.050
-# CASE 1: Power: 0.280
-# CASE 2: Power: 0.900
-# CASE 3: Power: 0.900
-
-# 'close': [.3, .5, .7]
-# Type 1 error: 0.020
-# CASE 1: Power: 0.220
-# CASE 2: Power: 0.890
-# CASE 3: Power: 0.920
-
-# 'close': [.2, .4, .6, .8]
-# MSE: 1.081(0.053)
-# Type 1 error: 0.070
-# CASE 1: Power: 0.300
-# CASE 2: Power: 0.840
-# CASE 3: Power: 0.810
-
-# 'min': [.2, .4, .6, .8]
-# MSE: 1.081(0.053)
-# Type 1 error: 0.120
-# CASE 1: Power: 0.360
-# CASE 2: Power: 0.830
-# CASE 3: Power: 0.910
+for i in [2, 3, 4]:
+	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= .05])/len(P_value)))
 
