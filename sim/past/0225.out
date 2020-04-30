@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "ratio.py", line 4, in <module>
-    import funs
-ModuleNotFoundError: No module named 'funs'
