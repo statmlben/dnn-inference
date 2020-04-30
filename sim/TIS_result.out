@@ -1,0 +1,22 @@
+p, L0, d0, K0 = 100, 3, 128, 5
+tau, x_max, pho = 2., .4, 0.25
+N = 2000
+
+'fuse'
+CASE 0: Type 1 error: 0.046
+CASE 1: Power: 0.123
+CASE 2: Power: 0.428
+CASE 3: Power: 0.392
+
+'close':
+CASE 0: Type 1 error: 0.061
+CASE 1: Power: 0.109
+CASE 2: Power: 0.409
+CASE 3: Power: 0.400
+
+
+p, L0, d0, K0 = 100, 3, 128, 5
+tau, x_max, pho = 2., .4, 0.25
+N = 6000
+
+'fuse'
