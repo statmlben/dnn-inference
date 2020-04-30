@@ -15,6 +15,7 @@ from keras.optimizers import Adam, SGD
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+import time
 
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
@@ -27,7 +28,7 @@ n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 # specify model
-P_value, SE_list = [], []
+P_value, SE_list, time_lst = [], [], []
 
 for i in range(1000):
 	K.clear_session()
@@ -53,7 +54,7 @@ for i in range(1000):
 	# import matplotlib.pyplot as plt
 	# plt.hist(Y, bins=50)
 	# plt.show()
-
+	tic = time.perf_counter()
 	## Define the full model
 	d, L = d0, L0
 	model = Reg_model(p=p, d=d, L=L)
@@ -82,12 +83,17 @@ for i in range(1000):
 	shiing = funs.DeepT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
 	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
+	toc = time.perf_counter()
 	P_value.append(p_value_tmp)
 	SE_list.append(SE_tmp)
+	time_lst.append(toc - tic)
 
-P_value=np.array(P_value)
-SE_list=np.array(SE_list)
+P_value = np.array(P_value)
+SE_list = np.array(SE_list)
+time_lst = np.array(time_lst)
+
 print('MSE: %.3f(%.3f)' %(SE_list.mean(), SE_list.std()))
+print('Time: %.3f(%.3f)' %(time_lst.mean(), time_lst.std()))
 print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= .05])/len(P_value)))
 # print('CASE 1: Type 1 error: %.3f' %(len(P_value[:,1][P_value[:,1] <= .05])/len(P_value)))
 
