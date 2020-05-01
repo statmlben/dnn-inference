@@ -280,7 +280,10 @@ class DeepT(object):
 						# evaluation
 						SE_tmp = (y_test_perm - pred_y)**2
 						SE_mask_tmp = (y_test_perm - pred_y_mask)**2
-						diff_tmp = SE_tmp - SE_mask_tmp + perturb_tmp*np.random.randn(len(SE_tmp))
+						if perturb_tmp == 'auto':
+							diff_tmp = SE_tmp - SE_mask_tmp + SE_tmp.std()*np.random.randn(len(SE_tmp))
+						else:
+							diff_tmp = SE_tmp - SE_mask_tmp + perturb_tmp*np.random.randn(len(SE_tmp))
 						Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 						p_value_tmp = norm.cdf(Lambda_tmp)
 						P_value.append(p_value_tmp)
@@ -294,7 +297,7 @@ class DeepT(object):
 					perturb_lst.append(perturb_tmp)
 				
 					if verbose==1:
-						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %.3f' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
+						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
 					
 					if Err1 <= self.alpha:
 						found = 1
@@ -334,7 +337,7 @@ class DeepT(object):
 			if split_params['split'] == 'one-sample':
 				if (pred_size == None) or (inf_size == None):
 					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
-					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %.3f' %(k, n, m, perturb_level))
+					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
 				else:
 					n, m, perturb_level = pred_size, inf_size, split_params['perturb']
 			
@@ -370,7 +373,10 @@ class DeepT(object):
 			SE_mask = (pred_y_mask - y_inf_mask)**2
 			## compute p-value
 			if split_params['split'] == 'one-sample':
-				diff_tmp = SE - SE_mask + perturb_level * np.random.randn(len(SE))
+				if perturb_level == 'auto':
+					diff_tmp = SE - SE_mask + SE.std() * np.random.randn(len(SE))
+				else:
+					diff_tmp = SE - SE_mask + perturb_level * np.random.randn(len(SE))
 			if split_params['split'] == 'two-sample':
 				diff_tmp = SE - SE_mask
 			Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std()**2 )**(-1/2)*( diff_tmp.mean() )
