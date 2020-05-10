@@ -1,3 +1,5 @@
+## OS_ada.py
+
 import numpy as np
 import pandas as pd
 from numpy import linalg as LA
@@ -21,7 +23,7 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .4, 0.25
+tau, x_max, pho = 2., .4, 0.75
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
@@ -70,13 +72,13 @@ for i in range(100):
 				  'verbose': 0}
 
 	split_params = {'split': 'one-sample',
-					'perturb': None,
+					'perturb': 0.1,
 					'num_perm': 1000,
-					'ratio_grid': [.3, .4, .5, .6, .7],
+					'ratio_grid': [.3, .4, .5],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 1000,
-					'metric': 'fuse',
+					'metric': 'close',
 					'verbose': 1}
 
 	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
