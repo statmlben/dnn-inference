@@ -83,13 +83,13 @@ def group_norm(W, p=2, q=1):
 	return np.sum((np.sum(np.abs(W)**p, axis=1))**(q/p))**(1/q)
 
 class DeepT(object):
-	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0):
+	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse'):
 		self.inf_cov = inf_cov
 		self.model = model
 		self.model_mask = model_mask
 		self.alpha = alpha
 		self.change = change
-
+		self.eva_metric = eva_metric
 
 	# def reset_model(self):
 	# 	initial_weights = self.model.get_weights()
@@ -142,22 +142,25 @@ class DeepT(object):
 
 
 	## can be extent to @abstractmethod
-	def mask_cov(self, X, k=0, type_='vector'):
-		if type_ == 'vector':
-			Z = X.copy()
+	def mask_cov(self, X, k=0):
+		Z = X.copy()
+		if type(self.inf_cov[k]) is list:
+			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0] = 0.
+		else:
 			Z[:,self.inf_cov[k]]= 0.
 		return Z
 
-	def perm_cov(self, X, k=0, type_='vector'):
-		if type_ == 'vector':
-			Z = X.copy()
+	def perm_cov(self, X, k=0):
+		Z = X.copy()
+		if type(self.inf_cov[k]) is list:
+			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0])
+		else:
 			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
 		return Z
 
-	def noise_cov(self, X, k=0, type_='vector'):
-		if type_ == 'vector':
-			Z = X.copy()
-			Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
+	def noise_cov(self, X, k=0):
+		Z = X.copy()
+		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='one-sample', num_perm=100, perturb_grid=[.01, .1, 1.], ratio_grid=[.1, .2, .3, .4], min_inf=0, min_est=0, metric='fuse', verbose=0):
@@ -191,26 +194,42 @@ class DeepT(object):
 					Z_test = self.mask_cov(X_test, k)
 				if self.change == 'perm':
 					Z_test = self.perm_cov(X_test, k)
-				pred_y = self.model.predict(X_test).flatten()
-				pred_y_mask = self.model_mask.predict(Z_test).flatten()
-				# print(len(pred_y), len(pred_y_mask))
+				
+				if self.eva_metric == 'mse':
+					pred_y = self.model.predict(X_test).flatten()
+					pred_y_mask = self.model_mask.predict(Z_test).flatten()
+				
+				if self.eva_metric == 'zero-one':
+					pred_y = self.model.predict(X_test)
+					pred_y_mask = self.model_mask.predict(Z_test)
+					pred_label = np.argmax(pred_y, 1)
+					pred_label_mask = np.argmax(pred_y_mask, 1)
+					label_test = np.argmax(y_test, 1)
+				
 				for j in range(num_perm):
+					metric_tmp, metric_mask_tmp = 0., 0.
 					# permutate testing sample
-					y_test_perm = np.random.permutation(y_test)
+					if self.eva_metric == 'mse':
+						y_test_perm = np.random.permutation(y_test)
+					if self.eva_metric == 'zero-one':
+						label_test_perm = np.random.permutation(label_test)
 					# split two sample
-					ind_inf, ind_inf_mask = train_test_split(range(len(y_test_perm)), train_size=m_tmp, random_state=42)
+					ind_inf, ind_inf_mask = train_test_split(range(len(y_test)), train_size=m_tmp, random_state=42)
 					# evaluation
-					SE_tmp = (y_test_perm[ind_inf] - pred_y[ind_inf])**2
-					SE_mask_tmp = (y_test_perm[ind_inf_mask] - pred_y_mask[ind_inf_mask])**2
-
-					diff_tmp = SE_tmp - SE_mask_tmp
+					if self.eva_metric == 'mse':
+						metric_tmp = (y_test_perm[ind_inf] - pred_y[ind_inf])**2
+						metric_mask_tmp = (y_test_perm[ind_inf_mask] - pred_y_mask[ind_inf_mask])**2
+					if self.eva_metric == 'zero-one':
+						metric_tmp = label_test_perm[ind_inf] * pred_label[ind_inf]
+						metric_mask_tmp = label_test_perm[ind_inf_mask] * pred_label[ind_inf_mask]
+					diff_tmp = metric_tmp - metric_mask_tmp
 					Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 					p_value_tmp = norm.cdf(Lambda_tmp)
 					P_value.append(p_value_tmp)
 				
 				P_value = np.array(P_value)
 				## compute the type 1 error
-				Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+				Err1 = len(P_value[P_value < self.alpha]) / len(P_value)
 				Err1_lst.append(Err1)
 				ratio_lst.append(ratio_tmp)
 				
@@ -273,20 +292,34 @@ class DeepT(object):
 						Z_test = self.mask_cov(X_test, k)
 					if self.change == 'perm':
 						Z_test = self.perm_cov(X_test, k)
-					pred_y = self.model.predict(X_test).flatten()
-					pred_y_mask = self.model_mask.predict(Z_test).flatten()
-					# print(len(pred_y), len(pred_y_mask))
+
+					if self.eva_metric == 'mse':
+						pred_y = self.model.predict(X_test).flatten()
+						pred_y_mask = self.model_mask.predict(Z_test).flatten()
+					if self.eva_metric == 'zero-one':
+						pred_y = self.model.predict(X_test)
+						pred_y_mask = self.model.predict(Z_test)
+						label_test = np.argmax(y_test, 1)
+						pred_label = np.argmax(pred_y, 1)
+						pred_label_mask = np.argmax(pred_y_mask, 1)
+
 					P_value = []
 					for j in range(num_perm):
 						# permutate testing sample
-						y_test_perm = np.random.permutation(y_test)
+						if self.eva_metric == 'mse':
+							y_test_perm = np.random.permutation(y_test)
+						if self.eva_metric == 'zero-one':
+							label_test_perm = np.random.permutation(label_test)
 						# evaluation
-						SE_tmp = (y_test_perm - pred_y)**2
-						SE_mask_tmp = (y_test_perm - pred_y_mask)**2
+						if self.eva_metric == 'zero-one':
+							metric_tmp = label_test_perm * pred_label
+							metric_mask_tmp = label_test_perm * pred_label_mask
+							
 						if perturb_tmp == 'auto':
-							diff_tmp = SE_tmp - SE_mask_tmp + SE_tmp.std()*np.random.randn(len(SE_tmp))
+							diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))
 						else:
-							diff_tmp = SE_tmp - SE_mask_tmp + perturb_tmp*np.random.randn(len(SE_tmp))
+							diff_tmp = metric_tmp - metric_mask_tmp + perturb_tmp*np.random.randn(len(metric_tmp))
+						
 						Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 						p_value_tmp = norm.cdf(Lambda_tmp)
 						P_value.append(p_value_tmp)
@@ -359,8 +392,15 @@ class DeepT(object):
 				X_inf, X_inf_mask, y_inf, y_inf_mask = X_test.copy(), X_test.copy(), y_test.copy(), y_test.copy()
 			## prediction and inference in full model
 			history = self.model.fit(X_train, y_train, **fit_params)
-			pred_y = self.model.predict(X_inf).flatten()
-			SE = (pred_y - y_inf)**2
+			if self.eva_metric == 'mse':
+				pred_y = self.model.predict(X_inf).flatten()
+				eva_metric = (pred_y - y_inf)**2
+			if self.eva_metric == 'zero-one':
+				inf_label = np.argmax(y_inf, 1)
+				pred_y = self.model.predict(X_inf)
+				pred_label = np.argmax(pred_y, 1)
+				eva_metric = pred_label * inf_label
+
 			# prediction and inference in mask model
 			if self.change == 'mask':
 				Z_train = self.mask_cov(X_train, k)
@@ -372,18 +412,29 @@ class DeepT(object):
 				Z_inf = self.mask_cov(X_inf_mask, k)
 			if self.change == 'perm':
 				Z_inf = self.perm_cov(X_inf_mask, k)
-			pred_y_mask = self.model_mask.predict(Z_inf).flatten()
-			SE_mask = (pred_y_mask - y_inf_mask)**2
+			
+			if self.eva_metric == 'mse':
+				pred_y_mask = self.model_mask.predict(Z_inf).flatten()
+				eva_metric_mask = (pred_y_mask - y_inf_mask)**2
+
+			if self.eva_metric == 'zero-one':
+				inf_label_mask = np.argmax(y_inf_mask, 1)
+				pred_y_mask = self.model_mask.predict(Z_inf)
+				pred_y_label = np.argmax(pred_y_mask, 1)
+				eva_metric_mask = pred_y_label * inf_label_mask
+
 			## compute p-value
 			if split_params['split'] == 'one-sample':
 				if perturb_level == 'auto':
-					diff_tmp = SE - SE_mask + SE.std() * np.random.randn(len(SE))
+					diff_tmp = eva_metric - eva_metric_mask + eva_metric.std() * np.random.randn(len(eva_metric))
 				else:
-					diff_tmp = SE - SE_mask + perturb_level * np.random.randn(len(SE))
+					diff_tmp = eva_metric - eva_metric_mask + perturb_level * np.random.randn(len(eva_metric))
+			
 			if split_params['split'] == 'two-sample':
-				diff_tmp = SE - SE_mask
+				diff_tmp = eva_metric - eva_metric_mask
+			
 			Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std()**2 )**(-1/2)*( diff_tmp.mean() )
-			print('diff: %.3f(%.3f); SE: %.3f(%.3f); SE_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), SE.mean(), SE.std(), SE_mask.mean(), SE_mask.std()))
+			print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), eva_metric.mean(), eva_metric.std(), eva_metric_mask.mean(), eva_metric_mask.std()))
 			p_value_tmp = norm.cdf(Lambda)
 
 			if p_value_tmp < self.alpha:
@@ -392,17 +443,18 @@ class DeepT(object):
 				print('accept H0 with p_value: %.3f' %p_value_tmp)
 
 			P_value.append(p_value_tmp)
-		return P_value, SE.mean()
+		return P_value, eva_metric.mean()
 
 
 class PermT(object):
-	def __init__(self, inf_cov, model, model_perm, alpha=.05, num_folds=5, verbose=0):
+	def __init__(self, inf_cov, model, model_perm, alpha=.05, num_folds=5, verbose=0, eva_metric='mse'):
 		self.inf_cov = inf_cov
 		self.model = model
 		self.model_perm = model_perm
 		self.alpha = alpha
 		self.num_perm = 100
 		self.num_folds = num_folds
+		self.eva_metric = eva_metric
 
 	def reset_model(self):
 		if int(tf.__version__[0]) == 2:
@@ -454,22 +506,25 @@ class PermT(object):
 
 
 	## can be extent to @abstractmethod
-	def mask_cov(self, X, k=0, type_='vector'):
-		if type_ == 'vector':
-			Z = X.copy()
+	def mask_cov(self, X, k=0):
+		Z = X.copy()
+		if type(self.inf_cov[k]) is list:
+			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0] = 0.
+		else:
 			Z[:,self.inf_cov[k]]= 0.
 		return Z
 
-	def perm_cov(self, X, k=0, type_='vector'):
-		if type_ == 'vector':
-			Z = X.copy()
+	def perm_cov(self, X, k=0):
+		Z = X.copy()
+		if type(self.inf_cov[k]) is list:
+			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0])
+		else:
 			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
 		return Z
 
-	def noise_cov(self, X, k=0, type_='vector'):
-		if type_ == 'vector':
-			Z = X.copy()
-			Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
+	def noise_cov(self, X, k=0):
+		Z = X.copy()
+		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
 	def testing(self, X, y, fit_params={}):
@@ -483,9 +538,16 @@ class PermT(object):
 			for train, test in kfold.split(X, y):
 				self.reset_model()
 				history = self.model.fit(X[train], y[train], **fit_params)
-				pred_y = self.model.predict(X[test]).flatten()
-				SE = (pred_y - y[test])**2
-				score_cv.append(SE.mean())
+				if self.eva_metric == 'mse':
+					pred_y = self.model.predict(X[test]).flatten()
+					metric = (pred_y - y[test])**2
+					score_cv.append(metric.mean())
+				if self.eva_metric == 'zero-one':
+					pred_y = self.model.predict(X[test])
+					pred_label = np.argmax(pred_y,1)
+					label = np.argmax(y, 1)
+					metric = pred_label * label[test]
+					score_cv.append(metric.mean())
 			score = np.mean(score_cv)
 			# prediction and inference in mask model
 			score_perm = []
@@ -495,9 +557,15 @@ class PermT(object):
 				for train_perm, test_perm in kfold.split(Z, y):
 					self.reset_model()
 					history_perm = self.model_perm.fit(Z[train_perm], y[train_perm], **fit_params)
-					pred_y_perm = self.model_perm.predict(Z[test_perm]).flatten()
-					SE_perm = (pred_y_perm - y[test_perm])**2
-					score_perm_cv.append(SE_perm.mean())
+					if self.eva_metric == 'mse':
+						pred_y_perm = self.model_perm.predict(Z[test_perm]).flatten()
+						metric_perm = (pred_y_perm - y[test_perm])**2
+						score_perm_cv.append(SE_perm.mean())
+					if self.eva_metric == 'zero-one':
+						pred_y_perm = self.model_perm.predict(Z[test_perm])
+						pred_label_perm = np.argmax(pred_y_perm, 1)
+						metric_perm = pred_label_perm * label[test_perm]
+						score_perm_cv.append(metric_perm.mean())
 				score_perm.append(np.mean(score_perm_cv))
 			score_perm = np.array(score_perm)
 			## compute p-value
@@ -510,4 +578,4 @@ class PermT(object):
 				print('accept H0 with p_value: %.3f' %p_value_tmp)
 
 			P_value.append(p_value_tmp)
-		return P_value, SE.mean()
+		return P_value, metric.mean()
