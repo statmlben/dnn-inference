@@ -81,7 +81,8 @@ split_params = {'split': 'one-sample',
 				'metric': 'close',
 				'verbose': 1}
 
-inf_cov = [[np.arange(19,28), np.arange(13, 20)]]
+inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],
+		   [np.arange(7,16), np.arange(9,16)]]
 shiing = funs.DeepT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
 p_value_tmp, metric_tmp = shiing.testing(x, y, fit_params=fit_params, split_params=split_params)
 toc = time.perf_counter()
