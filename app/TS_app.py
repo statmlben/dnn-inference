@@ -67,16 +67,16 @@ fit_params = {'callbacks': [es],
 			  'epochs': 100,
 			  'batch_size': 32,
 			  'validation_split': .2,
-			  'verbose': 1}
+			  'verbose': 0}
 
-split_params = {'split': 'one-sample',
+split_params = {'split': 'two-sample',
 				'perturb': None,
 				'num_perm': 1000,
-				'ratio_grid': [.3, .4, .5],
+				'ratio_grid': [.2, .3, .4],
 				'perturb_grid': [.05, .1, .5, 1.],
 				'min_inf': 100,
 				'min_est': 1000,
-				'metric': 'close',
+				'metric': 'fuse',
 				'verbose': 1}
 
 inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],

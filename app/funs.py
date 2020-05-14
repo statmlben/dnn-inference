@@ -109,7 +109,6 @@ class DeepT(object):
 				if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
 					reset_weights(layer) #apply function recursively
 					continue
-
 				#where are the initializers?
 				if hasattr(layer, 'cell'):
 					init_container = layer.cell
@@ -119,7 +118,30 @@ class DeepT(object):
 				for key, initializer in init_container.__dict__.items():
 					if "initializer" not in key: #is this item an initializer?
 					  continue #if no, skip it
+					# find the corresponding variable, like the kernel or the bias
+					if key == 'recurrent_initializer': #special case check
+						var = getattr(init_container, 'recurrent_kernel')
+					else:
+						var = getattr(init_container, key.replace("_initializer", ""))
+					
+					if var is None:
+						continue
+					else:
+						var.assign(initializer(var.shape, var.dtype))
 
+			for layer in self.model_mask.layers:
+				if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
+					reset_weights(layer) #apply function recursively
+					continue
+				#where are the initializers?
+				if hasattr(layer, 'cell'):
+					init_container = layer.cell
+				else:
+					init_container = layer
+
+				for key, initializer in init_container.__dict__.items():
+					if "initializer" not in key: #is this item an initializer?
+					  continue #if no, skip it
 					# find the corresponding variable, like the kernel or the bias
 					if key == 'recurrent_initializer': #special case check
 						var = getattr(init_container, 'recurrent_kernel')
@@ -136,9 +158,13 @@ class DeepT(object):
 			for layer in self.model.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
+				if hasattr(layer, 'bias_initializer'):
+					layer.bias.initializer.run(session=session)     
 			for layer in self.model_mask.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
+				if hasattr(layer, 'bias_initializer'):
+					layer.bias.initializer.run(session=session)  
 
 
 	## can be extent to @abstractmethod
@@ -181,6 +207,7 @@ class DeepT(object):
 				y_train_perm = np.random.permutation(y_train)
 				# training for full model
 				history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
+				
 				# training for mask model
 				if self.change == 'mask':
 					Z_train = self.mask_cov(X_train, k)
@@ -207,7 +234,6 @@ class DeepT(object):
 					label_test = np.argmax(y_test, 1)
 				
 				for j in range(num_perm):
-					metric_tmp, metric_mask_tmp = 0., 0.
 					# permutate testing sample
 					if self.eva_metric == 'mse':
 						y_test_perm = np.random.permutation(y_test)
@@ -220,8 +246,8 @@ class DeepT(object):
 						metric_tmp = (y_test_perm[ind_inf] - pred_y[ind_inf])**2
 						metric_mask_tmp = (y_test_perm[ind_inf_mask] - pred_y_mask[ind_inf_mask])**2
 					if self.eva_metric == 'zero-one':
-						metric_tmp = label_test_perm[ind_inf] * pred_label[ind_inf]
-						metric_mask_tmp = label_test_perm[ind_inf_mask] * pred_label[ind_inf_mask]
+						metric_tmp = 1. - 1.*(label_test_perm[ind_inf] == pred_label[ind_inf])
+						metric_mask_tmp = 1. - 1.*(label_test_perm[ind_inf_mask] == pred_label[ind_inf_mask])
 					diff_tmp = metric_tmp - metric_mask_tmp
 					Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 					p_value_tmp = norm.cdf(Lambda_tmp)
@@ -312,8 +338,8 @@ class DeepT(object):
 							label_test_perm = np.random.permutation(label_test)
 						# evaluation
 						if self.eva_metric == 'zero-one':
-							metric_tmp = label_test_perm * pred_label
-							metric_mask_tmp = label_test_perm * pred_label_mask
+							metric_tmp = 1. - 1.*(label_test_perm == pred_label)
+							metric_mask_tmp = 1. - 1.*(label_test_perm == pred_label_mask)
 							
 						if perturb_tmp == 'auto':
 							diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))
@@ -370,6 +396,7 @@ class DeepT(object):
 	def testing(self, X, y, fit_params, split_params, pred_size=None, inf_size=None):
 		P_value = []
 		for k in range(len(self.inf_cov)):
+			self.reset_model()
 			if split_params['split'] == 'one-sample':
 				if (pred_size == None) or (inf_size == None):
 					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
@@ -384,28 +411,30 @@ class DeepT(object):
 				else:
 					n, m = pred_size, inf_size
 
-			self.reset_model()
 			X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=42)
 			if split_params['split'] == 'two-sample':
 				X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test, train_size=m, random_state=42)
 			if split_params['split'] == 'one-sample':
 				X_inf, X_inf_mask, y_inf, y_inf_mask = X_test.copy(), X_test.copy(), y_test.copy(), y_test.copy()
 			## prediction and inference in full model
+			self.reset_model()
 			history = self.model.fit(X_train, y_train, **fit_params)
 			if self.eva_metric == 'mse':
 				pred_y = self.model.predict(X_inf).flatten()
-				eva_metric = (pred_y - y_inf)**2
+				metric_full = (pred_y - y_inf)**2
 			if self.eva_metric == 'zero-one':
 				inf_label = np.argmax(y_inf, 1)
 				pred_y = self.model.predict(X_inf)
 				pred_label = np.argmax(pred_y, 1)
-				eva_metric = pred_label * inf_label
+				metric_full = 1. - 1.*(pred_label == inf_label)
 
 			# prediction and inference in mask model
 			if self.change == 'mask':
 				Z_train = self.mask_cov(X_train, k)
 			if self.change == 'perm':
 				Z_train = self.perm_cov(X_train, k)
+			
+			self.reset_model()
 			history_mask = self.model_mask.fit(Z_train, y_train, **fit_params)
 			
 			if self.change == 'mask':
@@ -421,20 +450,20 @@ class DeepT(object):
 				inf_label_mask = np.argmax(y_inf_mask, 1)
 				pred_y_mask = self.model_mask.predict(Z_inf)
 				pred_y_label = np.argmax(pred_y_mask, 1)
-				eva_metric_mask = pred_y_label * inf_label_mask
+				metric_mask = 1. - 1.*(pred_y_label == inf_label_mask)
 
 			## compute p-value
 			if split_params['split'] == 'one-sample':
 				if perturb_level == 'auto':
-					diff_tmp = eva_metric - eva_metric_mask + eva_metric.std() * np.random.randn(len(eva_metric))
+					diff_tmp = metric_full - metric_mask + metric_full.std() * np.random.randn(len(metric_full))
 				else:
-					diff_tmp = eva_metric - eva_metric_mask + perturb_level * np.random.randn(len(eva_metric))
+					diff_tmp = metric_full - metric_mask + perturb_level * np.random.randn(len(metric_full))
 			
 			if split_params['split'] == 'two-sample':
-				diff_tmp = eva_metric - eva_metric_mask
+				diff_tmp = metric_full - metric_mask
 			
-			Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std()**2 )**(-1/2)*( diff_tmp.mean() )
-			print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), eva_metric.mean(), eva_metric.std(), eva_metric_mask.mean(), eva_metric_mask.std()))
+			Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
+			print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
 			p_value_tmp = norm.cdf(Lambda)
 
 			if p_value_tmp < self.alpha:
@@ -443,7 +472,7 @@ class DeepT(object):
 				print('accept H0 with p_value: %.3f' %p_value_tmp)
 
 			P_value.append(p_value_tmp)
-		return P_value, eva_metric.mean()
+		return P_value, metric_full.mean()
 
 
 class PermT(object):
@@ -540,14 +569,14 @@ class PermT(object):
 				history = self.model.fit(X[train], y[train], **fit_params)
 				if self.eva_metric == 'mse':
 					pred_y = self.model.predict(X[test]).flatten()
-					metric = (pred_y - y[test])**2
-					score_cv.append(metric.mean())
+					metric_full = (pred_y - y[test])**2
+					score_cv.append(metric_full.mean())
 				if self.eva_metric == 'zero-one':
 					pred_y = self.model.predict(X[test])
 					pred_label = np.argmax(pred_y,1)
 					label = np.argmax(y, 1)
-					metric = pred_label * label[test]
-					score_cv.append(metric.mean())
+					metric_full = 1. - 1.*(pred_label == label[test])
+					score_cv.append(metric_full.mean())
 			score = np.mean(score_cv)
 			# prediction and inference in mask model
 			score_perm = []
@@ -560,11 +589,11 @@ class PermT(object):
 					if self.eva_metric == 'mse':
 						pred_y_perm = self.model_perm.predict(Z[test_perm]).flatten()
 						metric_perm = (pred_y_perm - y[test_perm])**2
-						score_perm_cv.append(SE_perm.mean())
+						score_perm_cv.append(metric_perm.mean())
 					if self.eva_metric == 'zero-one':
 						pred_y_perm = self.model_perm.predict(Z[test_perm])
 						pred_label_perm = np.argmax(pred_y_perm, 1)
-						metric_perm = pred_label_perm * label[test_perm]
+						metric_perm = pred_label_perm == label[test_perm]
 						score_perm_cv.append(metric_perm.mean())
 				score_perm.append(np.mean(score_perm_cv))
 			score_perm = np.array(score_perm)
@@ -578,4 +607,4 @@ class PermT(object):
 				print('accept H0 with p_value: %.3f' %p_value_tmp)
 
 			P_value.append(p_value_tmp)
-		return P_value, metric.mean()
+		return P_value, metric_full.mean()
