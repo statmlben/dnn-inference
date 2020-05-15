@@ -476,12 +476,12 @@ class DeepT(object):
 
 
 class PermT(object):
-	def __init__(self, inf_cov, model, model_perm, alpha=.05, num_folds=5, verbose=0, eva_metric='mse'):
+	def __init__(self, inf_cov, model, model_perm, alpha=.05, num_folds=5, num_perm=100, verbose=0, eva_metric='mse'):
 		self.inf_cov = inf_cov
 		self.model = model
 		self.model_perm = model_perm
 		self.alpha = alpha
-		self.num_perm = 100
+		self.num_perm = num_perm
 		self.num_folds = num_folds
 		self.eva_metric = eva_metric
 
@@ -529,10 +529,13 @@ class PermT(object):
 			for layer in self.model.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
+				if hasattr(layer, 'bias_initializer'):
+					layer.bias.initializer.run(session=session)     
 			for layer in self.model_perm.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
-
+				if hasattr(layer, 'bias_initializer'):
+					layer.bias.initializer.run(session=session)  
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0):
@@ -593,7 +596,7 @@ class PermT(object):
 					if self.eva_metric == 'zero-one':
 						pred_y_perm = self.model_perm.predict(Z[test_perm])
 						pred_label_perm = np.argmax(pred_y_perm, 1)
-						metric_perm = pred_label_perm == label[test_perm]
+						metric_perm = 1. - 1.*(pred_label_perm == label[test_perm])
 						score_perm_cv.append(metric_perm.mean())
 				score_perm.append(np.mean(score_perm_cv))
 			score_perm = np.array(score_perm)

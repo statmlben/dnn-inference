@@ -56,7 +56,7 @@ def cnn():
 	model.add(Dense(128, activation='relu'))
 	model.add(Dropout(0.5))
 	model.add(Dense(num_classes, activation='softmax'))
-	model.compile(loss=keras.losses.binary_crossentropy, optimizer=keras.optimizers.Adadelta(0.0005), metrics=['accuracy'])
+	model.compile(loss=keras.losses.binary_crossentropy, optimizer=keras.optimizers.Adam(0.005), metrics=['accuracy'])
 	return model
 
 tic = time.perf_counter()
@@ -83,7 +83,7 @@ fit_params = {'callbacks': [es],
 
 inf_cov = [[np.arange(19,28), np.arange(13, 20)], [np.arange(21,28), np.arange(4, 13)],
 		   [np.arange(7,16), np.arange(9, 16)]]
-shiing = funs.PermT(inf_cov=inf_cov, model=model, model_perm=model_perm, eva_metric='zero-one')
+shiing = funs.PermT(inf_cov=inf_cov, model=model, model_perm=model_perm, num_perm=100, eva_metric='zero-one')
 p_value_tmp, metric_tmp = shiing.testing(x, y, fit_params=fit_params)
 toc = time.perf_counter()
 print('testing time: %.3f' %(toc-tic))
