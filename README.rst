@@ -7,7 +7,7 @@
 
 .. |Python3| image:: https://img.shields.io/badge/python-3-green.svg
 
-.. |tensorflow| image:: https://img.shields.io/badge/keras-tensorflow-green.svg
+.. |tensorflow| image:: https://img.shields.io/badge/keras-tensorflow-blue.svg
 .. _tensorflow: https://www.tensorflow.org/
 
 Deep-Inference
