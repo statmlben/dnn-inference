@@ -26,10 +26,10 @@ Dependencies
 Deep-Inference requires:
 
 - Python
-- Keras
-- Tensorflow
-- Sklearn
-- SciPy
+- keras
+- tensorflow
+- sklearn
+- sciPy
 - Cython
 
 User installation
