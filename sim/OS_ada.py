@@ -11,7 +11,7 @@ import keras.backend as K
 # from keras.constraints import x_max_norm
 from sklearn.model_selection import train_test_split
 from keras.optimizers import Adam, SGD
-import seaborn as sns
+# import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 import time

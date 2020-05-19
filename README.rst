@@ -30,7 +30,6 @@ Deep-Inference requires:
 - tensorflow
 - sklearn
 - sciPy
-- Cython
 
 User installation
 ~~~~~~~~~~~~~~~~~
@@ -45,7 +44,7 @@ Source code
 
 You can check the latest sources with the command::
 
-    git clone 
+    git clone https://github.com/statmlben/deep-inference.git
 
 
 Documentation
