@@ -131,7 +131,7 @@ class DnnT(object):
 		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='one-sample', num_perm=100, perturb_grid=[.01, .1, 1.], ratio_grid=[.1, .2, .3, .4], min_inf=0, min_est=0, metric='fuse', verbose=0):
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='two-sample', num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .3, .4], min_inf=0, min_est=0, ratio_method='fuse', verbose=0):
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
 		if split == 'two-sample':
@@ -198,13 +198,13 @@ class DnnT(object):
 				
 				if Err1 <= self.alpha:
 					found = 1
-					if metric == 'fuse':
+					if ratio_method == 'fuse':
 						m_opt = m_tmp
 						n_opt = len(X) - 2*m_opt
 						break
 
 			if found == 1:
-				if metric == 'close':
+				if ratio_method == 'close':
 					Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 					Err1_lst, ratio_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha]
 					m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
@@ -286,20 +286,20 @@ class DnnT(object):
 					
 					if Err1 <= self.alpha:
 						found = 1
-						if metric == 'fuse':
+						if ratio_method == 'fuse':
 							m_opt = m_tmp
 							n_opt = len(X) - m_opt
 							perturb_opt = perturb_tmp
 							break
 				
 				if found == 1:
-					if metric == 'min':
+					if ratio_method == 'min':
 						Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 						m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 						n_opt = len(X) - m_opt
 						perturb_opt = perturb_tmp
 						
-					if metric == 'close':
+					if ratio_method == 'close':
 						Err1_lst, ratio_lst, perturb_lst = np.array(Err1_lst), np.array(ratio_lst), np.array(perturb_lst)
 						Err1_lst, ratio_lst, perturb_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha], perturb_lst[Err1_lst <= self.alpha]
 						Err1_lst = self.alpha - Err1_lst

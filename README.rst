@@ -91,15 +91,20 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 	- **split_params: {dict of splitting parameters}**
 		- **split: {'one-sample', 'two-sample'}**. 
 		- **perturb: float**
-		 perturb level for the one-sample test, if ``perturb = 'auto'``, then the perturb level is set as std of metric for full model.
+		 Perturb level for the one-sample test, if ``perturb = 'auto'``, then the perturb level is set as std of metric for full model.
 		- **num_perm: int**
-		 number of permutation for determine the splitting ratio.
-		- **ratio_grid: list of float (0,1)**
-		- **perturb_grid: list of float**
-		- **min_inf: int**
-		- **min_est: int**
-		- **metric: {fuse, close}**
-		- **verbose: {0,1}**
+		 Number of permutation for determine the splitting ratio.
+		- **ratio_grid: list of float (0,1), default=[.2, .3, .4]**
+		 A list of estimation/inference ratios under searching.
+		- **perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
+		 A list of perturb levels under searching. 
+		- **min_inf: int, default=0**
+		 The minimal size for inference sample.
+		- **min_est: int, default=0**
+		 The minimal size for estimation sample.
+		- **split_method: {'fuse', 'close'}, default='fuse'**
+		 The adaptive splitting method to determine the optimal estimation/inference ratios.
+		- **verbose: {0,1}, default=1**
 	- **est_size: int, default=None**
 	 A pre-specific estimation sample size, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
 	- **inf_size: int, default=None**
@@ -229,12 +234,14 @@ Example
 					'perturb_grid': [.05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 1000,
-					'metric': 'close',
+					'split_method': 'close',
 					'verbose': 1}
 
 	inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],
 			   [np.arange(7,16), np.arange(9,16)]]
+
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
+	
 	p_value_tmp, metric_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	print('testing time: %.3f' %(toc-tic))
