@@ -35,7 +35,7 @@ Deep-Inference requires:
 User installation
 ~~~~~~~~~~~~~~~~~
 
-Install Variant-SVMs using ``pip`` ::
+Install Deep-Inference using ``pip`` ::
 
 	pip install deep-inference
 	pip install git+https://github.com/statmlben/deep-inference.git
