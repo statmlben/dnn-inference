@@ -1,11 +1,8 @@
 ## OS_ada.py
 
 import numpy as np
-import pandas as pd
-from numpy import linalg as LA
 import funs
 from functools import partial
-import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.callbacks import EarlyStopping
