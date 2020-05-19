@@ -1,19 +1,13 @@
-from __future__ import print_function
+import numpy as np
 import keras
 from keras.datasets import mnist
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
 from tensorflow.python.keras import backend as K
-import numpy as np
 import time
-from numpy import linalg as LA
-import funs
 from sklearn.model_selection import train_test_split
 from keras.optimizers import Adam, SGD
-import seaborn as sns
-import matplotlib.pyplot as plt
-import time
+from DnnT import DnnT
 
 num_classes = 2
 
@@ -64,7 +58,7 @@ from keras.callbacks import EarlyStopping
 es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=20, restore_best_weights=True)
 
 fit_params = {'callbacks': [es],
-			  'epochs': 100,
+			  'epochs': 2,
 			  'batch_size': 32,
 			  'validation_split': .2,
 			  'verbose': 1}
@@ -81,8 +75,7 @@ split_params = {'split': 'one-sample',
 
 inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],
 		   [np.arange(7,16), np.arange(9,16)]]
-# inf_cov = [[np.arange(7,16), np.arange(9,16)]]
-shiing = funs.DeepT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
+shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
 p_value_tmp, metric_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
 toc = time.perf_counter()
 print('testing time: %.3f' %(toc-tic))

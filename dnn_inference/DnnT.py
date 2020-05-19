@@ -8,7 +8,7 @@ from keras.initializers import glorot_uniform
 import tensorflow as tf
 from sklearn.model_selection import KFold
 
-class DeepT(object):
+class DnnT(object):
 	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse'):
 		self.inf_cov = inf_cov
 		self.model = model
@@ -16,6 +16,22 @@ class DeepT(object):
 		self.alpha = alpha
 		self.change = change
 		self.eva_metric = eva_metric
+
+	def metric(self, y_true, y_pred):
+		if self.eva_metric == 'mse':
+			metric_tmp = ((y_true - y_pred)**2).flatten()
+		elif self.eva_metric == 'mae':
+			metric_tmp = abs(y_true - y_pred).flatten()
+		elif self.eva_metric == 'zero-one':
+			label_pred = np.argmax(y_pred, 1)
+			label_true = np.argmax(y_true, 1)
+			metric_tmp = 1. - 1.*(label_true == label_pred)
+		elif self.eva_metric == 'cross-entropy':
+			label_true = np.argmax(y_true, 1)
+			metric_tmp = np.log(y_pred[range(len(y_pred)),label_true])
+		else:
+			metric_tmp = self.eva_metric(y_true, y_pred)
+		return metric_tmp
 
 	# def reset_model(self):
 	# 	initial_weights = self.model.get_weights()
@@ -148,32 +164,24 @@ class DeepT(object):
 				if self.change == 'perm':
 					Z_test = self.perm_cov(X_test, k)
 				
-				if self.eva_metric == 'mse':
-					pred_y = self.model.predict(X_test).flatten()
-					pred_y_mask = self.model_mask.predict(Z_test).flatten()
+				pred_y = self.model.predict(X_test)
+				pred_y_mask = self.model_mask.predict(Z_test)
 				
-				if self.eva_metric == 'zero-one':
-					pred_y = self.model.predict(X_test)
-					pred_y_mask = self.model_mask.predict(Z_test)
-					pred_label = np.argmax(pred_y, 1)
-					pred_label_mask = np.argmax(pred_y_mask, 1)
-					label_test = np.argmax(y_test, 1)
+				# if self.eva_metric == 'zero-one':
+				# 	pred_y = self.model.predict(X_test)
+				# 	pred_y_mask = self.model_mask.predict(Z_test)
+				# 	pred_label = np.argmax(pred_y, 1)
+				# 	pred_label_mask = np.argmax(pred_y_mask, 1)
+				# 	label_test = np.argmax(y_test, 1)
 				
 				for j in range(num_perm):
 					# permutate testing sample
-					if self.eva_metric == 'mse':
-						y_test_perm = np.random.permutation(y_test)
-					if self.eva_metric == 'zero-one':
-						label_test_perm = np.random.permutation(label_test)
+					y_test_perm = np.random.permutation(y_test)
 					# split two sample
 					ind_inf, ind_inf_mask = train_test_split(range(len(y_test)), train_size=m_tmp, random_state=42)
 					# evaluation
-					if self.eva_metric == 'mse':
-						metric_tmp = (y_test_perm[ind_inf] - pred_y[ind_inf])**2
-						metric_mask_tmp = (y_test_perm[ind_inf_mask] - pred_y_mask[ind_inf_mask])**2
-					if self.eva_metric == 'zero-one':
-						metric_tmp = 1. - 1.*(label_test_perm[ind_inf] == pred_label[ind_inf])
-						metric_mask_tmp = 1. - 1.*(label_test_perm[ind_inf_mask] == pred_label[ind_inf_mask])
+					metric_tmp = self.metric(y_test_perm[ind_inf], pred_y[ind_inf])
+					metric_mask_tmp = self.metric(y_test_perm[ind_inf_mask], pred_y_mask[ind_inf_mask])
 					diff_tmp = metric_tmp - metric_mask_tmp
 					Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 					p_value_tmp = norm.cdf(Lambda_tmp)
@@ -245,28 +253,17 @@ class DeepT(object):
 					if self.change == 'perm':
 						Z_test = self.perm_cov(X_test, k)
 
-					if self.eva_metric == 'mse':
-						pred_y = self.model.predict(X_test).flatten()
-						pred_y_mask = self.model_mask.predict(Z_test).flatten()
-					if self.eva_metric == 'zero-one':
-						pred_y = self.model.predict(X_test)
-						pred_y_mask = self.model.predict(Z_test)
-						label_test = np.argmax(y_test, 1)
-						pred_label = np.argmax(pred_y, 1)
-						pred_label_mask = np.argmax(pred_y_mask, 1)
+					pred_y = self.model.predict(X_test)
+					pred_y_mask = self.model_mask.predict(Z_test)
 
 					P_value = []
 					for j in range(num_perm):
 						# permutate testing sample
-						if self.eva_metric == 'mse':
-							y_test_perm = np.random.permutation(y_test)
-						if self.eva_metric == 'zero-one':
-							label_test_perm = np.random.permutation(label_test)
+						y_test_perm = np.random.permutation(y_test)
 						# evaluation
-						if self.eva_metric == 'zero-one':
-							metric_tmp = 1. - 1.*(label_test_perm == pred_label)
-							metric_mask_tmp = 1. - 1.*(label_test_perm == pred_label_mask)
-							
+						metric_tmp = self.metric(y_test_perm, pred_y)
+						metric_mask_tmp = self.metric(y_test_perm, pred_y_mask)
+
 						if perturb_tmp == 'auto':
 							diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))
 						else:
@@ -345,14 +342,9 @@ class DeepT(object):
 			## prediction and inference in full model
 			self.reset_model()
 			history = self.model.fit(X_train, y_train, **fit_params)
-			if self.eva_metric == 'mse':
-				pred_y = self.model.predict(X_inf).flatten()
-				metric_full = (pred_y - y_inf)**2
-			if self.eva_metric == 'zero-one':
-				inf_label = np.argmax(y_inf, 1)
-				pred_y = self.model.predict(X_inf)
-				pred_label = np.argmax(pred_y, 1)
-				metric_full = 1. - 1.*(pred_label == inf_label)
+
+			pred_y = self.model.predict(X_inf)
+			metric_full = self.metric(y_inf, pred_y)
 
 			# prediction and inference in mask model
 			if self.change == 'mask':
@@ -368,15 +360,8 @@ class DeepT(object):
 			if self.change == 'perm':
 				Z_inf = self.perm_cov(X_inf_mask, k)
 			
-			if self.eva_metric == 'mse':
-				pred_y_mask = self.model_mask.predict(Z_inf).flatten()
-				eva_metric_mask = (pred_y_mask - y_inf_mask)**2
-
-			if self.eva_metric == 'zero-one':
-				inf_label_mask = np.argmax(y_inf_mask, 1)
-				pred_y_mask = self.model_mask.predict(Z_inf)
-				pred_y_label = np.argmax(pred_y_mask, 1)
-				metric_mask = 1. - 1.*(pred_y_label == inf_label_mask)
+			pred_y_mask = self.model_mask.predict(Z_inf)
+			metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
 			## compute p-value
 			if split_params['split'] == 'one-sample':
@@ -399,5 +384,3 @@ class DeepT(object):
 
 			P_value.append(p_value_tmp)
 		return P_value, metric_full.mean()
-
-

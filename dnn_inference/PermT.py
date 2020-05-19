@@ -18,6 +18,22 @@ class PermT(object):
 		self.num_folds = num_folds
 		self.eva_metric = eva_metric
 
+	def metric(self, y_true, y_pred):
+		if self.eva_metric == 'mse':
+			metric_tmp = ((y_true - y_pred)**2).flatten()
+		elif self.eva_metric == 'mae':
+			metric_tmp = abs(y_true - y_pred).flatten()
+		elif self.eva_metric == 'zero-one':
+			label_pred = np.argmax(y_pred, 1)
+			label_true = np.argmax(y_true, 1)
+			metric_tmp = 1. - 1.*(label_true == label_pred)
+		elif self.eva_metric == 'cross-entropy':
+			label_true = np.argmax(y_true, 1)
+			metric_tmp = np.log(y_pred[range(len(y_pred)),label_true])
+		else:
+			metric_tmp = self.eva_metric(y_true, y_pred)
+		return metric_tmp
+
 	def reset_model(self):
 		if int(tf.__version__[0]) == 2:
 			# for layer in self.model.layers: 
@@ -103,16 +119,9 @@ class PermT(object):
 			for train, test in kfold.split(X, y):
 				self.reset_model()
 				history = self.model.fit(X[train], y[train], **fit_params)
-				if self.eva_metric == 'mse':
-					pred_y = self.model.predict(X[test]).flatten()
-					metric_full = (pred_y - y[test])**2
-					score_cv.append(metric_full.mean())
-				if self.eva_metric == 'zero-one':
-					pred_y = self.model.predict(X[test])
-					pred_label = np.argmax(pred_y,1)
-					label = np.argmax(y, 1)
-					metric_full = 1. - 1.*(pred_label == label[test])
-					score_cv.append(metric_full.mean())
+				pred_y = self.model.predict(X[test])
+				metric_full = self.metric(y[test], pred_y)
+				score_cv.append(metric_full.mean())
 			score = np.mean(score_cv)
 			# prediction and inference in mask model
 			score_perm = []
@@ -122,15 +131,9 @@ class PermT(object):
 				for train_perm, test_perm in kfold.split(Z, y):
 					self.reset_model()
 					history_perm = self.model_perm.fit(Z[train_perm], y[train_perm], **fit_params)
-					if self.eva_metric == 'mse':
-						pred_y_perm = self.model_perm.predict(Z[test_perm]).flatten()
-						metric_perm = (pred_y_perm - y[test_perm])**2
-						score_perm_cv.append(metric_perm.mean())
-					if self.eva_metric == 'zero-one':
-						pred_y_perm = self.model_perm.predict(Z[test_perm])
-						pred_label_perm = np.argmax(pred_y_perm, 1)
-						metric_perm = 1. - 1.*(pred_label_perm == label[test_perm])
-						score_perm_cv.append(metric_perm.mean())
+					pred_y_perm = self.model_perm.predict(Z[test_perm])
+					metric_perm = self.metric(y[test_perm], pred_y_perm)
+					score_perm_cv.append(metric_perm.mean())
 				score_perm.append(np.mean(score_perm_cv))
 			score_perm = np.array(score_perm)
 			## compute p-value
