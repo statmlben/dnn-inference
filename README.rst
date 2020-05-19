@@ -10,10 +10,10 @@
 .. |tensorflow| image:: https://img.shields.io/badge/keras-tensorflow-blue.svg
 .. _tensorflow: https://www.tensorflow.org/
 
-Deep-Inference
+Dnn-Inference
 ============
 
-Deep-Inference is a Python module for hypothesis testing based on deep neural networks. 
+Dnn-Inference is a Python module for hypothesis testing based on deep neural networks. 
 
 This project was created by `Ben Dai <http://users.stat.umn.edu/~bdai/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
 
@@ -36,21 +36,21 @@ User installation
 
 Install Deep-Inference using ``pip`` ::
 
-	pip install deep-inference
-	pip install git+https://github.com/statmlben/deep-inference.git
+	pip install dnn-inference
+	pip install git+https://github.com/statmlben/dnn-inference.git
 
 Source code
 ~~~~~~~~~~~
 
 You can check the latest sources with the command::
 
-    git clone https://github.com/statmlben/deep-inference.git
+    git clone https://github.com/statmlben/dnn-inference.git
 
 
 Documentation
 ------------
 
-DeepT
+DnnT
 ~~~~~~~~~~~~
 
 
