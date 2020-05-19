@@ -316,23 +316,23 @@ class DnnT(object):
 		
 			return n_opt, m_opt, perturb_opt
 
-	def testing(self, X, y, fit_params, split_params, pred_size=None, inf_size=None):
+	def testing(self, X, y, fit_params, split_params, est_size=None, inf_size=None):
 		P_value = []
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
 			if split_params['split'] == 'one-sample':
-				if (pred_size == None) or (inf_size == None):
+				if (est_size == None) or (inf_size == None):
 					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
 				else:
-					n, m, perturb_level = pred_size, inf_size, split_params['perturb']
+					n, m, perturb_level = est_size, inf_size, split_params['perturb']
 			
 			if split_params['split'] == 'two-sample':
-				if (pred_size == None) or (inf_size == None):
+				if (est_size == None) or (inf_size == None):
 					n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 				else:
-					n, m = pred_size, inf_size
+					n, m = est_size, inf_size
 
 			X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=42)
 			if split_params['split'] == 'two-sample':
