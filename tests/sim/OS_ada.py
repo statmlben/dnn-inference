@@ -1,23 +1,18 @@
-## TS_ada.py
+## OS_ada.py
 
 import numpy as np
-import pandas as pd
-from numpy import linalg as LA
-import funs
+import sim_data
 from functools import partial
-import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.callbacks import EarlyStopping
-from keras.constraints import Constraint
 import keras.backend as K
-# from keras.constraints import x_max_norm
 from sklearn.model_selection import train_test_split
 from keras.optimizers import Adam, SGD
-import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 import time
+from DnnT import DnnT
 
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
@@ -32,7 +27,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-for i in range(100):
+for i in range(1):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
@@ -40,17 +35,15 @@ for i in range(100):
 		model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
 		for l in range(L-2):
 			model.add(Dense(d, use_bias=False, activation='relu'))
-			# model.add(Dense(d, use_bias=False, activation='relu', kernel_constraint=max_norm(1./tau)))
 		model.add(Dense(1, use_bias=False, activation='relu'))
 		model.compile(loss='mean_squared_error', optimizer=optimizer)
 		return model
 
 	## Generate data
-	X = funs.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
+	X = sim_data.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
 	X0 = X.copy()
 	X0[:,:K0] = 0.
-	# W = funs.gen_W(p=p, d=d0, L=L0, tau=tau, K0=5)
-	y = funs.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
+	y = sim_data.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
 	# print('mean y: %.3f' %np.mean(y))
 	
 	# import matplotlib.pyplot as plt
@@ -71,20 +64,21 @@ for i in range(100):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'split': 'two-sample',
-					'perturb': None,
+	split_params = {'split': 'one-sample',
+					'perturb': 0.1,
 					'num_perm': 1000,
-					'ratio_grid': [.2, .3, .4],
+					'ratio_grid': [.3, .4, .5],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 1000,
-					'metric': 'fuse',
+					'ratio_method': 'close',
+					'cv_num': 5,
 					'verbose': 1}
 
 	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
-	shiing = funs.DeepT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
+	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp, SE_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
+	p_value_tmp, SE_tmp = shiing.testing(X, y, cv_num=5, fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	P_value.append(p_value_tmp)
 	SE_list.append(SE_tmp)

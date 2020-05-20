@@ -102,9 +102,13 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 		 The minimal size for inference sample.
 		- **min_est: int, default=0**
 		 The minimal size for estimation sample.
-		- **split_method: {'fuse', 'close'}, default='fuse'**
+		- **ratio_method: {'fuse', 'close'}, default='fuse'**
 		 The adaptive splitting method to determine the optimal estimation/inference ratios.
+		- **cv_num: int, default=1**
+		 The number of cross-validation to shuttle the estimation/inference samples in adaptive ratio splitting.
 		- **verbose: {0,1}, default=1**
+	- **cv_num: int, default=1**
+	 The number of cross-validation to shuttle the estimation/inference samples in testing.
 	- **est_size: int, default=None**
 	 A pre-specific estimation sample size, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
 	- **inf_size: int, default=None**
@@ -219,10 +223,10 @@ Example
 	model, model_mask = cnn(), cnn()
 
 	from keras.callbacks import EarlyStopping
-	es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=20, restore_best_weights=True)
+	es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=10, restore_best_weights=True)
 
 	fit_params = {'callbacks': [es],
-				  'epochs': 2,
+				  'epochs': 20,
 				  'batch_size': 32,
 				  'validation_split': .2,
 				  'verbose': 1}

@@ -55,22 +55,22 @@ tic = time.perf_counter()
 model, model_mask = cnn(), cnn()
 
 from keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=20, restore_best_weights=True)
+es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=15, restore_best_weights=True)
 
 fit_params = {'callbacks': [es],
-			  'epochs': 2,
+			  'epochs': 100,
 			  'batch_size': 32,
 			  'validation_split': .2,
-			  'verbose': 1}
+			  'verbose': 0}
 
 split_params = {'split': 'one-sample',
 				'perturb': None,
 				'num_perm': 1000,
 				'ratio_grid': [.3, .4, .5],
-				'perturb_grid': [.05, .1, .5, 1.],
+				'perturb_grid': [.005, .01, .05, .1, .5, 1.],
 				'min_inf': 100,
 				'min_est': 1000,
-				'metric': 'close',
+				'ratio_method': 'close',
 				'verbose': 1}
 
 inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],
@@ -79,3 +79,5 @@ shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask'
 p_value_tmp, metric_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
 toc = time.perf_counter()
 print('testing time: %.3f' %(toc-tic))
+
+# OS test: [0.6642883319367069, 0.9672120396024865, 9.977801368581722e-25]
