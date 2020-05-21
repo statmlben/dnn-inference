@@ -271,19 +271,24 @@ class DnnT(object):
 							Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 							p_value_tmp = norm.cdf(Lambda_tmp)
 							P_value_cv.append(p_value_tmp)
+						
+						if verbose==1:
+							print('cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, np.mean(P_value_cv), ratio_tmp, perturb_tmp))
+
 						P_value.append(P_value_cv)
 				
 					P_value = np.array(P_value)
 					P_value = np.mean(P_value, 0)
 					## compute the type 1 error
 					Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+					if verbose==1:
+						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
+
 					Err1_lst.append(Err1)
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
 				
-					if verbose==1:
-						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
-					
+
 					if Err1 <= self.alpha:
 						found = 1
 						if ratio_method == 'fuse':
@@ -376,8 +381,9 @@ class DnnT(object):
 					diff_tmp = metric_full - metric_mask
 				
 				Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
-				print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
 				p_value_tmp = norm.cdf(Lambda)
+				print('cv: %d; p_value: %.3f; diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(h, p_value_tmp, diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
+
 				P_value_cv.append(p_value_tmp)
 
 			p_value_mean = np.mean(P_value_cv)
