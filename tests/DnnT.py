@@ -133,10 +133,12 @@ class DnnT(object):
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='two-sample', 
 				num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .3, .4], 
 				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, verbose=0):
+		
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
 		if split == 'two-sample':
 			for ratio_tmp in reversed(ratio_grid):
+				ratio_tmp = ratio_tmp/2
 				m_tmp = int(len(X)*ratio_tmp)
 				if m_tmp < min_inf:
 					continue
@@ -200,16 +202,17 @@ class DnnT(object):
 						n_opt = len(X) - 2*m_opt
 						break
 
-			if found == 1:
+			if found==1:
 				if ratio_method == 'close':
 					Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 					Err1_lst, ratio_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha]
-					m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
+					m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X) / 2)
 					n_opt = len(X) - 2*m_opt
 
 			if found==0:
 				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
 				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
+				print('err list for the TS test: %s' %Err1_lst)
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - 2*m_opt
 			
@@ -270,20 +273,24 @@ class DnnT(object):
 							
 							Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 							p_value_tmp = norm.cdf(Lambda_tmp)
-							P_value_cv.append(p_value_tmp)
+							P_value_cv.append(p_value_tmp)						
+						if verbose==1:
+							print('cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, np.mean(P_value_cv), ratio_tmp, perturb_tmp))
+
 						P_value.append(P_value_cv)
 				
 					P_value = np.array(P_value)
 					P_value = np.mean(P_value, 0)
 					## compute the type 1 error
 					Err1 = len(P_value[P_value<self.alpha])/len(P_value)
+					if verbose==1:
+						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
+
 					Err1_lst.append(Err1)
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
 				
-					if verbose==1:
-						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
-					
+
 					if Err1 <= self.alpha:
 						found = 1
 						if ratio_method == 'fuse':
@@ -376,8 +383,9 @@ class DnnT(object):
 					diff_tmp = metric_full - metric_mask
 				
 				Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
-				print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
 				p_value_tmp = norm.cdf(Lambda)
+				print('cv: %d; p_value: %.3f; diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(h, p_value_tmp, diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
+
 				P_value_cv.append(p_value_tmp)
 
 			p_value_mean = np.mean(P_value_cv)
