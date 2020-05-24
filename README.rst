@@ -78,7 +78,7 @@ Class for one-sample/two-sample test based on deep neural networks.
 
 .. code:: python
 
-	def testing(self, X, y, fit_params, split_params, est_size=None, inf_size=None)
+	def testing(self, X, y, cv_num=1, cp='geometric', fit_params, split_params, est_size=None, inf_size=None)
 Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 
 - Parameters:
@@ -106,9 +106,13 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 		 The adaptive splitting method to determine the optimal estimation/inference ratios.
 		- **cv_num: int, default=1**
 		 The number of cross-validation to shuttle the estimation/inference samples in adaptive ratio splitting.
+		- **cp: {'geometric', 'min', 'hamonic'}, default ='geometric'** 
+		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 		- **verbose: {0,1}, default=1**
 	- **cv_num: int, default=1**
 	 The number of cross-validation to shuttle the estimation/inference samples in testing.
+	- **cp: {'geometric', 'min', 'hamonic'}, default ='geometric'**
+	 A method to combine p-values obtained from cross-validation.
 	- **est_size: int, default=None**
 	 A pre-specific estimation sample size, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
 	- **inf_size: int, default=None**
