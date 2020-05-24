@@ -7,6 +7,8 @@ import keras.backend as K
 from keras.initializers import glorot_uniform
 import tensorflow as tf
 from sklearn.model_selection import KFold
+from scipy.stats import hmean, gmean
+import scipy.optimize
 
 class DnnT(object):
 	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse'):
@@ -132,7 +134,7 @@ class DnnT(object):
 
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='two-sample', 
 				num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .3, .4], 
-				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, verbose=0):
+				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, cp='geometric', verbose=0):
 		
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
@@ -186,7 +188,16 @@ class DnnT(object):
 					P_value.append(P_value_cv)
 				
 				P_value = np.array(P_value)
-				P_value = np.mean(P_value, 0)
+				if cv_num > 1:
+					if cp == 'geometric':
+						P_value = np.e*gmean(P_value, 0)
+					elif cp == 'min':
+						P_value = cv_num*np.min(P_value, 0)
+					else:
+						warnings.warn("cp should be geometric or min.")
+				else:
+					P_value = np.mean(P_value, 0)
+
 				## compute the type 1 error
 				Err1 = len(P_value[P_value < self.alpha]) / len(P_value)
 				Err1_lst.append(Err1)
@@ -212,7 +223,7 @@ class DnnT(object):
 			if found==0:
 				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
 				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
-				print('err list for the TS test: %s' %Err1_lst)
+				# print('err list for the TS test: %s' %Err1_lst)
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - 2*m_opt
 			
@@ -280,7 +291,16 @@ class DnnT(object):
 						P_value.append(P_value_cv)
 				
 					P_value = np.array(P_value)
-					P_value = np.mean(P_value, 0)
+					
+					if cv_num > 1:
+						if cp == 'geometric':
+							P_value = np.e*gmean(P_value, 0)
+						elif cp == 'min':
+							P_value = cv_num*np.min(P_value, 0)
+						else:
+							warnings.warn("cp should be geometric or min.")
+					else:
+						P_value = np.mean(P_value, 0)
 					## compute the type 1 error
 					Err1 = len(P_value[P_value<self.alpha])/len(P_value)
 					if verbose==1:
@@ -290,7 +310,6 @@ class DnnT(object):
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
 				
-
 					if Err1 <= self.alpha:
 						found = 1
 						if ratio_method == 'fuse':
@@ -323,7 +342,7 @@ class DnnT(object):
 		
 			return n_opt, m_opt, perturb_opt
 
-	def testing(self, X, y, fit_params, split_params, cv_num=1, est_size=None, inf_size=None):
+	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='geometric', est_size=None, inf_size=None):
 		P_value = []
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
@@ -388,7 +407,24 @@ class DnnT(object):
 
 				P_value_cv.append(p_value_tmp)
 
-			p_value_mean = np.mean(P_value_cv)
+			if cv_num > 1:
+				if cp == 'geometric':
+					p_value_mean = np.e*gmean(P_value_cv)
+				elif cp == 'min':
+					p_value_mean = cv_num*np.min(P_value_cv)
+				elif cp == 'hamonic':
+					def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
+					sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
+					a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num
+					p_value_mean = a_h * hmean(P_value_cv)
+					# print('cv_p-value is %s; a_h: %.3f' %(P_value_cv, a_h))
+				else:
+					warnings.warn("pls input correct way to combine p-values")
+			else:
+				p_value_mean = np.mean(P_value_cv)
+
+			p_value_mean = min(1, p_value_mean)
+
 			if p_value_mean < self.alpha:
 				print('reject H0 with p_value: %.3f' %p_value_mean)
 			else:
@@ -396,3 +432,6 @@ class DnnT(object):
 
 			P_value.append(p_value_mean)
 		return P_value
+
+
+
