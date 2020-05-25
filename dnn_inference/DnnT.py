@@ -134,7 +134,7 @@ class DnnT(object):
 
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='two-sample', 
 				num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .3, .4], 
-				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, cp='geometric', verbose=0):
+				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, cp='gmean', verbose=0):
 		
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
@@ -189,10 +189,12 @@ class DnnT(object):
 				
 				P_value = np.array(P_value)
 				if cv_num > 1:
-					if cp == 'geometric':
+					if cp == 'gmean':
 						P_value = np.e*gmean(P_value, 0)
 					elif cp == 'min':
 						P_value = cv_num*np.min(P_value, 0)
+					elif cp == 'hmean':
+						P_value = np.e * np.log(cv_num) * hmean(P_value, 0)
 					else:
 						warnings.warn("cp should be geometric or min.")
 				else:
@@ -212,7 +214,6 @@ class DnnT(object):
 						m_opt = m_tmp
 						n_opt = len(X) - 2*m_opt
 						break
-
 			if found==1:
 				if ratio_method == 'close':
 					Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
@@ -293,10 +294,15 @@ class DnnT(object):
 					P_value = np.array(P_value)
 					
 					if cv_num > 1:
-						if cp == 'geometric':
+						if cp == 'gmean':
 							P_value = np.e*gmean(P_value, 0)
 						elif cp == 'min':
 							P_value = cv_num*np.min(P_value, 0)
+						elif cp == 'hmean':
+							# def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
+							# sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
+							# a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num
+							p_value_mean = np.e * np.log(cv_num) * hmean(P_value_cv)
 						else:
 							warnings.warn("cp should be geometric or min.")
 					else:
@@ -342,7 +348,7 @@ class DnnT(object):
 		
 			return n_opt, m_opt, perturb_opt
 
-	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='geometric', est_size=None, inf_size=None):
+	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='gmean', est_size=None, inf_size=None):
 		P_value = []
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
@@ -408,11 +414,11 @@ class DnnT(object):
 				P_value_cv.append(p_value_tmp)
 
 			if cv_num > 1:
-				if cp == 'geometric':
+				if cp == 'gmean':
 					p_value_mean = np.e*gmean(P_value_cv)
 				elif cp == 'min':
 					p_value_mean = cv_num*np.min(P_value_cv)
-				elif cp == 'hamonic':
+				elif cp == 'hmean':
 					def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
 					sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
 					a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num

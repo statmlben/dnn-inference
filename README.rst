@@ -106,12 +106,12 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 		 The adaptive splitting method to determine the optimal estimation/inference ratios.
 		- **cv_num: int, default=1**
 		 The number of cross-validation to shuttle the estimation/inference samples in adaptive ratio splitting.
-		- **cp: {'geometric', 'min', 'hamonic'}, default ='geometric'** 
+		- **cp: {'gmean', 'min', 'hmean'}, default ='gmean'** 
 		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 		- **verbose: {0,1}, default=1**
 	- **cv_num: int, default=1**
 	 The number of cross-validation to shuttle the estimation/inference samples in testing.
-	- **cp: {'geometric', 'min', 'hamonic'}, default ='geometric'**
+	- **cp: {'gmean', 'min', 'hmean'}, default ='gmean'**
 	 A method to combine p-values obtained from cross-validation.
 	- **est_size: int, default=None**
 	 A pre-specific estimation sample size, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
