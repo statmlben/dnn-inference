@@ -419,10 +419,10 @@ class DnnT(object):
 				elif cp == 'min':
 					p_value_mean = cv_num*np.min(P_value_cv)
 				elif cp == 'hmean':
-					def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
-					sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
-					a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num
-					p_value_mean = a_h * hmean(P_value_cv)
+					# def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
+					# sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
+					# a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num
+					p_value_mean = np.e * np.log(cv_num) * hmean(P_value_cv)
 					# print('cv_p-value is %s; a_h: %.3f' %(P_value_cv, a_h))
 				else:
 					warnings.warn("pls input correct way to combine p-values")
