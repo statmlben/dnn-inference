@@ -17,20 +17,20 @@ from DnnT import DnnT
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-p, L0, d0, K0 = 100, 3, 128, 5
+p0, L0, d0, K0 = 100, 2, 64, 5
 tau, x_max, pho = 2., .4, .25
 N = 6000
-n_params = p*d0 + (L0-2)*d0**2 + d0
+n_params = p0*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 1
+if_power = 0
 
 if if_power == 1:
-	num_sim = 100
+	num_sim = 10
 else:
 	num_sim = 1000
 
@@ -47,17 +47,22 @@ for i in range(num_sim):
 		return model
 
 	## Generate data
-	X = sim_data.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
+	X = sim_data.gen_X(n=N, p=p0, pho=pho, x_max=x_max, distribution='section6-2')
 	X0 = X.copy()
 	X0[:,:K0] = 0.
-	y = sim_data.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
+
+	y = sim_data.gen_Y(p=p0, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
 	y = y[:,np.newaxis]
 	# print('mean y: %.3f' %np.mean(y))
 	
 	# import matplotlib.pyplot as plt
 	# plt.hist(Y, bins=50)
 	# plt.show()
+	p = int(p0*(1. - 1/np.log(N)))
+	X = X[:,:p]
+	
 	tic = time.perf_counter()
+
 	## Define the full model
 	d, L = d0, L0
 	model = Reg_model(p=p, d=d, L=L)
@@ -73,23 +78,23 @@ for i in range(num_sim):
 				  'verbose': 0}
 
 	split_params = {'split': 'one-sample',
-					'perturb': None,
-					'num_perm': 500,
-					'ratio_grid': [.2, .4, .6, .8],
+					'perturb': 0.0,
+					'num_perm': 1000,
+					'ratio_grid': [.6],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
-					'min_inf': 100,
-					'min_est': 500,
+					'min_inf': 0,
+					'min_est': 0,
 					'ratio_method': 'close',
 					'cv_num': 1,
 					'cp': 'gmean',
-					'verbose': 1}
+					'verbose': 0}
 	if if_power == 1:
 		inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
 	else:
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp = shiing.testing(X, y, cv_num=5, cp='gmean', fit_params=fit_params, split_params=split_params)
+	p_value_tmp = shiing.testing(X, y, cv_num=1, cp='gmean', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	P_value.append(p_value_tmp)
 	time_lst.append(toc - tic)
@@ -105,3 +110,12 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
+
+# type1 Error:
+## OS without permutation (ratio, error)
+# N=6000; (0.2, 0.852); (0.4, 0.931), (0.6, 0.948); (0.8, )
+# N=1000; (0.2, 0.951); (0.4, 0.957); (0.6, 0.980); (0.8, 0.999)
+
+## TS 
+
+## OS with permutation

@@ -9,6 +9,8 @@ import tensorflow as tf
 from sklearn.model_selection import KFold
 from scipy.stats import hmean, gmean
 import scipy.optimize
+from keras.models import load_model
+
 
 class DnnT(object):
 	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse'):
@@ -138,6 +140,8 @@ class DnnT(object):
 		
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
+		n_sample, p = X.shape
+		not_inf_cov = np.array([j for j in range(p) if j not in self.inf_cov[k]])
 		if split == 'two-sample':
 			for ratio_tmp in reversed(ratio_grid):
 				ratio_tmp = ratio_tmp/2
@@ -152,35 +156,47 @@ class DnnT(object):
 				for h in range(cv_num):
 					self.reset_model()
 					P_value_cv = []
-					X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=1)
-					# permutate training sample
-					y_train_perm = np.random.permutation(y_train)
+					## generate permutated samples
+					index_perm = np.random.permutation(range(len(y)))
+					y_perm = y[index_perm].copy()
+					X_perm = X.copy()
+					X_perm[:,not_inf_cov] = X_perm[:,not_inf_cov][index_perm,:]
+					## split sample
+					X_train, X_test, y_train, y_test = train_test_split(y_perm, y_perm, train_size=n_tmp, random_state=1)
 					# training for full model
-					history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
+					history = self.model.fit(x=X_train, y=y_train, **fit_params)
 					
 					# training for mask model
 					if self.change == 'mask':
 						Z_train = self.mask_cov(X_train, k)
 					if self.change == 'perm':
 						Z_train = self.perm_cov(X_train, k)
-					history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
-					
-					## evaluate the performance
-					if self.change == 'mask':
-						Z_test = self.mask_cov(X_test, k)
-					if self.change == 'perm':
-						Z_test = self.perm_cov(X_test, k)
-					
-					pred_y = self.model.predict(X_test)
-					pred_y_mask = self.model_mask.predict(Z_test)
+					history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
+					## save model
+					# self.model.save_weights('model.h5')
+					# self.model_mask.save_weights('model_mask.h5')
+					# self.model = load_model('model.h5', compile=False)
+					# self.model_mask = load_model('model_mask.h5', compile=False)
 					for j in range(num_perm):
+						# generate permutation for testing
+						index_test_perm = np.random.permutation(range(len(y_test)))
+						y_test_perm = y_test[index_test_perm].copy()
+						X_test_perm = X_test.copy()
+						X_test_perm[:,not_inf_cov] = X_test_perm[:,not_inf_cov][index_test_perm,:]
+						## evaluate the performance
+						if self.change == 'mask':
+							Z_test_perm = self.mask_cov(X_test_perm, k)
+						if self.change == 'perm':
+							Z_test_perm = self.perm_cov(X_test_perm, k)
+					
+						pred_y_perm = self.model.predict(X_test_perm)
+						pred_y_mask_perm = self.model_mask.predict(Z_test_perm)
 						# permutate testing sample
-						y_test_perm = np.random.permutation(y_test)
 						# split two sample
-						ind_inf, ind_inf_mask = train_test_split(range(len(y_test)), train_size=m_tmp, random_state=42)
+						ind_inf, ind_inf_mask = train_test_split(range(len(pred_y_perm)), train_size=m_tmp, random_state=42)
 						# evaluation
-						metric_tmp = self.metric(y_test_perm[ind_inf], pred_y[ind_inf])
-						metric_mask_tmp = self.metric(y_test_perm[ind_inf_mask], pred_y_mask[ind_inf_mask])
+						metric_tmp = self.metric(y_test_perm[ind_inf], pred_y_perm[ind_inf])
+						metric_mask_tmp = self.metric(y_test_perm[ind_inf_mask], pred_y_mask_perm[ind_inf_mask])
 						diff_tmp = metric_tmp - metric_mask_tmp
 						Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 						p_value_tmp = norm.cdf(Lambda_tmp)
@@ -250,33 +266,44 @@ class DnnT(object):
 					P_value = []
 					for h in range(cv_num):
 						P_value_cv = []
-						X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_tmp, random_state=h)
-						# permutate training sample
-						y_train_perm = np.random.permutation(y_train)
+						## generate permutated samples
+						index_perm = np.random.permutation(range(len(y)))
+						y_perm = y[index_perm].copy()
+						X_perm = X.copy()
+						X_perm[:,not_inf_cov] = X_perm[:,not_inf_cov][index_perm,:]
+						# split samples
+						X_train, X_test, y_train, y_test = train_test_split(X_perm, y_perm, train_size=n_tmp, random_state=h)
 						# training for full model
-						history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
+						history = self.model.fit(x=X_train, y=y_train, **fit_params)
 						# training for mask model
 						if self.change == 'mask':
 							Z_train = self.mask_cov(X_train, k)
 						if self.change == 'perm':
 							Z_train = self.perm_cov(X_train, k)
-						history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
-						
-						## evaluate the performance
-						if self.change == 'mask':
-							Z_test = self.mask_cov(X_test, k)
-						if self.change == 'perm':
-							Z_test = self.perm_cov(X_test, k)
-
-						pred_y = self.model.predict(X_test)
-						pred_y_mask = self.model_mask.predict(Z_test)
-
+						history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
+						## save and load models
+						# self.model.save_weights('model.h5')
+						# self.model_mask.save_weights('model_mask.h5')
+						# self.model = load_model('model.h5', compile=False)
+						# self.model_mask = load_model('model_mask.h5', compile=False)
 						for j in range(num_perm):
-							# permutate testing sample
-							y_test_perm = np.random.permutation(y_test)
+							## evaluate the performance
+							index_test_perm = np.random.permutation(range(len(y_test)))
+							y_test_perm = y_test[index_test_perm].copy()
+							X_test_perm = X_test.copy()
+							X_test_perm[:,not_inf_cov] = X_test_perm[:,not_inf_cov][index_test_perm,:]
+							## evaluate the performance
+							if self.change == 'mask':
+								Z_test_perm = self.mask_cov(X_test_perm, k)
+							if self.change == 'perm':
+								Z_test_perm = self.perm_cov(X_test_perm, k)
+						
+							pred_y_perm = self.model.predict(X_test_perm)
+							pred_y_mask_perm = self.model_mask.predict(Z_test_perm)
+
 							# evaluation
-							metric_tmp = self.metric(y_test_perm, pred_y)
-							metric_mask_tmp = self.metric(y_test_perm, pred_y_mask)
+							metric_tmp = self.metric(y_test_perm, pred_y_perm)
+							metric_mask_tmp = self.metric(y_test_perm, pred_y_mask_perm)
 
 							if perturb_tmp == 'auto':
 								diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))

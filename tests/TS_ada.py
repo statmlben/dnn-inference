@@ -17,7 +17,7 @@ from DnnT import DnnT
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-p, L0, d0, K0 = 100, 3, 128, 5
+p, L0, d0, K0 = 100, 4, 256, 5
 tau, x_max, pho = 2., .4, .25
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
@@ -30,7 +30,7 @@ P_value, SE_list, time_lst = [], [], []
 if_power = 1
 
 if if_power == 1:
-	num_sim = 100
+	num_sim = 10
 else:
 	num_sim = 1000
 
@@ -72,9 +72,9 @@ for i in range(num_sim):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'split': 'one-sample',
+	split_params = {'split': 'two-sample',
 					'perturb': None,
-					'num_perm': 500,
+					'num_perm': 1000,
 					'ratio_grid': [.2, .4, .6, .8],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
@@ -82,14 +82,14 @@ for i in range(num_sim):
 					'ratio_method': 'close',
 					'cv_num': 1,
 					'cp': 'gmean',
-					'verbose': 1}
+					'verbose': 0}
 	if if_power == 1:
 		inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
 	else:
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp = shiing.testing(X, y, cv_num=5, cp='gmean', fit_params=fit_params, split_params=split_params)
+	p_value_tmp = shiing.testing(X, y, cv_num=1, cp='gmean', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	P_value.append(p_value_tmp)
 	time_lst.append(toc - tic)

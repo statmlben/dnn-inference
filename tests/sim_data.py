@@ -42,6 +42,12 @@ def gen_X(n, p, pho, x_max=1., distribution='uniform'):
 				cov[i,j] = pho**(abs(i-j))
 		np.fill_diagonal(cov, 1.)
 		X = x_max*np.random.multivariate_normal(np.zeros(p), cov, n)
+	if distribution == 'section6-2':
+		cov = np.zeros((p,p), dtype='float32')
+		cov[0,:] = 0.1
+		cov[:,0] = 0.1
+		np.fill_diagonal(cov, 1.)
+		X = x_max*np.random.multivariate_normal(np.zeros(p), cov, n)
 	return X
 
 def gen_W(p, d, L, tau, K0=5):
