@@ -189,8 +189,8 @@ class DnnT(object):
 						if self.change == 'perm':
 							Z_test_perm = self.perm_cov(X_test_perm, k)
 					
-						pred_y_perm = self.model.predict(X_test_perm)
-						pred_y_mask_perm = self.model_mask.predict(Z_test_perm)
+						pred_y_perm = self.model.predict_on_batch(X_test_perm)
+						pred_y_mask_perm = self.model_mask.predict_on_batch(Z_test_perm)
 						# permutate testing sample
 						# split two sample
 						ind_inf, ind_inf_mask = train_test_split(range(len(pred_y_perm)), train_size=m_tmp, random_state=42)
@@ -282,10 +282,10 @@ class DnnT(object):
 							Z_train = self.perm_cov(X_train, k)
 						history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
 						## save and load models
-						# self.model.save_weights('model.h5')
-						# self.model_mask.save_weights('model_mask.h5')
-						# self.model = load_model('model.h5', compile=False)
-						# self.model_mask = load_model('model_mask.h5', compile=False)
+						# self.model.save('model.h5')
+						# self.model_mask.save('model_mask.h5')
+						# model_tmp = load_model('model.h5', compile=False)
+						# model_mask_tmp = load_model('model_mask.h5', compile=False)
 						for j in range(num_perm):
 							## evaluate the performance
 							index_test_perm = np.random.permutation(range(len(y_test)))
@@ -298,13 +298,16 @@ class DnnT(object):
 							if self.change == 'perm':
 								Z_test_perm = self.perm_cov(X_test_perm, k)
 						
-							pred_y_perm = self.model.predict(X_test_perm)
-							pred_y_mask_perm = self.model_mask.predict(Z_test_perm)
+							pred_y_perm = self.model.predict_on_batch(X_test_perm)
+							pred_y_mask_perm = self.model_mask.predict_on_batch(Z_test_perm)
+							# pred_y_perm = model_tmp.predict_on_batch(X_test_perm)
+							# pred_y_mask_perm = model_mask_tmp.predict_on_batch(Z_test_perm)
 
 							# evaluation
 							metric_tmp = self.metric(y_test_perm, pred_y_perm)
 							metric_mask_tmp = self.metric(y_test_perm, pred_y_mask_perm)
-
+							# print('metric_tmp: %.3f; metric_mask_tmp: %.3f' %(np.mean(metric_tmp), np.mean(metric_mask_tmp)))
+							
 							if perturb_tmp == 'auto':
 								diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))
 							else:
@@ -377,6 +380,7 @@ class DnnT(object):
 
 	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='gmean', est_size=None, inf_size=None):
 		P_value = []
+		fit_err = 0
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
 			if split_params['split'] == 'one-sample':
@@ -404,7 +408,7 @@ class DnnT(object):
 				self.reset_model()
 				history = self.model.fit(X_train, y_train, **fit_params)
 
-				pred_y = self.model.predict(X_inf)
+				pred_y = self.model.predict_on_batch(X_inf)
 				metric_full = self.metric(y_inf, pred_y)
 
 				# prediction and inference in mask model
@@ -421,9 +425,11 @@ class DnnT(object):
 				if self.change == 'perm':
 					Z_inf = self.perm_cov(X_inf_mask, k)
 				
-				pred_y_mask = self.model_mask.predict(Z_inf)
+				pred_y_mask = self.model_mask.predict_on_batch(Z_inf)
 				metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
+				if ((np.mean(metric_mask) > 2) or (np.mean(metric_full) > 2)):
+					fit_err = 1
 				## compute p-value
 				if split_params['split'] == 'one-sample':
 					if perturb_level == 'auto':
@@ -464,7 +470,5 @@ class DnnT(object):
 				print('accept H0 with p_value: %.3f' %p_value_mean)
 
 			P_value.append(p_value_mean)
-		return P_value
-
-
+		return P_value, fit_err
 

@@ -3,7 +3,7 @@
 import numpy as np
 import sim_data
 from functools import partial
-from keras.models import Sequential
+from keras.models import Sequential, Model, Input
 from keras.layers import Dense
 from keras.callbacks import EarlyStopping
 import keras.backend as K
@@ -30,21 +30,35 @@ P_value, SE_list, time_lst = [], [], []
 if_power = 1
 
 if if_power == 1:
-	num_sim = 100
+	num_sim = 1
 else:
 	num_sim = 1000
 
 for i in range(num_sim):
+	print('#'*50)
+	print('%d-th simulation for folds test')
+	print('#'*50)
 	K.clear_session()
 
-	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
-		model = Sequential()
-		model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
+	def Reg_model(p, d, L=3):
+		# Create a simple model.
+		inputs = Input(shape=(p,))
+		hidden_layer = Dense(d, use_bias=False, input_dim=p, activation='relu')(inputs)
 		for l in range(L-2):
-			model.add(Dense(d, use_bias=False, activation='relu'))
-		model.add(Dense(1, use_bias=False, activation='relu'))
-		model.compile(loss='mean_squared_error', optimizer=optimizer)
+			hidden_layer = Dense(d, use_bias=False, activation='relu')(hidden_layer)
+		outputs = Dense(1, use_bias=False, activation='relu')(hidden_layer)
+		model = Model(inputs, outputs)
+		# model.compile(loss='mean_squared_error', optimizer=optimizer)
 		return model
+
+	# def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
+	# 	model = Sequential()
+	# 	model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
+	# 	for l in range(L-2):
+	# 		model.add(Dense(d, use_bias=False, activation='relu'))
+	# 	model.add(Dense(1, use_bias=False, activation='relu'))
+	# 	model.compile(loss='mean_squared_error', optimizer=optimizer)
+	# 	return model
 
 	## Generate data
 	X = sim_data.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
@@ -61,8 +75,10 @@ for i in range(num_sim):
 	## Define the full model
 	d, L = d0, L0
 	model = Reg_model(p=p, d=d, L=L)
+	model.compile(loss='mean_squared_error', optimizer=Adam(lr=.0005))
 	model_mask = Reg_model(p=p, d=d, L=L)
-	
+	model_mask.compile(loss='mean_squared_error', optimizer=Adam(lr=.0005))
+
 	## define fitting params
 	es = EarlyStopping(monitor='val_loss', mode='min', verbose=verbose, patience=50, restore_best_weights=True)
 	
@@ -74,12 +90,12 @@ for i in range(num_sim):
 
 	split_params = {'split': 'one-sample',
 					'perturb': None,
-					'num_perm': 500,
+					'num_perm': 100,
 					'ratio_grid': [.2, .4, .6, .8],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 500,
-					'ratio_method': 'close',
+					'ratio_method': 'fuse',
 					'cv_num': 1,
 					'cp': 'gmean',
 					'verbose': 1}
@@ -89,10 +105,11 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp = shiing.testing(X, y, cv_num=5, cp='gmean', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=5, cp='gmean', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
-	P_value.append(p_value_tmp)
-	time_lst.append(toc - tic)
+	if fit_err == 0:
+		P_value.append(p_value_tmp)
+		time_lst.append(toc - tic)
 
 P_value = np.array(P_value)
 time_lst = np.array(time_lst)
@@ -105,3 +122,7 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
+# CASE 0: Type 1 error: 0.050
+# CASE 1: Power: 0.950
+# CASE 2: Power: 1.000
+# CASE 3: Power: 1.000
