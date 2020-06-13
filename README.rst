@@ -11,7 +11,7 @@
 .. _tensorflow: https://www.tensorflow.org/
 
 Dnn-Inference
-============
+=============
 
 Dnn-Inference is a Python module for hypothesis testing based on deep neural networks. 
 
@@ -48,10 +48,10 @@ You can check the latest sources with the command::
 
 
 Documentation
-------------
+-------------
 
 DnnT
-~~~~~~~~~~~~
+~~~~
 Class for one-sample/two-sample test based on deep neural networks. 
 
 .. code:: python
@@ -124,7 +124,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 
 
 PermT
-~~~~~~~~~~~~
+~~~~~
 Class for permutation testing based on deep neural networks. 
 
 .. code:: python
@@ -167,7 +167,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 	 The p_values for target hypothesis testings.
 
 Example
-~~~~~~~~~~~~~~~~~
+~~~~~~~
 .. code:: python
 
 	import numpy as np
