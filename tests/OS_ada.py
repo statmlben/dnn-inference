@@ -18,8 +18,8 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .4, .00
-N = 6000
+tau, x_max, pho = 2., .2, .25
+N = 2000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -27,7 +27,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 0
+if_power = 1
 
 if if_power == 1:
 	num_sim = 100
@@ -115,10 +115,10 @@ P_value = np.array(P_value)
 time_lst = np.array(time_lst)
 
 # print('MSE: %.3f(%.3f)' %(SE_list.mean(), SE_list.std()))
-print('Time: %.3f(%.3f)' %(time_lst.mean(), time_lst.std()/np.sqrt(len(time_lst))))
+print('N: %d; p: %d; L: %d; d: %d; K: %d; x_max: %.3f; pho: %.3f' % (N, p, L0, d0, K0, x_max, pho))
+print('Time: %.2f(%.2f)' %(time_lst.mean(), time_lst.std()/np.sqrt(len(time_lst))))
 print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= shiing.alpha])/len(P_value)))
 
 if if_power == 1:
 	for i in [1, 2, 3]:
-		print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
-
+		print('CASE %d: Power: %.2f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))

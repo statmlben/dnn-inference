@@ -383,8 +383,8 @@ class DnnT(object):
 					## compute the type 1 error
 					Err1 = len(P_value[P_value<=self.alpha])/len(P_value)
 					if verbose==1:
-						print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
-
+						# print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
+						print('p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(P_value.mean(), ratio_tmp, perturb_tmp))
 					Err1_lst.append(Err1)
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
