@@ -18,7 +18,7 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .6, .25
+tau, x_max, pho = 2., .4, .00
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
@@ -27,7 +27,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 1
+if_power = 0
 
 if if_power == 1:
 	num_sim = 100
@@ -84,7 +84,7 @@ for i in range(num_sim):
 	
 	fit_params = {'callbacks': [es],
 				  'epochs': 100,
-				  'batch_size': 512,
+				  'batch_size': 64,
 				  'validation_split': .2,
 				  'verbose': 0}
 
@@ -122,10 +122,3 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
-
-# comb-os - close - N2K
-# Time: 21.886(0.104)
-# CASE 0: Type 1 error: 0.000
-# CASE 1: Power: 0.250
-# CASE 2: Power: 1.000
-# CASE 3: Power: 0.989
