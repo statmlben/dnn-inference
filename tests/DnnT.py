@@ -134,12 +134,10 @@ class DnnT(object):
 		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-sample', 
-				num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
-				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, cp='gmean', 
-				stopping_metric='p-value', verbose=0):
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-sample', perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
+				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, cp='gmean', verbose=0):
 		
-		candidate, Err1_lst, ratio_lst = [], [], []
+		candidate, Err1_lst, ratio_lst, P_value_lst = [], [], [], []
 		found = 0
 		n_sample, p = X.shape
 		not_inf_cov = np.array([j for j in range(p) if j not in self.inf_cov[k]])
@@ -178,48 +176,25 @@ class DnnT(object):
 					# self.model_mask.save_weights('model_mask.h5')
 					# self.model = load_model('model.h5', compile=False)
 					# self.model_mask = load_model('model_mask.h5', compile=False)
-					if stopping_metric == 'p-value':
-						if self.change == 'mask':
-							Z_test = self.mask_cov(X_test, k)
-						if self.change == 'perm':
-							Z_test = self.perm_cov(X_test, k)
-						pred_y = self.model.predict_on_batch(X_test)
-						pred_y_mask = self.model_mask.predict_on_batch(Z_test)
-						ind_inf, ind_inf_mask = train_test_split(range(len(pred_y)), train_size=m_tmp, random_state=42)
-						# evaluation
-						metric_tmp = self.metric(y_test[ind_inf], pred_y[ind_inf])
-						metric_mask_tmp = self.metric(y_test[ind_inf_mask], pred_y_mask[ind_inf_mask])
-						diff_tmp = metric_tmp - metric_mask_tmp
-						Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
-						p_value_tmp = norm.cdf(Lambda_tmp)
-						P_value_cv.append(p_value_tmp)
-						P_value.append(P_value_cv)
-					else:
-						for j in range(num_perm):
-							# generate permutation for testing
-							index_test_perm = np.random.permutation(range(len(y_test)))
-							y_test_perm = y_test[index_test_perm].copy()
-							X_test_perm = X_test.copy()
-							X_test_perm[:,not_inf_cov] = X_test_perm[:,not_inf_cov][index_test_perm,:]
-							## evaluate the performance
-							if self.change == 'mask':
-								Z_test_perm = self.mask_cov(X_test_perm, k)
-							if self.change == 'perm':
-								Z_test_perm = self.perm_cov(X_test_perm, k)
-						
-							pred_y_perm = self.model.predict_on_batch(X_test_perm)
-							pred_y_mask_perm = self.model_mask.predict_on_batch(Z_test_perm)
-							# permutate testing sample
-							# split two sample
-							ind_inf, ind_inf_mask = train_test_split(range(len(pred_y_perm)), train_size=m_tmp, random_state=42)
-							# evaluation
-							metric_tmp = self.metric(y_test_perm[ind_inf], pred_y_perm[ind_inf])
-							metric_mask_tmp = self.metric(y_test_perm[ind_inf_mask], pred_y_mask_perm[ind_inf_mask])
-							diff_tmp = metric_tmp - metric_mask_tmp
-							Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
-							p_value_tmp = norm.cdf(Lambda_tmp)
-							P_value_cv.append(p_value_tmp)
-						P_value.append(P_value_cv)
+					if self.change == 'mask':
+						Z_test = self.mask_cov(X_test, k)
+					if self.change == 'perm':
+						Z_test = self.perm_cov(X_test, k)
+					pred_y = self.model.predict_on_batch(X_test)
+					pred_y_mask = self.model_mask.predict_on_batch(Z_test)
+					ind_inf, ind_inf_mask = train_test_split(range(len(pred_y)), train_size=m_tmp, random_state=42)
+					# evaluation
+					metric_tmp = self.metric(y_test[ind_inf], pred_y[ind_inf])
+					metric_mask_tmp = self.metric(y_test[ind_inf_mask], pred_y_mask[ind_inf_mask])
+					diff_tmp = metric_tmp - metric_mask_tmp
+					Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
+					p_value_tmp = norm.cdf(Lambda_tmp)
+					P_value.append(p_value_tmp)
+					# P_value.append(P_value_cv)
+					if verbose == 1:
+						print('(AdaRatio) cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, p_value_tmp, ratio_tmp, perturb_tmp))
+						print('(AdaRatio) diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
+						# P_value_cv.append(p_value_tmp)
 				
 				P_value = np.array(P_value)
 				if cv_num > 1:
@@ -234,26 +209,31 @@ class DnnT(object):
 				else:
 					P_value = np.mean(P_value, 0)
 
+				if verbose==1:
+					# print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
+					print('(AdaRatio) p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(P_value.mean(), ratio_tmp, perturb_tmp))
+
 				## compute the type 1 error
-				Err1 = len(P_value[P_value < self.alpha]) / len(P_value)
-				Err1_lst.append(Err1)
+				# Err1 = len(P_value[P_value < self.alpha]) / len(P_value)
+				# Err1_lst.append(Err1)
+				P_value_lst.append(P_value)
 				ratio_lst.append(ratio_tmp)
 				
-				if verbose==1:
-					print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f' %(Err1, P_value.mean(), ratio_tmp))
+				# if verbose==1:
+				# 	print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f' %(Err1, P_value.mean(), ratio_tmp))
 				
-				if Err1 <= self.alpha:
+				if P_value > self.alpha:
 					found = 1
 					if ratio_method == 'fuse':
 						m_opt = m_tmp
 						n_opt = len(X) - 2*m_opt
 						break
-			if found==1:
+			if found == 1:
 				if ratio_method == 'close':
-					Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
-					Err1_lst, ratio_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha]
-					m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X) / 2)
-					n_opt = len(X) - 2*m_opt
+					P_value_lst = np.array(P_value_lst)
+					ratio_lst = np.array(ratio_lst)
+					m_opt = int(ratio_lst[np.argmax(P_value_lst)] * len(X))
+					n_opt = len(X) - m_opt
 
 			if found==0:
 				warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and inference sample ratio is set as the min of ratio_grid.")
@@ -271,7 +251,7 @@ class DnnT(object):
 				## stop if current perturb is enough to control the type 1 error
 				if found == 1:
 					break
-				Err1_lst, ratio_lst, perturb_lst = [], [], []
+				Err1_lst, ratio_lst, perturb_lst, P_value_lst = [], [], [], []
 				for ratio_tmp in reversed(ratio_grid):
 					self.reset_model()
 					m_tmp = int(len(X)*ratio_tmp)
@@ -304,62 +284,25 @@ class DnnT(object):
 						# self.model_mask.save('model_mask.h5')
 						# model_tmp = load_model('model.h5', compile=False)
 						# model_mask_tmp = load_model('model_mask.h5', compile=False)
-						if stopping_metric == 'p-value':
-							if self.change == 'mask':
-								Z_test = self.mask_cov(X_test, k)
-							if self.change == 'perm':
-								Z_test = self.perm_cov(X_test, k)
-							pred_y = self.model.predict_on_batch(X_test)
-							pred_y_mask = self.model_mask.predict_on_batch(Z_test)
-							# evaluation
-							metric_tmp = self.metric(y_test, pred_y)
-							metric_mask_tmp = self.metric(y_test, pred_y_mask)
-							diff_tmp = metric_tmp - metric_mask_tmp
-							Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
-							p_value_tmp = norm.cdf(Lambda_tmp)
-							if verbose == 1:
-								# print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
-								print('cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, p_value_tmp, ratio_tmp, perturb_tmp))
-							P_value_cv.append(p_value_tmp)
-							P_value.append(P_value_cv)
-						else:
-							for j in range(num_perm):
-								## evaluate the performance
-								index_test_perm = np.random.permutation(range(len(y_test)))
-								y_test_perm = y_test[index_test_perm].copy()
-								X_test_perm = X_test.copy()
-								X_test_perm[:,not_inf_cov] = X_test_perm[:,not_inf_cov][index_test_perm,:]
-								## evaluate the performance
-								if self.change == 'mask':
-									Z_test_perm = self.mask_cov(X_test_perm, k)
-								if self.change == 'perm':
-									Z_test_perm = self.perm_cov(X_test_perm, k)
-							
-								pred_y_perm = self.model.predict_on_batch(X_test_perm)
-								pred_y_mask_perm = self.model_mask.predict_on_batch(Z_test_perm)
-								# pred_y_perm = model_tmp.predict_on_batch(X_test_perm)
-								# pred_y_mask_perm = model_mask_tmp.predict_on_batch(Z_test_perm)
-
-								# evaluation
-								metric_tmp = self.metric(y_test_perm, pred_y_perm)
-								metric_mask_tmp = self.metric(y_test_perm, pred_y_mask_perm)
-								# print('metric_tmp: %.3f(%.3f); metric_mask_tmp: %.3f(%.3f)' %(np.mean(metric_tmp), np.std(metric_tmp), np.mean(metric_mask_tmp), np.std(metric_mask_tmp)))
-								
-								if perturb_tmp == 'auto':
-									diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))
-								else:
-									diff_tmp = metric_tmp - metric_mask_tmp + perturb_tmp*np.random.randn(len(metric_tmp))
-								
-								Lambda_tmp = np.sqrt(len(diff_tmp))*( diff_tmp.mean() )/ ( diff_tmp.std() )
-								p_value_tmp = norm.cdf(Lambda_tmp)
-								P_value_cv.append(p_value_tmp)
-								# print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))					
-								# print('p_value: %.3f' %p_value_tmp)
-							if verbose == 1:
-								# print('diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
-								print('cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, np.mean(P_value_cv), ratio_tmp, perturb_tmp))
-
-							P_value.append(P_value_cv)
+						# if stopping_metric == 'p-value':
+						if self.change == 'mask':
+							Z_test = self.mask_cov(X_test, k)
+						if self.change == 'perm':
+							Z_test = self.perm_cov(X_test, k)
+						pred_y = self.model.predict_on_batch(X_test)
+						pred_y_mask = self.model_mask.predict_on_batch(Z_test)
+						# evaluation
+						metric_tmp = self.metric(y_test, pred_y)
+						metric_mask_tmp = self.metric(y_test, pred_y_mask)
+						diff_tmp = metric_tmp - metric_mask_tmp
+						# print('(AdaRatio) diff: %.3f(%.3f); metric_tmp: %.3f(%.3f); metric_mask_tmp: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
+						Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
+						p_value_tmp = norm.cdf(Lambda_tmp)
+						if verbose == 1:
+							print('(AdaRatio) diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
+							print('(AdaRatio) cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, p_value_tmp, ratio_tmp, perturb_tmp))
+						# P_value_cv.append(p_value_tmp)
+						P_value.append(p_value_tmp)
 				
 					P_value = np.array(P_value)
 					# print(P_value)
@@ -381,15 +324,17 @@ class DnnT(object):
 						P_value = np.mean(P_value, 0)
 					# print('p_value: %s' %P_value)
 					## compute the type 1 error
-					Err1 = len(P_value[P_value<=self.alpha])/len(P_value)
+					# Err1 = len(P_value[P_value<=self.alpha])/len(P_value)
+					
 					if verbose==1:
 						# print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
-						print('p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(P_value.mean(), ratio_tmp, perturb_tmp))
-					Err1_lst.append(Err1)
+						print('(AdaRatio) p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(P_value.mean(), ratio_tmp, perturb_tmp))
+					# Err1_lst.append(Err1)
+					P_value_lst.append(P_value)
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
 				
-					if Err1 <= self.alpha:
+					if P_value > self.alpha:
 						found = 1
 						if ratio_method == 'fuse':
 							m_opt = m_tmp
@@ -405,12 +350,11 @@ class DnnT(object):
 						perturb_opt = perturb_tmp
 						
 					if ratio_method == 'close':
-						Err1_lst, ratio_lst, perturb_lst = np.array(Err1_lst), np.array(ratio_lst), np.array(perturb_lst)
-						Err1_lst, ratio_lst, perturb_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha], perturb_lst[Err1_lst <= self.alpha]
-						Err1_lst = self.alpha - Err1_lst
-						m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
+						P_value_lst = np.array(P_value_lst)
+						ratio_lst, perturb_lst = np.array(ratio_lst), np.array(perturb_lst)
+						m_opt = int(ratio_lst[np.argmax(P_value_lst)] * len(X))
 						n_opt = len(X) - m_opt
-						perturb_opt = perturb_lst[np.argmin(Err1_lst)]
+						perturb_opt = perturb_lst[np.argmax(P_value_lst)]
 
 			if found==0:
 				warnings.warn("No ratio and perturb_level can control the Type 1 error, pls increase the perturb_level and sample size, and inference sample ratio is set as the min of ratio_grid.")
