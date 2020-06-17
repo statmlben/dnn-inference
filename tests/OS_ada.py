@@ -15,11 +15,11 @@ import time
 from DnnT import DnnT
 
 array32 = partial(np.array, dtype=np.float32)
-np.random.seed(0)
+np.random.seed(1)
 
 p, L0, d0, K0 = 100, 3, 128, 5
 tau, x_max, pho = 2., .4, .25
-N = 10000
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -27,7 +27,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 1
+if_power = 0
 
 if if_power == 1:
 	num_sim = 100
