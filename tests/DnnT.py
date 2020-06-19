@@ -161,7 +161,7 @@ class DnnT(object):
 					X_perm = X.copy()
 					X_perm[:,not_inf_cov] = X_perm[:,not_inf_cov][index_perm,:]
 					## split sample
-					X_train, X_test, y_train, y_test = train_test_split(y_perm, y_perm, train_size=n_tmp, random_state=1)
+					X_train, X_test, y_train, y_test = train_test_split(X_perm, y_perm, train_size=n_tmp, random_state=1)
 					# training for full model
 					history = self.model.fit(x=X_train, y=y_train, **fit_params)
 					
@@ -192,7 +192,7 @@ class DnnT(object):
 					P_value.append(p_value_tmp)
 					# P_value.append(P_value_cv)
 					if verbose == 1:
-						print('(AdaRatio) cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, p_value_tmp, ratio_tmp, perturb_tmp))
+						print('(AdaRatio) cv: %d; p_value: %.3f, inference sample ratio: %.3f' %(h, p_value_tmp, ratio_tmp))
 						print('(AdaRatio) diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
 						# P_value_cv.append(p_value_tmp)
 				
@@ -211,7 +211,7 @@ class DnnT(object):
 
 				if verbose==1:
 					# print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value.mean(), ratio_tmp, perturb_tmp))
-					print('(AdaRatio) p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(P_value.mean(), ratio_tmp, perturb_tmp))
+					print('(AdaRatio) p_value: %.3f, inference sample ratio: %.3f' %(P_value.mean(), ratio_tmp))
 
 				## compute the type 1 error
 				# Err1 = len(P_value[P_value < self.alpha]) / len(P_value)
@@ -228,11 +228,13 @@ class DnnT(object):
 						m_opt = m_tmp
 						n_opt = len(X) - 2*m_opt
 						break
+			
 			if found == 1:
 				if ratio_method == 'close':
 					P_value_lst = np.array(P_value_lst)
 					ratio_lst = np.array(ratio_lst)
-					m_opt = int(ratio_lst[np.argmax(P_value_lst)] * len(X))
+					m_opt = int(ratio_lst[np.argmin(np.abs(P_value_lst - 0.5))] * len(X))
+					# m_opt = int(ratio_lst[np.argmax(P_value_lst)] * len(X))
 					n_opt = len(X) - m_opt
 
 			if found==0:
@@ -352,7 +354,8 @@ class DnnT(object):
 					if ratio_method == 'close':
 						P_value_lst = np.array(P_value_lst)
 						ratio_lst, perturb_lst = np.array(ratio_lst), np.array(perturb_lst)
-						m_opt = int(ratio_lst[np.argmax(P_value_lst)] * len(X))
+						m_opt = int(ratio_lst[np.argmin(np.abs(P_value_lst - 0.5))] * len(X))
+						# m_opt = int(ratio_lst[np.argmax(P_value_lst)] * len(X))
 						n_opt = len(X) - m_opt
 						perturb_opt = perturb_lst[np.argmax(P_value_lst)]
 
