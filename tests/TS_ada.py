@@ -1,4 +1,4 @@
-## OS_ada.py
+## TS_ada.py
 
 import numpy as np
 import sim_data
@@ -19,7 +19,7 @@ np.random.seed(1)
 
 p, L0, d0, K0 = 100, 3, 128, 5
 tau, x_max, pho = 2., .4, .25
-N = 6000
+N = 2000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -112,6 +112,3 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.2f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
-
-## N=2000; close .2-.5
-# type1 0.052

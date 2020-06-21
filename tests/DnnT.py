@@ -200,6 +200,10 @@ class DnnT(object):
 				if cv_num > 1:
 					if cp == 'gmean':
 						P_value = np.e*gmean(P_value, 0)
+					elif cp == 'median':
+						P_value = 2*np.median(P_value, 0)
+					elif cp == '2nd-smallest':
+						P_value = cv_num/2.*np.partition(P_value, 1)[1]
 					elif cp == 'min':
 						P_value = cv_num*np.min(P_value, 0)
 					elif cp == 'hmean':
@@ -311,6 +315,10 @@ class DnnT(object):
 					if cv_num > 1:
 						if cp == 'gmean':
 							P_value = np.e*gmean(P_value, 0)
+						elif cp == 'median':
+							P_value = 2*np.median(P_value, 0)
+						elif cp == '2nd-smallest':
+							P_value = cv_num/2.*np.partition(P_value, 1)[1]
 						elif cp == 'mean':
 							P_value = 2*np.mean(P_value, 0)
 						elif cp == 'min':
@@ -439,6 +447,10 @@ class DnnT(object):
 			if cv_num > 1:
 				if cp == 'gmean':
 					p_value_mean = np.e*gmean(P_value_cv)
+				elif cp == 'median':
+					p_value_mean = 2.*np.median(P_value_cv)
+				elif cp == '2nd-smallest':
+					p_value_mean = cv_num/2.*np.partition(P_value_cv, 1)[1]
 				elif cp == 'min':
 					p_value_mean = cv_num*np.min(P_value_cv)
 				elif cp == 'hmean':
