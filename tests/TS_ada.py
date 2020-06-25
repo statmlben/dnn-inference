@@ -1,4 +1,4 @@
-## TS_ada.py
+## OS_ada.py
 
 import numpy as np
 import sim_data
@@ -15,11 +15,17 @@ import time
 from DnnT import DnnT
 
 array32 = partial(np.array, dtype=np.float32)
-np.random.seed(1)
+np.random.seed(2)
+
+if_comb = 1
+if if_comb == 1:
+	cv_num_ada = 5
+else:
+	cv_num_ada = 1
 
 p, L0, d0, K0 = 100, 3, 128, 5
 tau, x_max, pho = 2., .4, .25
-N = 2000
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -50,6 +56,15 @@ for i in range(num_sim):
 		model = Model(inputs, outputs)
 		# model.compile(loss='mean_squared_error', optimizer=optimizer)
 		return model
+
+	# def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
+	# 	model = Sequential()
+	# 	model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
+	# 	for l in range(L-2):
+	# 		model.add(Dense(d, use_bias=False, activation='relu'))
+	# 	model.add(Dense(1, use_bias=False, activation='relu'))
+	# 	model.compile(loss='mean_squared_error', optimizer=optimizer)
+	# 	return model
 
 	## Generate data
 	X = sim_data.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
@@ -82,6 +97,7 @@ for i in range(num_sim):
 	split_params = {'split': 'two-sample',
 					'perturb': None,
 					'ratio_grid': [.2, .4, .6, .8],
+					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 200,
 					'ratio_method': 'fuse',
@@ -94,7 +110,7 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=5, cp='gmean', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=cv_num_ada, cp='2nd-smallest', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	if fit_err == 0:
 		P_value.append(p_value_tmp)
@@ -112,3 +128,6 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.2f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
+
+## N=2000; close .2-.5
+# type1 0.052

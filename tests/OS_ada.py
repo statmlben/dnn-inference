@@ -15,11 +15,20 @@ import time
 from DnnT import DnnT
 
 array32 = partial(np.array, dtype=np.float32)
-np.random.seed(1)
+np.random.seed(2)
+
+if_comb = 0
+if if_comb == 1:
+	ratio_grid_ada = [.2, .4, .6, .8]
+	cv_num_ada = 5
+else:
+	ratio_grid_ada = [.1, .3, .5]
+	cv_num_ada = 1
+
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .4, .50
-N = 2000
+tau, x_max, pho = 2., .2, .25
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -90,11 +99,11 @@ for i in range(num_sim):
 
 	split_params = {'split': 'one-sample',
 					'perturb': None,
-					'ratio_grid': [.2, .4, .6, .8],
+					'ratio_grid': [.1, .3, .5],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 200,
-					'ratio_method': 'fuse',
+					'ratio_method': 'close',
 					'cv_num': 1,
 					'cp': 'gmean',
 					'verbose': 1}
@@ -104,7 +113,7 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=5, cp='2nd-smallest', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=cv_num_ada, cp='2nd-smallest', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	if fit_err == 0:
 		P_value.append(p_value_tmp)
