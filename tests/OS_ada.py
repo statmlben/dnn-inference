@@ -22,12 +22,12 @@ if if_comb == 1:
 	ratio_grid_ada = [.2, .4, .6, .8]
 	cv_num_ada = 5
 else:
-	ratio_grid_ada = [.1, .3, .5]
+	ratio_grid_ada = [.1, .2, .3, .5]
 	cv_num_ada = 1
 
 
-p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .2, .25
+p, L0, d0, K0 = 100, 2, 256, 5
+tau, x_max, pho = 2., .4, .25
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
@@ -99,7 +99,7 @@ for i in range(num_sim):
 
 	split_params = {'split': 'one-sample',
 					'perturb': None,
-					'ratio_grid': [.1, .3, .5],
+					'ratio_grid': ratio_grid_ada,
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 200,
