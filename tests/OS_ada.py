@@ -15,28 +15,27 @@ import time
 from DnnT import DnnT
 
 array32 = partial(np.array, dtype=np.float32)
-np.random.seed(2)
+np.random.seed(0)
 
 if_comb = 0
 if if_comb == 1:
 	ratio_grid_ada = [.2, .4, .6, .8]
 	cv_num_ada = 5
 else:
-	ratio_grid_ada = [.1, .2, .3, .5]
+	ratio_grid_ada = [.2, .4, .6, .8]
 	cv_num_ada = 1
 
 
-p, L0, d0, K0 = 100, 2, 256, 5
-tau, x_max, pho = 2., .4, .25
+p, L0, d0, K0 = 100, 3, 128, 5
+tau, x_max, pho = 2., .4, .00
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
-print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 1
+if_power = 0
 
 if if_power == 1:
 	num_sim = 100
@@ -103,7 +102,8 @@ for i in range(num_sim):
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 200,
-					'ratio_method': 'close',
+					'num_perm': 500,
+					'ratio_method': 'fuse',
 					'cv_num': 1,
 					'cp': 'gmean',
 					'verbose': 1}
@@ -131,6 +131,7 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.2f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
+print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 ## N=2000; close .2-.5
 # type1 0.052
