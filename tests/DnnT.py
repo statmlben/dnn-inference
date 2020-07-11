@@ -218,7 +218,7 @@ class DnnT(object):
 						warnings.warn("cp should be geometric or min.")
 				else:
 					P_value_cp = np.mean(P_value, 0)
-
+				P_value_cp = np.minimum(P_value_cp, 1.)
 				## compute the type 1 error
 				Err1 = len(P_value_cp[P_value_cp < self.alpha]) / len(P_value_cp)
 				Err1_lst.append(Err1)
@@ -341,8 +341,9 @@ class DnnT(object):
 							warnings.warn("cp should be geometric, mean or min.")
 					else:
 						P_value_cp = np.mean(P_value, 0)
-					# print('p_value: %s' %P_value_cp)
 					# compute the type 1 error
+					P_value_cp = np.minimum(P_value_cp, 1.)
+					# print('p_value: %s' %P_value_cp)
 					Err1 = len(P_value_cp[P_value_cp<=self.alpha])/len(P_value_cp)
 					Err1_lst.append(Err1)
 					

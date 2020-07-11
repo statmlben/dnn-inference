@@ -17,7 +17,7 @@ from DnnT import DnnT
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-if_comb = 0
+if_comb = 1
 if if_comb == 1:
 	ratio_grid_ada = [.2, .4, .6, .8]
 	cv_num_ada = 5
@@ -27,7 +27,7 @@ else:
 
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .4, .00
+tau, x_max, pho = 2., .6, .25
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 
@@ -102,10 +102,10 @@ for i in range(num_sim):
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 100,
 					'min_est': 200,
-					'num_perm': 500,
+					'num_perm': 100,
 					'ratio_method': 'fuse',
 					'cv_num': 1,
-					'cp': 'gmean',
+					'cp': '2nd-smallest',
 					'verbose': 1}
 	if if_power == 1:
 		inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
