@@ -204,16 +204,23 @@ class DnnT(object):
 				P_value = np.array(P_value)
 				# print(P_value)
 				if cv_num > 1:
+					P_value = np.array(P_value)
 					if cp == 'gmean':
 						P_value_cp = np.e*gmean(P_value, 0)
 					elif cp == 'median':
 						P_value_cp = 2*np.median(P_value, 0)
-					elif cp == '2nd-smallest':
+					elif cp == 'Q1':
 						P_value_cp = cv_num/2.*np.partition(P_value, 1)[1]
 					elif cp == 'min':
 						P_value_cp = cv_num*np.min(P_value, 0)
 					elif cp == 'hmean':
 						P_value_cp = np.e * np.log(cv_num) * hmean(P_value, 0)
+					elif cp == 'hommel':
+						const = np.sum(1. / (np.arange(cv_num) + 1.))
+						P_value_cp = const*np.min(np.sort(P_value)*cv_num/(np.arange(cv_num) + 1.))
+					elif cp == 'cauchy':
+						t0 = np.mean(np.tan((.5 - P_value_cv)*np.pi))
+						p_value_mean = .5 - np.arctan(t0)/np.pi
 					else:
 						warnings.warn("cp should be geometric or min.")
 				else:
@@ -326,12 +333,18 @@ class DnnT(object):
 							P_value_cp = np.e*gmean(P_value, 0)
 						elif cp == 'median':
 							P_value_cp = 2*np.median(P_value, 0)
-						elif cp == '2nd-smallest':
+						elif cp == 'Q1':
 							P_value_cp = cv_num/2.*np.partition(P_value, 1)[1]
 						elif cp == 'mean':
 							P_value_cp = 2*np.mean(P_value, 0)
 						elif cp == 'min':
 							P_value_cp = cv_num*np.min(P_value, 0)
+						elif cp == 'hommel':
+							const = np.sum(1. / (np.arange(cv_num) + 1.))
+							P_value_cp = const*np.min(np.sort(P_value)*cv_num/(np.arange(cv_num) + 1.))
+						elif cp == 'cauchy':
+							t0 = np.mean(np.tan((.5 - P_value_cv)*np.pi))
+							P_value_cp = .5 - np.arctan(t0)/np.pi
 						elif cp == 'hmean':
 							# def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
 							# sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
@@ -455,22 +468,28 @@ class DnnT(object):
 				print('cv: %d; p_value: %.3f; diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(h, p_value_tmp, diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
 
 				P_value_cv.append(p_value_tmp)
-
+			P_value_cv = np.array(P_value_cv)
 			if cv_num > 1:
 				if cp == 'gmean':
 					p_value_mean = np.e*gmean(P_value_cv)
 				elif cp == 'median':
 					p_value_mean = 2.*np.median(P_value_cv)
-				elif cp == '2nd-smallest':
+				elif cp == 'Q1':
 					p_value_mean = cv_num/2.*np.partition(P_value_cv, 1)[1]
 				elif cp == 'min':
 					p_value_mean = cv_num*np.min(P_value_cv)
+				elif cp == 'hommel':
+					const = np.sum(1. / (np.arange(cv_num) + 1.))
+					p_value_mean = const*np.min(np.sort(P_value_cv)*cv_num/(np.arange(cv_num) + 1.))
 				elif cp == 'hmean':
 					# def h_const(y): return y**2 - cv_num*( (y+1)*np.log(y+1) - y )
 					# sol_tmp = scipy.optimize.broyden1(h_const, xin=10., f_tol=1e-5)
 					# a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num
 					p_value_mean = np.e * np.log(cv_num) * hmean(P_value_cv)
 					# print('cv_p-value is %s; a_h: %.3f' %(P_value_cv, a_h))
+				elif cp == 'cauchy':
+					t0 = np.mean(np.tan((.5 - P_value_cv)*np.pi))
+					p_value_mean = .5 - np.arctan(t0)/np.pi
 				else:
 					warnings.warn("pls input correct way to combine p-values")
 			else:
@@ -484,5 +503,5 @@ class DnnT(object):
 				print('accept H0 with p_value: %.3f' %p_value_mean)
 
 			P_value.append(p_value_mean)
-		return P_value, fit_err
+		return P_value, fit_err, P_value_cv
 

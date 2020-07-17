@@ -17,7 +17,7 @@ from DnnT import DnnT
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(2)
 
-if_comb = 1
+if_comb = 0
 if if_comb == 1:
 	cv_num_ada = 5
 else:
@@ -33,7 +33,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 1
+if_power = 0
 
 if if_power == 1:
 	num_sim = 100
@@ -111,7 +111,7 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=cv_num_ada, cp='2nd-smallest', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err, p_value_cv_tmp = shiing.testing(X, y, cv_num=cv_num_ada, cp='Q1', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	if fit_err == 0:
 		P_value.append(p_value_tmp)
@@ -129,6 +129,7 @@ if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.2f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
 
+print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
 ## N=2000; close .2-.5
 # type1 0.052

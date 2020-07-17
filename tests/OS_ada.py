@@ -25,15 +25,14 @@ else:
 	ratio_grid_ada = [.2, .4, .6, .8]
 	cv_num_ada = 1
 
-
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .6, .25
+tau, x_max, pho = 2., .4, .25
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 
 verbose = 0
 # specify model
-P_value, SE_list, time_lst = [], [], []
+P_value, P_value_cv, SE_list, time_lst = [], [], [], []
 
 if_power = 0
 
@@ -105,7 +104,7 @@ for i in range(num_sim):
 					'num_perm': 100,
 					'ratio_method': 'fuse',
 					'cv_num': 1,
-					'cp': '2nd-smallest',
+					'cp': 'min',
 					'verbose': 1}
 	if if_power == 1:
 		inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
@@ -113,11 +112,12 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp, fit_err = shiing.testing(X, y, cv_num=cv_num_ada, cp='2nd-smallest', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err, p_value_cv = shiing.testing(X, y, cv_num=cv_num_ada, cp='hommel', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	if fit_err == 0:
 		P_value.append(p_value_tmp)
 		time_lst.append(toc - tic)
+		P_value_cv.append(p_value_cv)
 
 P_value = np.array(P_value)
 time_lst = np.array(time_lst)
