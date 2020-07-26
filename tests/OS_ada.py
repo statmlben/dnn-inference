@@ -26,7 +26,7 @@ else:
 	cv_num_ada = 1
 
 p, L0, d0, K0 = 100, 3, 128, 5
-tau, x_max, pho = 2., .4, .25
+tau, x_max, pho = 2., .4, .00
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 
@@ -91,7 +91,7 @@ for i in range(num_sim):
 	
 	fit_params = {'callbacks': [es],
 				  'epochs': 100,
-				  'batch_size': 64,
+				  'batch_size': 128,
 				  'validation_split': .2,
 				  'verbose': 0}
 

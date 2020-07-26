@@ -48,7 +48,7 @@ def cnn():
 	model.add(Dense(128, activation='relu'))
 	model.add(Dropout(0.5))
 	model.add(Dense(num_classes, activation='softmax'))
-	model.compile(loss=keras.losses.binary_crossentropy, optimizer=keras.optimizers.Adam(0.005), metrics=['accuracy'])
+	model.compile(loss=keras.losses.binary_crossentropy, optimizer=keras.optimizers.Adam(0.0005), metrics=['accuracy'])
 	return model
 
 tic = time.perf_counter()
@@ -61,24 +61,24 @@ fit_params = {'callbacks': [es],
 			  'epochs': 100,
 			  'batch_size': 32,
 			  'validation_split': .2,
-			  'verbose': 0}
+			  'verbose': 1}
 
 split_params = {'split': 'two-sample',
 				'perturb': None,
-				'num_perm': 1000,
+				'num_perm': 100,
 				'ratio_grid': [.2, .4, .6, .8],
 				'perturb_grid': [.01, .05, .1, .5, 1.],
 				'min_inf': 100,
 				'min_est': 1000,
-				'ratio_method': 'close',
+				'ratio_method': 'fuse',
+				'cv_num': 1,
+				'cp': 'min',
 				'verbose': 1}
 
-inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],
-		   [np.arange(7,16), np.arange(9,16)]]
-# inf_cov = [[np.arange(21,28), np.arange(4, 13)]]
+inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],[np.arange(7,16), np.arange(9,16)]]
+#inf_cov = [[np.arange(19,28), np.arange(13,20)]]
 shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
-p_value_tmp = shiing.testing(X, y, cv_num=1, cp='gmean', fit_params=fit_params, split_params=split_params)
+p_value_tmp, _, _ = shiing.testing(X, y, cv_num=1, cp='hommel', fit_params=fit_params, split_params=split_params)
 toc = time.perf_counter()
 print('testing time: %.3f' %(toc-tic))
 print('P-values: %s' %p_value_tmp)
-# OS test: [0.6642883319367069, 0.9672120396024865, 9.977801368581722e-25]

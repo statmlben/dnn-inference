@@ -139,8 +139,6 @@ class DnnT(object):
 		
 		candidate, Err1_lst, ratio_lst, P_value_lst = [], [], [], []
 		found = 0
-		n_sample, p = X.shape
-		# not_inf_cov = np.array([j for j in range(p) if j not in self.inf_cov[k]])
 		if split == 'two-sample':
 			# for ratio_tmp in reversed(ratio_grid):
 			for ratio_tmp in ratio_grid:
@@ -157,9 +155,10 @@ class DnnT(object):
 					self.reset_model()
 					P_value_cv = []
 					## generate permutated samples
-					index_perm = np.random.permutation(range(len(y)))
+					# index_perm = np.random.permutation(range(len(y)))
 					X_perm = X.copy()
-					X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]
+					X_perm = self.perm_cov(X_perm, k)
+					# X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]
 					## split sample
 					X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=1)
 					# training for full model
@@ -183,9 +182,10 @@ class DnnT(object):
 					# evaluation
 					pred_y_mask = self.model_mask.predict_on_batch(Z_test)
 					for j in range(num_perm):
-						ind_test_perm = np.random.permutation(range(len(y_test)))
+						# ind_test_perm = np.random.permutation(range(len(y_test)))
 						X_test_perm = X_test.copy()
-						X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
+						X_test_perm = self.perm_cov(X_test_perm, k)
+						# X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
 						pred_y = self.model.predict_on_batch(X_test_perm)
 						ind_inf, ind_inf_mask = train_test_split(range(len(pred_y)), train_size=m_tmp, random_state=42)
 
@@ -271,7 +271,6 @@ class DnnT(object):
 				Err1_lst, ratio_lst, perturb_lst, P_value_lst = [], [], [], []
 				# for ratio_tmp in reversed(ratio_grid):
 				for ratio_tmp in ratio_grid:
-					self.reset_model()
 					m_tmp = int(len(X)*ratio_tmp)
 					if m_tmp < min_inf:
 						continue
@@ -281,11 +280,13 @@ class DnnT(object):
 					# split data
 					P_value = []
 					for h in range(cv_num):
+						self.reset_model()
 						P_value_cv = []
 						## generate permutated samples
-						index_perm = np.random.permutation(range(len(y)))
+						# index_perm = np.random.permutation(range(len(y)))
 						X_perm = X.copy()
-						X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]
+						X_perm = self.perm_cov(X_perm, k)
+						# X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]
 						# split samples
 						X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=h)
 						# training for full model
@@ -310,9 +311,10 @@ class DnnT(object):
 						pred_y_mask = self.model_mask.predict_on_batch(Z_test)
 						# evaluation
 						for j in range(num_perm):
-							ind_test_perm = np.random.permutation(range(len(y_test)))
+							# ind_test_perm = np.random.permutation(range(len(y_test)))
 							X_test_perm = X_test.copy()
-							X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
+							X_test_perm = self.perm_cov(X_test_perm, k)
+							# X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
 							pred_y = self.model.predict_on_batch(X_test_perm)
 							metric_tmp = self.metric(y_test, pred_y)
 							metric_mask_tmp = self.metric(y_test, pred_y_mask)
@@ -351,7 +353,7 @@ class DnnT(object):
 							# a_h = (sol_tmp + cv_num)**2 / (sol_tmp+1) / cv_num
 							P_value_cp = np.e * np.log(cv_num) * hmean(P_value_cv)
 						else:
-							warnings.warn("cp should be geometric, mean or min.")
+							warnings.warn("Not a well-defined cp method, pls check the document.")
 					else:
 						P_value_cp = np.mean(P_value, 0)
 					# compute the type 1 error
@@ -401,30 +403,33 @@ class DnnT(object):
 		
 			return n_opt, m_opt, perturb_opt
 
-	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='gmean', est_size=None, inf_size=None):
+	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='gmean', inf_ratio=None):
 		P_value = []
 		fit_err = 0
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
 			if split_params['split'] == 'one-sample':
-				if (est_size == None) or (inf_size == None):
+				if ((inf_ratio == None) or (split_params['perturb'] == None)):
 					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
 				else:
-					n, m, perturb_level = est_size, inf_size, split_params['perturb']
+					m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
+					perturb_level = split_params['perturb']
 			
-			if split_params['split'] == 'two-sample':
-				if (est_size == None) or (inf_size == None):
+			elif split_params['split'] == 'two-sample':
+				if inf_ratio == None:
 					n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 				else:
-					n, m = est_size, inf_size
-			
+					m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
+			else:
+				warnings.warn("split method must be 'one-sample' or 'two-sample'!")
+
 			P_value_cv = []
 			for h in range(cv_num):
 				X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=h)
 				if split_params['split'] == 'two-sample':
-					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test, train_size=m, random_state=42)
+					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test, train_size=.5, random_state=42)
 				if split_params['split'] == 'one-sample':
 					X_inf, X_inf_mask, y_inf, y_inf_mask = X_test.copy(), X_test.copy(), y_test.copy(), y_test.copy()
 				## prediction and inference in full model
@@ -451,7 +456,7 @@ class DnnT(object):
 				pred_y_mask = self.model_mask.predict_on_batch(Z_inf)
 				metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
-				if ((np.mean(metric_mask) > 2) or (np.mean(metric_full) > 2)):
+				if ((np.mean(metric_mask) > 3) or (np.mean(metric_full) > 3)):
 					fit_err = 1
 				## compute p-value
 				if split_params['split'] == 'one-sample':
@@ -504,4 +509,5 @@ class DnnT(object):
 
 			P_value.append(p_value_mean)
 		return P_value, fit_err, P_value_cv
+		# return P_value
 

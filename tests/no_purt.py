@@ -17,9 +17,9 @@ from DnnT import DnnT
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
-p0, L0, d0, K0 = 100, 2, 64, 5
-tau, x_max, pho = 2., .4, .25
-N = 6000
+p0, L0, d0, K0 = 100, 2, 32, 3
+tau, x_max, pho = 2., .1, .00
+N = 10000
 n_params = p0*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -30,14 +30,14 @@ P_value, SE_list, time_lst = [], [], []
 if_power = 0
 
 if if_power == 1:
-	num_sim = 10
+	num_sim = 100
 else:
 	num_sim = 1000
 
 for i in range(num_sim):
 	K.clear_session()
 
-	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
+	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0001)):
 		model = Sequential()
 		model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
 		for l in range(L-2):
@@ -58,7 +58,7 @@ for i in range(num_sim):
 	# import matplotlib.pyplot as plt
 	# plt.hist(Y, bins=50)
 	# plt.show()
-	p = int(p0*(1. - 1/np.log(N)))
+	p = int(p0*(1. - 1./np.log(N)))
 	X = X[:,:p]
 	
 	tic = time.perf_counter()
@@ -78,13 +78,13 @@ for i in range(num_sim):
 				  'verbose': 0}
 
 	split_params = {'split': 'one-sample',
-					'perturb': 0.0,
-					'num_perm': 1000,
-					'ratio_grid': [.6],
+					'perturb': 1.0,
+					'num_perm': 100,
+					'ratio_grid': [.2],
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'min_inf': 0,
 					'min_est': 0,
-					'ratio_method': 'close',
+					'ratio_method': 'fuse',
 					'cv_num': 1,
 					'cp': 'gmean',
 					'verbose': 0}
@@ -94,10 +94,14 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp = shiing.testing(X, y, cv_num=1, cp='gmean', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err, p_value_cv = shiing.testing(X, y, cv_num=1, cp='hommel', fit_params=fit_params, split_params=split_params, inf_ratio=.2)
 	toc = time.perf_counter()
-	P_value.append(p_value_tmp)
-	time_lst.append(toc - tic)
+	# P_value.append(p_value_tmp)
+	# time_lst.append(toc - tic)
+	if fit_err == 0:
+		P_value.append(p_value_tmp)
+		time_lst.append(toc - tic)
+		#P_value_cv.append(p_value_cv)
 
 P_value = np.array(P_value)
 time_lst = np.array(time_lst)
@@ -109,13 +113,3 @@ print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= shiing.alp
 if if_power == 1:
 	for i in [1, 2, 3]:
 		print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
-
-
-# type1 Error:
-## OS without permutation (ratio, error)
-# N=6000; (0.2, 0.852); (0.4, 0.931), (0.6, 0.948); (0.8, )
-# N=1000; (0.2, 0.951); (0.4, 0.957); (0.6, 0.980); (0.8, 0.999)
-
-## TS 
-
-## OS with permutation

@@ -15,7 +15,9 @@ Dnn-Inference
 
 Dnn-Inference is a Python module for hypothesis testing based on deep neural networks. 
 
-.. This project was created by `Ben Dai <http://users.stat.umn.edu/~bdai/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
+Website: https://variant-svm.readthedocs.io/en/latest/
+
+This project was created by `Ben Dai <http://users.stat.umn.edu/~bdai/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
 
 Installation
 ------------
@@ -37,6 +39,9 @@ User installation
 Install Deep-Inference using ``pip`` ::
 
 	pip install dnn-inference
+
+or ::
+
 	pip install git+https://github.com/statmlben/dnn-inference.git
 
 Source code

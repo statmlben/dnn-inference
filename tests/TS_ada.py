@@ -17,13 +17,13 @@ from DnnT import DnnT
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(2)
 
-if_comb = 0
+if_comb = 1
 if if_comb == 1:
 	cv_num_ada = 5
 else:
 	cv_num_ada = 1
 
-p, L0, d0, K0 = 100, 2, 32, 5
+p, L0, d0, K0 = 100, 4, 128, 5
 tau, x_max, pho = 2., .4, .25
 N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
@@ -33,7 +33,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-if_power = 0
+if_power = 1
 
 if if_power == 1:
 	num_sim = 100
@@ -90,7 +90,7 @@ for i in range(num_sim):
 	
 	fit_params = {'callbacks': [es],
 				  'epochs': 100,
-				  'batch_size': 64,
+				  'batch_size': 512,
 				  'validation_split': .2,
 				  'verbose': 0}
 
@@ -111,7 +111,7 @@ for i in range(num_sim):
 		inf_cov = [range(0, K0)]
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 	
-	p_value_tmp, fit_err, p_value_cv_tmp = shiing.testing(X, y, cv_num=cv_num_ada, cp='Q1', fit_params=fit_params, split_params=split_params)
+	p_value_tmp, fit_err, p_value_cv_tmp = shiing.testing(X, y, cv_num=cv_num_ada, cp='hommel', fit_params=fit_params, split_params=split_params)
 	toc = time.perf_counter()
 	if fit_err == 0:
 		P_value.append(p_value_tmp)
