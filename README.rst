@@ -1,6 +1,9 @@
 .. -*- mode: rst -*-
 
-|Keras|_ |MIT| |Python3| |tensorflow|_
+|PyPi|_ |Keras|_ |MIT| |Python3| |tensorflow|_
+
+.. |PyPi| image:: https://badge.fury.io/py/dnn-inference.svg
+.. _PyPi: https://badge.fury.io/py/dnn-inference
 
 .. |Keras| image:: https://img.shields.io/badge/keras-tf.keras-red.svg
 .. _Keras: https://keras.io/
