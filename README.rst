@@ -98,7 +98,7 @@ Class for one-split/two-split test based on deep neural networks.
 
 .. code:: python
 
-	def testing(self, X, y, cv_num=1, cp='geometric', fit_params, split_params, inf_ratio=None)
+	def testing(self, X, y, cv_num=5, cp='hommel', fit_params, split_params, inf_ratio=None)
 
 Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 

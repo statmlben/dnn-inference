@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, find_packages
 
 
 with open('README.rst') as f:
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         # Needed for dependencies
         install_requires=['numpy', 'keras', 'tensorflow>=1.14', 'scipy', 'sklearn'],
         # *strongly* suggested for sharing
-        version='0.1',
+        version='0.5',
         # The license can be anything you like
         license='MIT',
         description='Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.',

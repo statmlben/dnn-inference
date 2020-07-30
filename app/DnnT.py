@@ -406,7 +406,7 @@ class DnnT(object):
 		
 			return n_opt, m_opt, perturb_opt
 
-	def testing(self, X, y, fit_params, split_params={}, cv_num=5, cp='hommel', inf_ratio=None):
+	def testing(self, X, y, fit_params, split_params={}, cv_num=5, cp='gmean', inf_ratio=None):
 		## update split_params
 		split_params_default = {'split': 'one-split',
 								'perturb': None,
