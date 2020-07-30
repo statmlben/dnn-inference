@@ -1,12 +1,14 @@
 .. -*- mode: rst -*-
 
-|Keras|_ |Python3| |tensorflow|_
+|Keras|_ |MIT| |Python3| |tensorflow|_
 
 .. |Keras| image:: https://img.shields.io/badge/keras-tf.keras-red.svg
 .. _Keras: https://keras.io/
 
-.. |Python3| image:: https://img.shields.io/badge/python-3-green.svg
+.. |MIT| image:: https://img.shields.io/pypi/l/varsvm.svg
 
+.. |Python3| image:: https://img.shields.io/badge/python-3-green.svg
+	
 .. |tensorflow| image:: https://img.shields.io/badge/keras-tensorflow-blue.svg
 .. _tensorflow: https://www.tensorflow.org/
 
@@ -14,8 +16,6 @@ Dnn-Inference
 =============
 
 Dnn-Inference is a Python module for hypothesis testing based on deep neural networks. 
-
-Website: https://variant-svm.readthedocs.io/en/latest/
 
 This project was created by `Ben Dai <http://users.stat.umn.edu/~bdai/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
 
@@ -28,10 +28,10 @@ Dependencies
 Deep-Inference requires:
 
 - Python
-- keras
-- tensorflow
+- Keras
+- Tensorflow==1.15
 - sklearn
-- sciPy
+- SciPy
 
 User installation
 ~~~~~~~~~~~~~~~~~
@@ -89,7 +89,8 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 - Parameters:
 	- **X: {array-like} of shape (n_samples, dim_features)**
 	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
-	- **y: {array-like} of shape (n_samples,)**
+	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+	 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.	- **y: {array-like} of shape (n_samples,)**
 	 Output vector/matrix relative to X.
 	- **fit_params: {dict of fitting parameters}**
 	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
