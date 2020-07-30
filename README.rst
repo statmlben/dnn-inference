@@ -132,6 +132,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 PermT
 ~~~~~
 Class for permutation testing based on deep neural networks. 
+
 **Remark:** *permutation testing break the dependence of the features, which may lead to incorrect p-values*.
 
 .. code:: python
@@ -162,8 +163,10 @@ Class for permutation testing based on deep neural networks.
 Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 
 - Parameters:
-	- **X: {array-like} of shape (n_samples, dim_features)**
+	- **X: {array-like}**
 	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+	 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.
 	- **y: {array-like} of shape (n_samples,)**
 	 Output vector/matrix relative to X.
 	- **fit_params: {dict of fitting parameters}**

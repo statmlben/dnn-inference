@@ -115,6 +115,7 @@ class DnnT(object):
 	def mask_cov(self, X, k=0):
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
+			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
 			Z[:, self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0] = 0.
 		else:
 			Z[:,self.inf_cov[k]]= 0.
@@ -123,6 +124,7 @@ class DnnT(object):
 	def perm_cov(self, X, k=0):
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
+			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
 			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0])
 		else:
 			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
