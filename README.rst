@@ -28,8 +28,9 @@ Dependencies
 Deep-Inference requires:
 
 - Python
+- Numpy
 - Keras
-- Tensorflow==1.15
+- Tensorflow>=1.15
 - sklearn
 - SciPy
 

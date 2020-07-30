@@ -14,7 +14,7 @@ if __name__ == "__main__":
         # Needed to actually package something
         packages=find_packages(),
         # Needed for dependencies
-        install_requires=['numpy', 'keras', 'tensorflow', 'scipy', 'sklearn'],
+        install_requires=['numpy', 'keras', 'tensorflow>=1.14', 'scipy', 'sklearn'],
         # *strongly* suggested for sharing
         version='0.1',
         # The license can be anything you like

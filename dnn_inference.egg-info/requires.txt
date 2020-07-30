@@ -1,5 +1,5 @@
 numpy
 keras
-tensorflow
+tensorflow>=1.14
 scipy
 sklearn
