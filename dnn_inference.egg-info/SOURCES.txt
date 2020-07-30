@@ -1,0 +1,11 @@
+README.rst
+setup.cfg
+setup.py
+dnn_inference/DnnT.py
+dnn_inference/PermT.py
+dnn_inference/__init__.py
+dnn_inference.egg-info/PKG-INFO
+dnn_inference.egg-info/SOURCES.txt
+dnn_inference.egg-info/dependency_links.txt
+dnn_inference.egg-info/requires.txt
+dnn_inference.egg-info/top_level.txt

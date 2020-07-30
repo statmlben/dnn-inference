@@ -83,7 +83,7 @@ Class for one-sample/two-sample test based on deep neural networks.
 
 .. code:: python
 
-	def testing(self, X, y, cv_num=1, cp='geometric', fit_params, split_params, est_size=None, inf_size=None)
+	def testing(self, X, y, cv_num=1, cp='geometric', fit_params, split_params, inf_ratio=None)
 Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 
 - Parameters:
@@ -96,11 +96,13 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 	- **split_params: {dict of splitting parameters}**
 		- **split: {'one-sample', 'two-sample'}**. 
 		- **perturb: float**
-		 Perturb level for the one-sample test, if ``perturb = 'auto'``, then the perturb level is set as std of metric for full model.
+		 Perturb level for the one-sample test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 		- **num_perm: int**
 		 Number of permutation for determine the splitting ratio.
 		- **ratio_grid: list of float (0,1), default=[.2, .3, .4]**
 		 A list of estimation/inference ratios under searching.
+		- **if_reverse: {0,1}, default=0**
+		 ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
 		- **perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
 		 A list of perturb levels under searching. 
 		- **min_inf: int, default=0**
@@ -111,17 +113,15 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 		 The adaptive splitting method to determine the optimal estimation/inference ratios.
 		- **cv_num: int, default=1**
 		 The number of cross-validation to shuttle the estimation/inference samples in adaptive ratio splitting.
-		- **cp: {'gmean', 'min', 'hmean'}, default ='gmean'** 
+		- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='Q1'**
 		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 		- **verbose: {0,1}, default=1**
 	- **cv_num: int, default=1**
 	 The number of cross-validation to shuttle the estimation/inference samples in testing.
 	- **cp: {'gmean', 'min', 'hmean'}, default ='gmean'**
 	 A method to combine p-values obtained from cross-validation.
-	- **est_size: int, default=None**
-	 A pre-specific estimation sample size, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
-	- **inf_size: int, default=None**
-	 A pre-specific inference sample size, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
+	- **inf_ratio: float, default=None**
+	 A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
 
 - Return:
 	- **P_value: array of float [0, 1]**
