@@ -65,13 +65,18 @@ Class for one-split/two-split test based on deep neural networks.
 	class dnn_inference.DnnT(inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse')
 
 - Parameters:
+
 	- **inf_cov: {list-like of shape (num of tests, dim of features)}** 
+
 	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
 	- **model: {keras-defined neural network}** 
+
 	 A neural network for original full dataset
 	- **model_mask: {keras-defined neural network}**
+
 	 A neural network for masked dataset by masking/changing the features under hypothesis testing
 	- **change: {'mask', 'perm'}, default='mask'** 
+	
 	 The way to change the testing features, ``'mask'`` replaces testing features as zeros, while ``'perm'`` permutes features via instances.
 	- **alpha: float (0,1), default=0.05**
 	 The nominal level of the hypothesis testing
@@ -88,6 +93,7 @@ Class for one-split/two-split test based on deep neural networks.
 Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 
 - Parameters:
+
 	- **X: {array-like} of shape (n_samples, dim_features)**
 	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
 	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
@@ -96,6 +102,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 	- **fit_params: {dict of fitting parameters}**
 	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
 	- **split_params: {dict of splitting parameters}**
+
 		- **split: {'one-split', 'two-split'}, default='one-split'**
 		 one-split or two-split test statistic.
 		- **perturb: float, default=None**
@@ -119,6 +126,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 		- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 		- **verbose: {0,1}, default=1**
+
 	- **cv_num: int, default=1**
 	 The number of cross-validation to shuffle the estimation/inference samples in testing.
 	- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
