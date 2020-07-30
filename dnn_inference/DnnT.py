@@ -133,7 +133,7 @@ class DnnT(object):
 		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-sample', perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
 				min_inf=0, min_est=0, ratio_method='fuse', num_perm=100, cv_num=1, cp='gmean', verbose=0):
 		
 		ratio_grid = ratio_grid.sort()
@@ -142,7 +142,7 @@ class DnnT(object):
 		
 		candidate, Err1_lst, ratio_lst, P_value_lst = [], [], [], []
 		found = 0
-		if split == 'two-sample':
+		if split == 'two-split':
 			for ratio_tmp in ratio_grid:
 				ratio_tmp = ratio_tmp/2
 				m_tmp = int(len(X)*ratio_tmp)
@@ -263,7 +263,7 @@ class DnnT(object):
 			
 			return n_opt, m_opt
 
-		if split == 'one-sample':
+		if split == 'one-split':
 			if perturb != None:
 				perturb_grid = [perturb]
 			for perturb_tmp in perturb_grid:
@@ -406,7 +406,7 @@ class DnnT(object):
 
 	def testing(self, X, y, fit_params, split_params, cv_num=1, cp='gmean', inf_ratio=None):
 		## update split_params
-		split_params_default = {'split': 'one-sample',
+		split_params_default = {'split': 'one-split',
 								'perturb': None,
 								'num_perm': 100,
 								'ratio_grid': [.2, .4, .6, .8],
@@ -424,7 +424,7 @@ class DnnT(object):
 		P_value = []
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
-			if split_params['split'] == 'one-sample':
+			if split_params['split'] == 'one-split':
 				if ((inf_ratio == None) or (split_params['perturb'] == None)):
 					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
@@ -432,21 +432,21 @@ class DnnT(object):
 					m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
 					perturb_level = split_params['perturb']
 			
-			elif split_params['split'] == 'two-sample':
+			elif split_params['split'] == 'two-split':
 				if inf_ratio == None:
 					n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 				else:
 					m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
 			else:
-				warnings.warn("split method must be 'one-sample' or 'two-sample'!")
+				warnings.warn("split method must be 'one-split' or 'two-split'!")
 
 			P_value_cv = []
 			for h in range(cv_num):
 				X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=h)
-				if split_params['split'] == 'two-sample':
+				if split_params['split'] == 'two-split':
 					X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test, train_size=.5, random_state=42)
-				if split_params['split'] == 'one-sample':
+				if split_params['split'] == 'one-split':
 					X_inf, X_inf_mask, y_inf, y_inf_mask = X_test.copy(), X_test.copy(), y_test.copy(), y_test.copy()
 				## prediction and inference in full model
 				self.reset_model()
@@ -475,13 +475,13 @@ class DnnT(object):
 				# if ((np.mean(metric_mask) > 3) or (np.mean(metric_full) > 3)):
 				# 	fit_err = 1
 				## compute p-value
-				if split_params['split'] == 'one-sample':
+				if split_params['split'] == 'one-split':
 					if perturb_level == 'auto':
 						diff_tmp = metric_full - metric_mask + metric_full.std() * np.random.randn(len(metric_full))
 					else:
 						diff_tmp = metric_full - metric_mask + perturb_level * np.random.randn(len(metric_full))
 				
-				if split_params['split'] == 'two-sample':
+				if split_params['split'] == 'two-split':
 					diff_tmp = metric_full - metric_mask
 				
 				Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )

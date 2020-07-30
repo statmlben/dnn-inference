@@ -57,7 +57,7 @@ Documentation
 
 DnnT
 ~~~~
-Class for one-sample/two-sample test based on deep neural networks. 
+Class for one-split/two-split test based on deep neural networks. 
 
 .. code:: python
 
@@ -94,12 +94,13 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 	- **fit_params: {dict of fitting parameters}**
 	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
 	- **split_params: {dict of splitting parameters}**
-		- **split: {'one-sample', 'two-sample'}**. 
-		- **perturb: float**
-		 Perturb level for the one-sample test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
-		- **num_perm: int**
+		- **split: {'one-split', 'two-split'}, default='one-split'**
+		 one-split or two-split test statistic.
+		- **perturb: float, default=None**
+		 Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
+		- **num_perm: int, default=100**
 		 Number of permutation for determine the splitting ratio.
-		- **ratio_grid: list of float (0,1), default=[.2, .3, .4]**
+		- **ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
 		 A list of estimation/inference ratios under searching.
 		- **if_reverse: {0,1}, default=0**
 		 ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
@@ -112,13 +113,13 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 		- **ratio_method: {'fuse', 'close'}, default='fuse'**
 		 The adaptive splitting method to determine the optimal estimation/inference ratios.
 		- **cv_num: int, default=1**
-		 The number of cross-validation to shuttle the estimation/inference samples in adaptive ratio splitting.
-		- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='Q1'**
+		 The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
+		- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 		- **verbose: {0,1}, default=1**
 	- **cv_num: int, default=1**
-	 The number of cross-validation to shuttle the estimation/inference samples in testing.
-	- **cp: {'gmean', 'min', 'hmean'}, default ='gmean'**
+	 The number of cross-validation to shuffle the estimation/inference samples in testing.
+	- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 	 A method to combine p-values obtained from cross-validation.
 	- **inf_ratio: float, default=None**
 	 A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
@@ -131,6 +132,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 PermT
 ~~~~~
 Class for permutation testing based on deep neural networks. 
+**Remark:** *permutation testing break the dependence of the features, which may lead to incorrect p-values*.
 
 .. code:: python
 
@@ -240,7 +242,7 @@ Example
 				  'validation_split': .2,
 				  'verbose': 1}
 
-	split_params = {'split': 'one-sample',
+	split_params = {'split': 'one-split',
 					'perturb': None,
 					'num_perm': 1000,
 					'ratio_grid': [.3, .4, .5],
