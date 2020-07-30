@@ -1,4 +1,5 @@
-from setuptools import setup
+from setuptools import setup, find_packages
+
 
 with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()
@@ -6,12 +7,12 @@ with open('README.rst') as f:
 if __name__ == "__main__":
     setup(
         # Needed to silence warnings (and to be a worthwhile package)
-        name='dnn_inference',
+        name='dnn-inference',
         url='https://github.com/statmlben/dnn-inference',
         author='Ben Dai',
         author_email='bdai@umn.edu',
         # Needed to actually package something
-        packages=['dnn_inference'],
+        packages=find_packages(),
         # Needed for dependencies
         install_requires=['numpy', 'keras', 'tensorflow', 'scipy', 'sklearn'],
         # *strongly* suggested for sharing
