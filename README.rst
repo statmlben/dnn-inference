@@ -246,21 +246,11 @@ Example
 				  'validation_split': .2,
 				  'verbose': 1}
 
-	split_params = {'split': 'one-split',
-					'perturb': None,
-					'num_perm': 1000,
-					'ratio_grid': [.3, .4, .5],
-					'perturb_grid': [.05, .1, .5, 1.],
-					'min_inf': 100,
-					'min_est': 1000,
-					'split_method': 'close',
-					'verbose': 1}
-
 	inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],
 			   [np.arange(7,16), np.arange(9,16)]]
 
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
 	
-	p_value_tmp, metric_tmp = shiing.testing(X, y, fit_params=fit_params, split_params=split_params)
+	p_value_tmp = shiing.testing(X, y, fit_params=fit_params)
 	toc = time.perf_counter()
 	print('testing time: %.3f' %(toc-tic))
