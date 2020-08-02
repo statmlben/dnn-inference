@@ -1,2 +1,5 @@
 sphinx>=1.4
 nbsphinx
+nbsphinx_link
+recommonmark
+sphinx_git
