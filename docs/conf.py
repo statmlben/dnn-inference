@@ -18,9 +18,6 @@
 #
 import os
 import sys
-import mock
-import pygame
-from pygame.locals import *
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
@@ -34,18 +31,6 @@ sys.path.insert(0, os.path.abspath('..'))
 # ones.
 # extensions = ['sphinx.ext.autodoc', 'sphinx.ext.mathjax', 'sphinx.ext.napoleon', 'nbsphinx',
 #                 'nbsphinx_link', 'recommonmark', 'sphinx_git']
-
-MOCK_MODULES = [
-    'numpy',
-    'keras',
-    'pandas',
-    'tensorflow',
-    'scipy',
-    'python-docx',
-    'sklearn']
-
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
 
 extensions = [
     'sphinx.ext.autodoc',
