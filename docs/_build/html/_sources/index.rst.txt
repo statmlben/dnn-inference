@@ -46,7 +46,7 @@ Reference manual
 .. toctree::
     :maxdepth: 2
     
-    python-api/dnn_inference
+    python-api/Dnn
 
 
 .. Indices and tables
