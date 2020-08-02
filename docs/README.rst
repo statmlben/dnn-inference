@@ -28,10 +28,10 @@ Dnn-Inference is a Python module for hypothesis testing based on deep neural net
 This project was created by `Ben Dai <http://users.stat.umn.edu/~bdai/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
 
 Installation
-------------
+============
 
 Dependencies
-~~~~~~~~~~~~
+------------
 
 Deep-Inference requires:
 
@@ -43,7 +43,7 @@ Deep-Inference requires:
 - SciPy
 
 User installation
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Install Deep-Inference using ``pip`` ::
 
@@ -54,7 +54,7 @@ or ::
 	pip install git+https://github.com/statmlben/dnn-inference.git
 
 Source code
-~~~~~~~~~~~
+-----------
 
 You can check the latest sources with the command::
 
@@ -62,10 +62,10 @@ You can check the latest sources with the command::
 
 
 Documentation
--------------
+=============
 
 DnnT
-~~~~
+----
 Class for one-split/two-split test based on deep neural networks. 
 
 .. code:: python
@@ -191,7 +191,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 
 
 PermT
-~~~~~
+-----
 Class for permutation testing based on deep neural networks. 
 
 **Remark:** *permutation testing break the dependence of the features, which may lead to incorrect p-values*.
@@ -261,7 +261,7 @@ Method under class ``DnnT``, conduct the hypothesis testings according to the gi
 	 The p_values for target hypothesis testings.
 
 Example
-~~~~~~~
+=======
 .. code:: python
 
 	import numpy as np

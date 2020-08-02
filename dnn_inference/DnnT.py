@@ -1,3 +1,9 @@
+"""
+Statistical inference based on deep nerual networks
+"""
+
+# Author: Ben Dai <bdai@umn.edu>
+
 import numpy as np
 from scipy.stats import norm
 from sklearn.model_selection import train_test_split
@@ -12,6 +18,33 @@ import scipy.optimize
 from keras.models import load_model
 
 class DnnT(object):
+	"""Class for one-split/two-split test based on deep neural networks. 
+	
+	Parameters
+	----------
+
+	inf_cov : list-like of shape (num of tests, dim of features)
+	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
+
+	model : {keras-defined neural network}
+	 A neural network for original full dataset
+	
+	model_mask : {keras-defined neural network}
+	 A neural network for masked dataset by masking/changing the features under hypothesis testing
+
+	change: {'mask', 'perm'}, default='mask'
+	 The way to change the testing features, ``'mask'`` replaces testing features as zeros, while ``'perm'`` permutes features via instances.
+
+	alpha: float (0,1), default=0.05
+	 The nominal level of the hypothesis testing
+	
+	verbose: {0, 1}, default=0
+	 If print the testing results, 1 indicates YES, 0 indicates NO.
+	
+	eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}
+	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
+	"""
+
 	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse'):
 		self.inf_cov = inf_cov
 		self.model = model
@@ -49,6 +82,9 @@ class DnnT(object):
 	# 	self.model.set_weights(new_weights)
 
 	def reset_model(self):
+		"""
+		Reset the full and mask network models under class Dnn
+		"""
 		if int(tf.__version__[0]) == 2:
 			for layer in self.model.layers:
 				if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
@@ -74,29 +110,29 @@ class DnnT(object):
 					else:
 						var.assign(initializer(var.shape, var.dtype))
 
-			for layer in self.model_mask.layers:
-				if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
-					reset_weights(layer) #apply function recursively
-					continue
-				#where are the initializers?
-				if hasattr(layer, 'cell'):
-					init_container = layer.cell
-				else:
-					init_container = layer
+		for layer in self.model_mask.layers:
+			if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
+				reset_weights(layer) #apply function recursively
+				continue
+			#where are the initializers?
+			if hasattr(layer, 'cell'):
+				init_container = layer.cell
+			else:
+				init_container = layer
 
-				for key, initializer in init_container.__dict__.items():
-					if "initializer" not in key: #is this item an initializer?
-					  continue #if no, skip it
-					# find the corresponding variable, like the kernel or the bias
-					if key == 'recurrent_initializer': #special case check
-						var = getattr(init_container, 'recurrent_kernel')
-					else:
-						var = getattr(init_container, key.replace("_initializer", ""))
-					
-					if var is None:
-						continue
-					else:
-						var.assign(initializer(var.shape, var.dtype))
+			for key, initializer in init_container.__dict__.items():
+				if "initializer" not in key: #is this item an initializer?
+				  continue #if no, skip it
+				# find the corresponding variable, like the kernel or the bias
+				if key == 'recurrent_initializer': #special case check
+					var = getattr(init_container, 'recurrent_kernel')
+				else:
+					var = getattr(init_container, key.replace("_initializer", ""))
+				
+				if var is None:
+					continue
+				else:
+					var.assign(initializer(var.shape, var.dtype))
 		
 		if int(tf.__version__[0]) == 1:
 			session = K.get_session()
@@ -104,7 +140,7 @@ class DnnT(object):
 				if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
 					layer.kernel.initializer.run(session=session)
 				if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
-					layer.bias.initializer.run(session=session)     
+					layer.bias.initializer.run(session=session)	 
 			for layer in self.model_mask.layers:
 				if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
 					layer.kernel.initializer.run(session=session)
@@ -113,6 +149,17 @@ class DnnT(object):
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0):
+		"""
+		Return instances with masked k-th hypothesized features.
+
+		Parameters
+		----------
+		X : array-like
+		Target instances.
+
+		k : integer, default = 0
+		k-th hypothesized features in inf_cov
+		"""
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
 			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
@@ -122,6 +169,17 @@ class DnnT(object):
 		return Z
 
 	def perm_cov(self, X, k=0):
+		"""
+		Return instances with permuted k-th hypothesized features.
+
+		Parameters
+		----------
+		X : array-like
+		Target instances.
+
+		k : integer, default = 0
+		k-th hypothesized features in inf_cov
+		"""
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
 			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
@@ -137,7 +195,70 @@ class DnnT(object):
 
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
 				if_reverse=0, min_inf=0, min_est=0, ratio_method='fuse', num_perm=100, cv_num=1, cp='gmean', verbose=0):
+		"""
+		Return a data-adaptive splitting ratio and perturbation level.
+
+		Parameters
+		----------
+		X : array-like | shape=(n_samples, dim1, dim2, ...)
+			Features. 
+
+		y : array-like | shape=(n_samples, dim)
+			Outcomes.
+
+		k : integer, default = 0
+			k-th hypothesized features in inf_cov
+
+		fit_params : dict | shape = dict of fitting parameters
+			See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``.
+
+		perturb : float | default=None
+			Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 		
+		split : {'one-split', 'two-split'}
+			one-split or two-split test statistic.
+
+		perturb_grid : list of float | default=[.01, .05, .1, .5, 1.]
+			A list of perturb levels under searching.
+
+		ratio_grid : list of float (0,1) | default=[.2, .4, .6, .8]
+			A list of estimation/inference ratios under searching.
+
+		if_reverse: {0,1} | default = 0
+			``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
+
+		min_inf: integer | default = 0
+			The minimal size for inference sample.
+
+		min_est: integer | default = 0
+			The minimal size for estimation sample.
+
+		ratio_method: {'close', 'fuse'} | default = 'fuse'
+			The adaptive splitting method to determine the optimal estimation/inference ratios.
+
+		cv_num: int, default=1
+			The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
+		
+		cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'} | default = 'hommel'
+			A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
+		
+		verbose: {0,1} | default=1
+			If print the adaptive splitting process.
+
+		Returns
+		-------
+		
+		n_opt : integer
+			A reasonable estimation sample size.
+
+		m_opt : integer
+			A reasonable inference sample size.
+
+		perturb_opt : float
+			A reasonable perturbation level.
+
+		"""
+
 		ratio_grid.sort()
 		if if_reverse == 1:
 			ratio_grid = list(reversed(ratio_grid))
@@ -407,7 +528,74 @@ class DnnT(object):
 			return n_opt, m_opt, perturb_opt
 
 	def testing(self, X, y, fit_params, split_params={}, cv_num=5, cp='hommel', inf_ratio=None):
-		## update split_params
+		"""
+		Return p-values for hypothesis testing for inf_cov in class Dnn.
+
+		Parameters
+		----------
+
+		X : {array-like} of shape (n_samples, dim_features)**
+	 		Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+			 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+			 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.	- **y: {array-like} of shape (n_samples,)**
+			 Output vector/matrix relative to X.
+	
+		fit_params: {dict of fitting parameters}**
+	 		See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
+	
+		split_params: {dict of splitting parameters}**
+
+			split: {'one-split', 'two-split'}, default='one-split'**
+				one-split or two-split test statistic.
+		
+			perturb: float, default=None**
+				Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
+			
+			num_perm: int, default=100**
+				Number of permutation for determine the splitting ratio.
+			
+			ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
+				A list of estimation/inference ratios under searching.
+			
+			if_reverse: {0,1}, default=0**
+				``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
+			
+			perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
+				A list of perturb levels under searching. 
+			
+			min_inf: int, default=0**
+				The minimal size for inference sample.
+			
+			min_est: int, default=0**
+				The minimal size for estimation sample.
+			
+			ratio_method: {'fuse', 'close'}, default='fuse'**
+				The adaptive splitting method to determine the optimal estimation/inference ratios.
+			
+			cv_num: int, default=1**
+				The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
+			
+			cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
+				A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
+			
+			verbose: {0,1}, default=1**
+
+		cv_num: int, default=1**
+			The number of cross-validation to shuffle the estimation/inference samples in testing.
+		
+		cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
+			A method to combine p-values obtained from cross-validation.
+		
+		inf_ratio: float, default=None**
+			A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
+
+		Return
+		------
+		
+		P_value: array of float [0, 1]**
+			The p_values for target hypothesis testings.
+
+		"""
 		split_params_default = {'split': 'one-split',
 								'perturb': None,
 								'num_perm': 100,

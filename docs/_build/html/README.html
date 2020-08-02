@@ -1,0 +1,648 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dnn-Inference &mdash; dnn-inference  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python-api" href="python-api/dnn_inference.html" />
+    <link rel="prev" title="Welcome to Dnn-Inference’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> dnn-inference
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dnn-Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-installation">User installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source-code">Source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dnnt">DnnT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permt">PermT</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="python-api/dnn_inference.html">Python-api</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dnn-inference</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Dnn-Inference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<p><a class="reference external" href="https://badge.fury.io/py/dnn-inference"><img alt="PyPi" src="https://badge.fury.io/py/dnn-inference.svg" /></a> <a class="reference external" href="https://keras.io/"><img alt="Keras" src="https://img.shields.io/badge/keras-tf.keras-red.svg" /></a> <img alt="MIT" src="https://img.shields.io/pypi/l/varsvm.svg" /> <img alt="Python3" src="https://img.shields.io/badge/python-3-green.svg" /> <a class="reference external" href="https://www.tensorflow.org/"><img alt="tensorflow" src="https://img.shields.io/badge/keras-tensorflow-blue.svg" /></a> <a class="reference external" href="https://pepy.tech/project/dnn-inference"><img alt="downloads" src="https://pepy.tech/badge/dnn-inference" /></a> <a class="reference external" href="https://pepy.tech/project/dnn-inference"><img alt="downloads_month" src="https://pepy.tech/badge/dnn-inference/month" /></a></p>
+<div class="section" id="dnn-inference">
+<h1>Dnn-Inference<a class="headerlink" href="#dnn-inference" title="Permalink to this headline">¶</a></h1>
+<p>Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.</p>
+<p>This project was created by <a class="reference external" href="http://users.stat.umn.edu/~bdai/">Ben Dai</a>. If there is any problem and suggestion please contact me via &lt;<a class="reference external" href="mailto:bdai&#37;&#52;&#48;umn&#46;edu">bdai<span>&#64;</span>umn<span>&#46;</span>edu</a>&gt;.</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Deep-Inference requires:</p>
+<ul class="simple">
+<li><p>Python</p></li>
+<li><p>Numpy</p></li>
+<li><p>Keras</p></li>
+<li><p>Tensorflow&gt;=1.15</p></li>
+<li><p>sklearn</p></li>
+<li><p>SciPy</p></li>
+</ul>
+</div>
+<div class="section" id="user-installation">
+<h2>User installation<a class="headerlink" href="#user-installation" title="Permalink to this headline">¶</a></h2>
+<p>Install Deep-Inference using <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">dnn</span><span class="o">-</span><span class="n">inference</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">statmlben</span><span class="o">/</span><span class="n">dnn</span><span class="o">-</span><span class="n">inference</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="source-code">
+<h2>Source code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<p>You can check the latest sources with the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">statmlben</span><span class="o">/</span><span class="n">dnn</span><span class="o">-</span><span class="n">inference</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dnnt">
+<h2>DnnT<a class="headerlink" href="#dnnt" title="Permalink to this headline">¶</a></h2>
+<p>Class for one-split/two-split test based on deep neural networks.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dnn_inference</span><span class="o">.</span><span class="n">DnnT</span><span class="p">(</span><span class="n">inf_cov</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mo">05</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul>
+<li><p>Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>inf_cov: {list-like of shape (num of tests, dim of features)}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>model: {keras-defined neural network}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A neural network for original full dataset</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>model_mask: {keras-defined neural network}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A neural network for masked dataset by masking/changing the features under hypothesis testing</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>change: {‘mask’, ‘perm’}, default=’mask’</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The way to change the testing features, <code class="docutils literal notranslate"><span class="pre">'mask'</span></code> replaces testing features as zeros, while <code class="docutils literal notranslate"><span class="pre">'perm'</span></code> permutes features via instances.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>alpha: float (0,1), default=0.05</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The nominal level of the hypothesis testing</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>verbose: {0, 1}, default=0</strong></p></li>
+</ul>
+<blockquote>
+<div><p>If print the testing results, 1 indicates YES, 0 indicates NO.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>eva_metric: {‘mse’, ‘zero-one’, ‘cross-entropy’, or custom metric function}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The evaluation metric, <code class="docutils literal notranslate"><span class="pre">'mse'</span></code> is the l2-loss for regression, <code class="docutils literal notranslate"><span class="pre">'zero-one'</span></code> is the zero-one loss for classification, <code class="docutils literal notranslate"><span class="pre">'cross-entropy'</span></code> is log-loss for classification. It can also be custom metric function as <code class="docutils literal notranslate"><span class="pre">eva_metric(y_true,</span> <span class="pre">y_pred)</span></code>.</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>Method</strong>:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">testing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="s1">&#39;hommel&#39;</span><span class="p">,</span> <span class="n">fit_params</span><span class="p">,</span> <span class="n">split_params</span><span class="p">,</span> <span class="n">inf_ratio</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Method under class <code class="docutils literal notranslate"><span class="pre">DnnT</span></code>, conduct the hypothesis testings according to the given data.</p>
+<ul>
+<li><p>Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>X: {array-like} of shape (n_samples, dim_features)</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+If X is vectorized feature, <code class="docutils literal notranslate"><span class="pre">shape</span></code> should be <code class="docutils literal notranslate"><span class="pre">(#Samples,</span> <span class="pre">dim</span> <span class="pre">of</span> <span class="pre">feaures)</span></code>
+If X is image/matrix data, <code class="docutils literal notranslate"><span class="pre">shape</span></code> should be <code class="docutils literal notranslate"><span class="pre">(#samples,</span> <span class="pre">img_rows,</span> <span class="pre">img_cols,</span> <span class="pre">channel)</span></code>, that is, <strong>X must channel_last image data</strong>.       - <strong>y: {array-like} of shape (n_samples,)</strong>
+Output vector/matrix relative to X.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>fit_params: {dict of fitting parameters}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>See keras <code class="docutils literal notranslate"><span class="pre">fit</span></code>: (<a class="reference external" href="https://keras.rstudio.com/reference/fit.html">https://keras.rstudio.com/reference/fit.html</a>), including <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, <code class="docutils literal notranslate"><span class="pre">epoch</span></code>, <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_split</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_data</span></code>, and so on.</p>
+</div></blockquote>
+<ul>
+<li><p><strong>split_params: {dict of splitting parameters}</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>split: {‘one-split’, ‘two-split’}, default=’one-split’</strong></p></li>
+</ul>
+<blockquote>
+<div><p>one-split or two-split test statistic.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>perturb: float, default=None</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Perturb level for the one-split test, if <code class="docutils literal notranslate"><span class="pre">perturb</span> <span class="pre">=</span> <span class="pre">None</span></code>, then the perturb level is determined by adaptive tunning.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>num_perm: int, default=100</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Number of permutation for determine the splitting ratio.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A list of estimation/inference ratios under searching.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>if_reverse: {0,1}, default=0</strong></p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">if_reverse</span> <span class="pre">=</span> <span class="pre">0</span></code> indicates the loop of <code class="docutils literal notranslate"><span class="pre">ratio_grid</span></code> starts from smallest one to largest one; <code class="docutils literal notranslate"><span class="pre">if_reverse</span> <span class="pre">=</span> <span class="pre">1</span></code> indicates the loop of <code class="docutils literal notranslate"><span class="pre">ratio_grid</span></code> starts from largest one to smallest one.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A list of perturb levels under searching.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>min_inf: int, default=0</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The minimal size for inference sample.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>min_est: int, default=0</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The minimal size for estimation sample.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>ratio_method: {‘fuse’, ‘close’}, default=’fuse’</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The adaptive splitting method to determine the optimal estimation/inference ratios.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>cv_num: int, default=1</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>cp: {‘gmean’, ‘min’, ‘hmean’, ‘Q1’, ‘hommel’, ‘cauchy’}, default =’hommel’</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A method to combine p-values obtained from cross-validation. see (<a class="reference external" href="https://arxiv.org/pdf/1212.4966.pdf">https://arxiv.org/pdf/1212.4966.pdf</a>) for more detail.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>verbose: {0,1}, default=1</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>cv_num: int, default=1</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The number of cross-validation to shuffle the estimation/inference samples in testing.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>cp: {‘gmean’, ‘min’, ‘hmean’, ‘Q1’, ‘hommel’, ‘cauchy’}, default =’hommel’</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A method to combine p-values obtained from cross-validation.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>inf_ratio: float, default=None</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A pre-specific inference sample ratio, if <code class="docutils literal notranslate"><span class="pre">est_size=None</span></code>, then it is determined by adaptive splitting method <code class="docutils literal notranslate"><span class="pre">metric</span></code>.</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>Return:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>P_value: array of float [0, 1]</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The p_values for target hypothesis testings.</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="permt">
+<h2>PermT<a class="headerlink" href="#permt" title="Permalink to this headline">¶</a></h2>
+<p>Class for permutation testing based on deep neural networks.</p>
+<p><strong>Remark:</strong> <em>permutation testing break the dependence of the features, which may lead to incorrect p-values</em>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dnn_inference</span><span class="o">.</span><span class="n">PermT</span><span class="p">(</span><span class="n">inf_cov</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mo">05</span><span class="p">,</span> <span class="n">num_folds</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">num_perm</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul>
+<li><p>Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>inf_cov: {list-like of shape (num of tests, dim of features)}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>model: {keras-defined neural network}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A neural network for original full dataset</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>model_mask: {keras-defined neural network}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>A neural network for masked dataset by masking/changing the features under hypothesis testing</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>alpha: float (0,1), default=0.05</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The nominal level of the hypothesis testing</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>num_folds: int, default=5</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Number of CV-folds to compute the score.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>verbose: {0, 1}, default=0</strong></p></li>
+</ul>
+<blockquote>
+<div><p>If print the testing results, 1 indicates YES, 0 indicates NO.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>eva_metric: {‘mse’, ‘zero-one’, ‘cross-entropy’, or custom metric function}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The evaluation metric, <code class="docutils literal notranslate"><span class="pre">'mse'</span></code> is the l2-loss for regression, <code class="docutils literal notranslate"><span class="pre">'zero-one'</span></code> is the zero-one loss for classification, <code class="docutils literal notranslate"><span class="pre">'cross-entropy'</span></code> is log-loss for classification. It can also be custom metric function as <code class="docutils literal notranslate"><span class="pre">eva_metric(y_true,</span> <span class="pre">y_pred)</span></code>.</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>Method</strong>:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">testing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fit_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Method under class <code class="docutils literal notranslate"><span class="pre">DnnT</span></code>, conduct the hypothesis testings according to the given data.</p>
+<ul>
+<li><p>Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>X: {array-like}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+If X is vectorized feature, <code class="docutils literal notranslate"><span class="pre">shape</span></code> should be <code class="docutils literal notranslate"><span class="pre">(#Samples,</span> <span class="pre">dim</span> <span class="pre">of</span> <span class="pre">feaures)</span></code>
+If X is image/matrix data, <code class="docutils literal notranslate"><span class="pre">shape</span></code> should be <code class="docutils literal notranslate"><span class="pre">(#samples,</span> <span class="pre">img_rows,</span> <span class="pre">img_cols,</span> <span class="pre">channel)</span></code>, that is, <strong>X must channel_last image data</strong>.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>y: {array-like} of shape (n_samples,)</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Output vector/matrix relative to X.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>fit_params: {dict of fitting parameters}</strong></p></li>
+</ul>
+<blockquote>
+<div><p>See keras <code class="docutils literal notranslate"><span class="pre">fit</span></code>: (<a class="reference external" href="https://keras.rstudio.com/reference/fit.html">https://keras.rstudio.com/reference/fit.html</a>), including <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, <code class="docutils literal notranslate"><span class="pre">epoch</span></code>, <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_split</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_data</span></code>, and so on.</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>Return:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>P_value: array of float [0, 1]</strong></p></li>
+</ul>
+<blockquote>
+<div><p>The p_values for target hypothesis testings.</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="example">
+<h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">keras</span>
+<span class="kn">from</span> <span class="nn">keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span><span class="p">,</span> <span class="n">SGD</span>
+<span class="kn">from</span> <span class="nn">dnn_inference</span> <span class="kn">import</span> <span class="n">DnnT</span>
+
+<span class="n">num_classes</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># input image dimensions</span>
+<span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span>
+
+<span class="c1"># the data, split between train and test sets</span>
+<span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="n">ind</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">+=</span> <span class="o">.</span><span class="mo">01</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">14251</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span>
+<span class="n">y</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">7</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="n">K</span><span class="o">.</span><span class="n">image_data_format</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;channels_first&#39;</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">/=</span> <span class="mf">255.</span>
+
+<span class="c1"># convert class vectors to binary class matrices</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+<span class="n">K</span><span class="o">.</span><span class="n">clear_session</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">cnn</span><span class="p">():</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">binary_crossentropy</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">0.005</span><span class="p">),</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">model</span>
+
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span> <span class="o">=</span> <span class="n">cnn</span><span class="p">(),</span> <span class="n">cnn</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
+<span class="n">es</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">fit_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;callbacks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">es</span><span class="p">],</span>
+                          <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                          <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+                          <span class="s1">&#39;validation_split&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+<span class="n">inf_cov</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">28</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">20</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="mi">28</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">16</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">16</span><span class="p">)]]</span>
+
+<span class="n">shiing</span> <span class="o">=</span> <span class="n">DnnT</span><span class="p">(</span><span class="n">inf_cov</span><span class="o">=</span><span class="n">inf_cov</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="o">=</span><span class="n">model_mask</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;zero-one&#39;</span><span class="p">)</span>
+
+<span class="n">p_value_tmp</span> <span class="o">=</span> <span class="n">shiing</span><span class="o">.</span><span class="n">testing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fit_params</span><span class="o">=</span><span class="n">fit_params</span><span class="p">)</span>
+<span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;testing time: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="python-api/dnn_inference.html" class="btn btn-neutral float-right" title="Python-api" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Dnn-Inference’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ben Dai
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
