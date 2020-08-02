@@ -29,8 +29,21 @@ sys.path.insert(0, os.path.abspath('..'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.mathjax', 'sphinx.ext.napoleon', 'nbsphinx',
-                'nbsphinx_link', 'recommonmark', 'sphinx_git']
+# extensions = ['sphinx.ext.autodoc', 'sphinx.ext.mathjax', 'sphinx.ext.napoleon', 'nbsphinx',
+#                 'nbsphinx_link', 'recommonmark', 'sphinx_git']
+
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode'
+]
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -39,10 +52,13 @@ templates_path = ['_templates']
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # The master toctree document.
-master_doc = 'index'
+# master_doc = 'index'
 
 # General information about the project.
 project = u'dnn-inference'
@@ -63,7 +79,7 @@ release = u''
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+# language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -117,53 +133,53 @@ html_static_path = ['_static']
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
+# latex_elements = {
+#     # The paper size ('letterpaper' or 'a4paper').
+#     #
+#     # 'papersize': 'letterpaper',
 
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
+#     # The font size ('10pt', '11pt' or '12pt').
+#     #
+#     # 'pointsize': '10pt',
 
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
+#     # Additional stuff for the LaTeX preamble.
+#     #
+#     # 'preamble': '',
 
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-}
+#     # Latex figure (float) alignment
+#     #
+#     # 'figure_align': 'htbp',
+# }
 
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'dnn-inference.tex', u'dnn-inference Documentation',
-     u'Ben Dai', 'manual'),
-]
-
-
-# -- Options for manual page output ---------------------------------------
-
-# One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'dnn-inference', u'dnn-inference Documentation',
-     [author], 1)
-]
+# # Grouping the document tree into LaTeX files. List of tuples
+# # (source start file, target name, title,
+# #  author, documentclass [howto, manual, or own class]).
+# latex_documents = [
+#     (master_doc, 'dnn-inference.tex', u'dnn-inference Documentation',
+#      u'Ben Dai', 'manual'),
+# ]
 
 
-# -- Options for Texinfo output -------------------------------------------
+# # -- Options for manual page output ---------------------------------------
 
-# Grouping the document tree into Texinfo files. List of tuples
-# (source start file, target name, title, author,
-#  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'dnn-inference', u'dnn-inference Documentation',
-     author, 'dnn-inference', 'One line description of project.',
-     'Miscellaneous'),
-]
+# # One entry per manual page. List of tuples
+# # (source start file, name, description, authors, manual section).
+# man_pages = [
+#     (master_doc, 'dnn-inference', u'dnn-inference Documentation',
+#      [author], 1)
+# ]
+
+
+# # -- Options for Texinfo output -------------------------------------------
+
+# # Grouping the document tree into Texinfo files. List of tuples
+# # (source start file, target name, title, author,
+# #  dir menu entry, description, category)
+# texinfo_documents = [
+#     (master_doc, 'dnn-inference', u'dnn-inference Documentation',
+#      author, 'dnn-inference', 'One line description of project.',
+#      'Miscellaneous'),
+# ]
 
 
 
