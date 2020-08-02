@@ -194,7 +194,7 @@ class DnnT(object):
 		return Z
 
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
-				if_reverse=0, min_inf=0, min_est=0, ratio_method='fuse', num_perm=100, cv_num=1, cp='gmean', verbose=0):
+				if_reverse=0, min_inf=0, min_est=0, ratio_method='fuse', num_perm=100, cv_num=1, cp='hommel', verbose=1):
 		"""
 		Return a data-adaptive splitting ratio and perturbation level.
 
