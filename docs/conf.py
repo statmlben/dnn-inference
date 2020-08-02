@@ -45,13 +45,6 @@ extensions = [
     'sphinx.ext.intersphinx'
 ]
 
-intersphinx_mapping = {#'python': ('https://docs.python.org/3', None),
-                       'numpy': ('https://docs.scipy.org/doc/numpy', None),
-                       #'matplotlib': ('https://matplotlib.org', None),
-                       #'h5py': ('https://h5py.readthedocs.io/en/stable', None),
-                       'scipy':('http://scipy.github.io/devdocs/', None),
-                       'astropy':('http://docs.astropy.org/en/stable/', None)}
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
