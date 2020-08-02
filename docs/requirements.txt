@@ -1,4 +1,4 @@
-sphinx>=3.1
+sphinx==1.5.3
 nbsphinx
 nbsphinx_link
 recommonmark
