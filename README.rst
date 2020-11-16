@@ -27,7 +27,7 @@ Dnn-Inference is a Python module for hypothesis testing based on deep neural net
 
 Website: https://dnn-inference.readthedocs.io
 
-.. image:: ./logo/logo.png
+.. image:: ./logo/logo_header.png
    :align: center
    :width: 100
 
