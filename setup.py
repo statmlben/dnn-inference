@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()
 
@@ -14,9 +13,9 @@ if __name__ == "__main__":
         # Needed to actually package something
         packages=['dnn_inference'],
         # Needed for dependencies
-        install_requires=['numpy', 'keras', 'tensorflow>=1.14', 'scipy', 'sklearn'],
+        install_requires=['numpy', 'keras', 'tensorflow>=2.3.1', 'scipy', 'sklearn', 'matplotlib'],
         # *strongly* suggested for sharing
-        version='0.5',
+        version='0.6',
         # The license can be anything you like
         license='MIT',
         description='Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.',

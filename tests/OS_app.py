@@ -1,3 +1,6 @@
+import sys
+sys.path.append('..')
+
 import numpy as np
 import keras
 from keras.datasets import mnist
@@ -7,10 +10,10 @@ from tensorflow.python.keras import backend as K
 import time
 from sklearn.model_selection import train_test_split
 from keras.optimizers import Adam, SGD
-from DnnT import DnnT
+from dnn_inference import DnnT
 
+np.random.seed(0)
 num_classes = 2
-
 # input image dimensions
 img_rows, img_cols = 28, 28
 
@@ -58,16 +61,16 @@ from keras.callbacks import EarlyStopping
 es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=0, patience=15, restore_best_weights=True)
 
 fit_params = {'callbacks': [es],
-			  'epochs': 100,
+			  'epochs': 5,
 			  'batch_size': 32,
 			  'validation_split': .2,
-			  'verbose': 1}
+			  'verbose': 0}
 
-split_params = {'split': 'two-sample',
+split_params = {'split': 'one-split',
 				'perturb': None,
 				'num_perm': 100,
 				'ratio_grid': [.2, .4, .6, .8],
-				'perturb_grid': [.01, .05, .1, .5, 1.],
+				'perturb_grid': [.001, .005, .01, .05, .1],
 				'min_inf': 100,
 				'min_est': 1000,
 				'ratio_method': 'fuse',
@@ -76,9 +79,10 @@ split_params = {'split': 'two-sample',
 				'verbose': 1}
 
 inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],[np.arange(7,16), np.arange(9,16)]]
-#inf_cov = [[np.arange(19,28), np.arange(13,20)]]
+# inf_cov = [[np.arange(19,28), np.arange(13,20)]]
 shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
-p_value_tmp, _, _ = shiing.testing(X, y, cv_num=1, cp='hommel', fit_params=fit_params, split_params=split_params)
+p_value_tmp = shiing.testing(X, y, cv_num=3, cp='hommel', fit_params=fit_params, split_params=split_params)
 toc = time.perf_counter()
+shiing.visual(X,y)
 print('testing time: %.3f' %(toc-tic))
 print('P-values: %s' %p_value_tmp)

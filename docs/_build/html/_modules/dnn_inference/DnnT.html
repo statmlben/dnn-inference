@@ -82,9 +82,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">Dnn-Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#documentation">Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#example">Example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../python-api/Dnn.html">Python-API</a></li>
@@ -159,19 +156,19 @@
 <span class="c1"># Author: Ben Dai &lt;bdai@umn.edu&gt;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">norm</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="k">import</span> <span class="n">EarlyStopping</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">keras.backend</span> <span class="k">as</span> <span class="nn">K</span>
-<span class="kn">from</span> <span class="nn">keras.initializers</span> <span class="k">import</span> <span class="n">glorot_uniform</span>
+<span class="kn">from</span> <span class="nn">keras.initializers</span> <span class="kn">import</span> <span class="n">glorot_uniform</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">KFold</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">hmean</span><span class="p">,</span> <span class="n">gmean</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">hmean</span><span class="p">,</span> <span class="n">gmean</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span>
-<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">load_model</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<div class="viewcode-block" id="DnnT"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT">[docs]</a><span class="k">class</span> <span class="nc">DnnT</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT">[docs]</a><span class="k">class</span> <span class="nc">DnnT</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Class for one-split/two-split test based on deep neural networks. </span>
 <span class="sd">	</span>
 <span class="sd">	Parameters</span>
@@ -197,17 +194,22 @@
 <span class="sd">	</span>
 <span class="sd">	eva_metric: {&#39;mse&#39;, &#39;zero-one&#39;, &#39;cross-entropy&#39;, or custom metric function}</span>
 <span class="sd">	 The evaluation metric, ``&#39;mse&#39;`` is the l2-loss for regression, ``&#39;zero-one&#39;`` is the zero-one loss for classification, ``&#39;cross-entropy&#39;`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.</span>
+<span class="sd">	</span>
+<span class="sd">	cp_path: {string}, default=&#39;./checkpoints&#39;</span>
+<span class="sd">	 The checkpoints path to save the models</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inf_cov</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inf_cov</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">cp_path</span> <span class="o">=</span> <span class="s1">&#39;./checkpoints&#39;</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span> <span class="o">=</span> <span class="n">inf_cov</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span> <span class="o">=</span> <span class="n">model_mask</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">change</span> <span class="o">=</span> <span class="n">change</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">eva_metric</span> <span class="o">=</span> <span class="n">eva_metric</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">p_values</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span> <span class="o">=</span> <span class="n">cp_path</span>
 
-	<span class="k">def</span> <span class="nf">metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT.metric"><a class="viewcode-back" href="../../dnn_inference.html#dnn_inference.DnnT.DnnT.metric">[docs]</a>	<span class="k">def</span> <span class="nf">metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eva_metric</span> <span class="o">==</span> <span class="s1">&#39;mse&#39;</span><span class="p">:</span>
 			<span class="n">metric_tmp</span> <span class="o">=</span> <span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">eva_metric</span> <span class="o">==</span> <span class="s1">&#39;mae&#39;</span><span class="p">:</span>
@@ -221,98 +223,100 @@
 			<span class="n">metric_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)),</span><span class="n">label_true</span><span class="p">])</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">metric_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eva_metric</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-		<span class="k">return</span> <span class="n">metric_tmp</span>
+		<span class="k">return</span> <span class="n">metric_tmp</span></div>
 
-	<span class="c1"># def reset_model(self):</span>
-	<span class="c1"># 	initial_weights = self.model.get_weights()</span>
-	<span class="c1"># 	backend_name = K.backend()</span>
-	<span class="c1"># 	if backend_name == &#39;tensorflow&#39;: </span>
-	<span class="c1"># 		k_eval = lambda placeholder: placeholder.eval(session=K.get_session())</span>
-	<span class="c1"># 	elif backend_name == &#39;theano&#39;: </span>
-	<span class="c1"># 		k_eval = lambda placeholder: placeholder.eval()</span>
-	<span class="c1"># 	else: </span>
-	<span class="c1"># 		raise ValueError(&quot;Unsupported backend&quot;)</span>
-	<span class="c1"># 	new_weights = [k_eval(glorot_uniform()(w.shape)) for w in initial_weights]</span>
-	<span class="c1"># 	self.model.set_weights(new_weights)</span>
+<div class="viewcode-block" id="DnnT.save_init"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.save_init">[docs]</a>	<span class="k">def</span> <span class="nf">save_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Save the initialization for full and mask network models under class Dnn</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/model_init.h5&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/model_mask_init.h5&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DnnT.reset_model"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.reset_model">[docs]</a>	<span class="k">def</span> <span class="nf">reset_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT.reset_model"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.reset_model">[docs]</a>	<span class="k">def</span> <span class="nf">reset_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Reset the full and mask network models under class Dnn</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-			<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span> <span class="c1">#if you&#39;re using a model as a layer</span>
-					<span class="n">reset_weights</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span> <span class="c1">#apply function recursively</span>
-					<span class="k">continue</span>
-				<span class="c1">#where are the initializers?</span>
-				<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;cell&#39;</span><span class="p">):</span>
-					<span class="n">init_container</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">cell</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">init_container</span> <span class="o">=</span> <span class="n">layer</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/model_init.h5&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/model_mask_init.h5&#39;</span><span class="p">)</span></div>
 
-				<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">initializer</span> <span class="ow">in</span> <span class="n">init_container</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-					<span class="k">if</span> <span class="s2">&quot;initializer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span> <span class="c1">#is this item an initializer?</span>
-					  <span class="k">continue</span> <span class="c1">#if no, skip it</span>
-					<span class="c1"># find the corresponding variable, like the kernel or the bias</span>
-					<span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;recurrent_initializer&#39;</span><span class="p">:</span> <span class="c1">#special case check</span>
-						<span class="n">var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">init_container</span><span class="p">,</span> <span class="s1">&#39;recurrent_kernel&#39;</span><span class="p">)</span>
-					<span class="k">else</span><span class="p">:</span>
-						<span class="n">var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">init_container</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_initializer&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+	<span class="c1"># def reset_model(self):</span>
+	<span class="c1"># 	&quot;&quot;&quot;</span>
+	<span class="c1"># 	Reset the full and mask network models under class Dnn</span>
+	<span class="c1"># 	&quot;&quot;&quot;</span>
+	<span class="c1"># 	if int(tf.__version__[0]) == 2:</span>
+	<span class="c1"># 		for layer in self.model.layers:</span>
+	<span class="c1"># 			if isinstance(layer, tf.keras.Model): #if you&#39;re using a model as a layer</span>
+	<span class="c1"># 				reset_weights(layer) #apply function recursively</span>
+	<span class="c1"># 				continue</span>
+	<span class="c1"># 			#where are the initializers?</span>
+	<span class="c1"># 			if hasattr(layer, &#39;cell&#39;):</span>
+	<span class="c1"># 				init_container = layer.cell</span>
+	<span class="c1"># 			else:</span>
+	<span class="c1"># 				init_container = layer</span>
+
+	<span class="c1"># 			for key, initializer in init_container.__dict__.items():</span>
+	<span class="c1"># 				if &quot;initializer&quot; not in key: #is this item an initializer?</span>
+	<span class="c1"># 				  continue #if no, skip it</span>
+	<span class="c1"># 				# find the corresponding variable, like the kernel or the bias</span>
+	<span class="c1"># 				if key == &#39;recurrent_initializer&#39;: #special case check</span>
+	<span class="c1"># 					var = getattr(init_container, &#39;recurrent_kernel&#39;)</span>
+	<span class="c1"># 				else:</span>
+	<span class="c1"># 					var = getattr(init_container, key.replace(&quot;_initializer&quot;, &quot;&quot;))</span>
 					
-					<span class="k">if</span> <span class="n">var</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-						<span class="k">continue</span>
-					<span class="k">else</span><span class="p">:</span>
-						<span class="n">var</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">initializer</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+	<span class="c1"># 				if var is None:</span>
+	<span class="c1"># 					continue</span>
+	<span class="c1"># 				else:</span>
+	<span class="c1"># 					var.assign(initializer(var.shape, var.dtype))</span>
 
-		<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span> <span class="c1">#if you&#39;re using a model as a layer</span>
-				<span class="n">reset_weights</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span> <span class="c1">#apply function recursively</span>
-				<span class="k">continue</span>
-			<span class="c1">#where are the initializers?</span>
-			<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;cell&#39;</span><span class="p">):</span>
-				<span class="n">init_container</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">cell</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">init_container</span> <span class="o">=</span> <span class="n">layer</span>
+	<span class="c1"># 	for layer in self.model_mask.layers:</span>
+	<span class="c1"># 		if isinstance(layer, tf.keras.Model): #if you&#39;re using a model as a layer</span>
+	<span class="c1"># 			reset_weights(layer) #apply function recursively</span>
+	<span class="c1"># 			continue</span>
+	<span class="c1"># 		#where are the initializers?</span>
+	<span class="c1"># 		if hasattr(layer, &#39;cell&#39;):</span>
+	<span class="c1"># 			init_container = layer.cell</span>
+	<span class="c1"># 		else:</span>
+	<span class="c1"># 			init_container = layer</span>
 
-			<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">initializer</span> <span class="ow">in</span> <span class="n">init_container</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-				<span class="k">if</span> <span class="s2">&quot;initializer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span> <span class="c1">#is this item an initializer?</span>
-				  <span class="k">continue</span> <span class="c1">#if no, skip it</span>
-				<span class="c1"># find the corresponding variable, like the kernel or the bias</span>
-				<span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;recurrent_initializer&#39;</span><span class="p">:</span> <span class="c1">#special case check</span>
-					<span class="n">var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">init_container</span><span class="p">,</span> <span class="s1">&#39;recurrent_kernel&#39;</span><span class="p">)</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">var</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">init_container</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_initializer&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+	<span class="c1"># 		for key, initializer in init_container.__dict__.items():</span>
+	<span class="c1"># 			if &quot;initializer&quot; not in key: #is this item an initializer?</span>
+	<span class="c1"># 			  continue #if no, skip it</span>
+	<span class="c1"># 			# find the corresponding variable, like the kernel or the bias</span>
+	<span class="c1"># 			if key == &#39;recurrent_initializer&#39;: #special case check</span>
+	<span class="c1"># 				var = getattr(init_container, &#39;recurrent_kernel&#39;)</span>
+	<span class="c1"># 			else:</span>
+	<span class="c1"># 				var = getattr(init_container, key.replace(&quot;_initializer&quot;, &quot;&quot;))</span>
 				
-				<span class="k">if</span> <span class="n">var</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="k">continue</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">var</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">initializer</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+	<span class="c1"># 			if var is None:</span>
+	<span class="c1"># 				continue</span>
+	<span class="c1"># 			else:</span>
+	<span class="c1"># 				var.assign(initializer(var.shape, var.dtype))</span>
 		
-		<span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-			<span class="n">session</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">get_session</span><span class="p">()</span>
-			<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-				<span class="k">if</span> <span class="p">((</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;kernel_initializer&#39;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">kernel</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)):</span>
-					<span class="n">layer</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
-				<span class="k">if</span> <span class="p">((</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;bias_initializer&#39;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">bias</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)):</span>
-					<span class="n">layer</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>	 
-			<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-				<span class="k">if</span> <span class="p">((</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;kernel_initializer&#39;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">kernel</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)):</span>
-					<span class="n">layer</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
-				<span class="k">if</span> <span class="p">((</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;bias_initializer&#39;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">bias</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)):</span>
-					<span class="n">layer</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>  </div>
+	<span class="c1"># 	if int(tf.__version__[0]) == 1:</span>
+	<span class="c1"># 		session = K.get_session()</span>
+	<span class="c1"># 		for layer in self.model.layers:</span>
+	<span class="c1"># 			if ((hasattr(layer, &#39;kernel_initializer&#39;)) and (layer.kernel != None)):</span>
+	<span class="c1"># 				layer.kernel.initializer.run(session=session)</span>
+	<span class="c1"># 			if ((hasattr(layer, &#39;bias_initializer&#39;)) and (layer.bias != None)):</span>
+	<span class="c1"># 				layer.bias.initializer.run(session=session)	 </span>
+	<span class="c1"># 		for layer in self.model_mask.layers:</span>
+	<span class="c1"># 			if ((hasattr(layer, &#39;kernel_initializer&#39;)) and (layer.kernel != None)):</span>
+	<span class="c1"># 				layer.kernel.initializer.run(session=session)</span>
+	<span class="c1"># 			if ((hasattr(layer, &#39;bias_initializer&#39;)) and (layer.bias != None)):</span>
+	<span class="c1"># 				layer.bias.initializer.run(session=session)</span>
 
 	<span class="c1">## can be extent to @abstractmethod</span>
-<div class="viewcode-block" id="DnnT.mask_cov"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.mask_cov">[docs]</a>	<span class="k">def</span> <span class="nf">mask_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT.mask_cov"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.mask_cov">[docs]</a>	<span class="k">def</span> <span class="nf">mask_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Return instances with masked k-th hypothesized features.</span>
 
 <span class="sd">		Parameters</span>
 <span class="sd">		----------</span>
 <span class="sd">		X : array-like</span>
-<span class="sd">		Target instances.</span>
+<span class="sd">		 Target instances.</span>
 
 <span class="sd">		k : integer, default = 0</span>
-<span class="sd">		k-th hypothesized features in inf_cov</span>
+<span class="sd">		 k-th hypothesized features in inf_cov</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">Z</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 		<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
@@ -322,17 +326,17 @@
 			<span class="n">Z</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span><span class="o">=</span> <span class="mf">0.</span>
 		<span class="k">return</span> <span class="n">Z</span></div>
 
-<div class="viewcode-block" id="DnnT.perm_cov"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.perm_cov">[docs]</a>	<span class="k">def</span> <span class="nf">perm_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT.perm_cov"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.perm_cov">[docs]</a>	<span class="k">def</span> <span class="nf">perm_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Return instances with permuted k-th hypothesized features.</span>
 
 <span class="sd">		Parameters</span>
 <span class="sd">		----------</span>
 <span class="sd">		X : array-like</span>
-<span class="sd">		Target instances.</span>
+<span class="sd">		 Target instances.</span>
 
 <span class="sd">		k : integer, default = 0</span>
-<span class="sd">		k-th hypothesized features in inf_cov</span>
+<span class="sd">		 k-th hypothesized features in inf_cov</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">Z</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 		<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
@@ -342,12 +346,12 @@
 			<span class="n">Z</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
 		<span class="k">return</span> <span class="n">Z</span></div>
 
-	<span class="k">def</span> <span class="nf">noise_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT.noise_cov"><a class="viewcode-back" href="../../dnn_inference.html#dnn_inference.DnnT.DnnT.noise_cov">[docs]</a>	<span class="k">def</span> <span class="nf">noise_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 		<span class="n">Z</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 		<span class="n">Z</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
-		<span class="k">return</span> <span class="n">Z</span>
+		<span class="k">return</span> <span class="n">Z</span></div>
 
-<div class="viewcode-block" id="DnnT.adaRatio"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.adaRatio">[docs]</a>	<span class="k">def</span> <span class="nf">adaRatio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fit_params</span><span class="o">=</span><span class="p">{},</span> <span class="n">perturb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;one-split&#39;</span><span class="p">,</span> <span class="n">perturb_grid</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">01</span><span class="p">,</span> <span class="o">.</span><span class="mi">05</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="n">ratio_grid</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="o">.</span><span class="mi">6</span><span class="p">,</span> <span class="o">.</span><span class="mi">8</span><span class="p">],</span> 
+<div class="viewcode-block" id="DnnT.adaRatio"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.adaRatio">[docs]</a>	<span class="k">def</span> <span class="nf">adaRatio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fit_params</span><span class="o">=</span><span class="p">{},</span> <span class="n">perturb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;one-split&#39;</span><span class="p">,</span> <span class="n">perturb_grid</span><span class="o">=</span><span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="o">.</span><span class="mi">01</span><span class="p">,</span> <span class="o">.</span><span class="mi">05</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="n">ratio_grid</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="o">.</span><span class="mi">6</span><span class="p">,</span> <span class="o">.</span><span class="mi">8</span><span class="p">],</span> 
 				<span class="n">if_reverse</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_inf</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_est</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ratio_method</span><span class="o">=</span><span class="s1">&#39;fuse&#39;</span><span class="p">,</span> <span class="n">num_perm</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cv_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="s1">&#39;hommel&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Return a data-adaptive splitting ratio and perturbation level.</span>
@@ -434,10 +438,8 @@
 					<span class="bp">self</span><span class="o">.</span><span class="n">reset_model</span><span class="p">()</span>
 					<span class="n">P_value_cv</span> <span class="o">=</span> <span class="p">[]</span>
 					<span class="c1">## generate permutated samples</span>
-					<span class="c1"># index_perm = np.random.permutation(range(len(y)))</span>
 					<span class="n">X_perm</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 					<span class="n">X_perm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">perm_cov</span><span class="p">(</span><span class="n">X_perm</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-					<span class="c1"># X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]</span>
 					<span class="c1">## split sample</span>
 					<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_perm</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="n">n_tmp</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 					<span class="c1"># training for full model</span>
@@ -450,10 +452,12 @@
 						<span class="n">Z_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">perm_cov</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 					<span class="n">history_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">Z_train</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 					<span class="c1">## save model</span>
-					<span class="c1"># self.model.save_weights(&#39;model.h5&#39;)</span>
-					<span class="c1"># self.model_mask.save_weights(&#39;model_mask.h5&#39;)</span>
-					<span class="c1"># self.model = load_model(&#39;model.h5&#39;, compile=False)</span>
-					<span class="c1"># self.model_mask = load_model(&#39;model_mask.h5&#39;, compile=False)</span>
+					<span class="n">path_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/ratio_tmp_model.h5&#39;</span>
+					<span class="n">mask_path_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/ratio_tmp_model_mask.h5&#39;</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">path_tmp</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">mask_path_tmp</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">path_tmp</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">mask_path_tmp</span><span class="p">)</span>
 					<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">change</span> <span class="o">==</span> <span class="s1">&#39;mask&#39;</span><span class="p">:</span>
 						<span class="n">Z_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_cov</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 					<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">change</span> <span class="o">==</span> <span class="s1">&#39;perm&#39;</span><span class="p">:</span>
@@ -576,10 +580,12 @@
 							<span class="n">Z_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">perm_cov</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 						<span class="n">history_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">Z_train</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 						<span class="c1">## save and load models</span>
-						<span class="c1"># self.model.save(&#39;model.h5&#39;)</span>
-						<span class="c1"># self.model_mask.save(&#39;model_mask.h5&#39;)</span>
-						<span class="c1"># model_tmp = load_model(&#39;model.h5&#39;, compile=False)</span>
-						<span class="c1"># model_mask_tmp = load_model(&#39;model_mask.h5&#39;, compile=False)</span>
+						<span class="n">path_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/ratio_tmp_model.h5&#39;</span>
+						<span class="n">mask_path_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/ratio_tmp_model_mask.h5&#39;</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">path_tmp</span><span class="p">)</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">mask_path_tmp</span><span class="p">)</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">path_tmp</span><span class="p">)</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">mask_path_tmp</span><span class="p">)</span>
 						<span class="c1"># if stopping_metric == &#39;p-value&#39;:</span>
 						<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">change</span> <span class="o">==</span> <span class="s1">&#39;mask&#39;</span><span class="p">:</span>
 							<span class="n">Z_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_cov</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -681,7 +687,7 @@
 		
 			<span class="k">return</span> <span class="n">n_opt</span><span class="p">,</span> <span class="n">m_opt</span><span class="p">,</span> <span class="n">perturb_opt</span></div>
 
-<div class="viewcode-block" id="DnnT.testing"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.testing">[docs]</a>	<span class="k">def</span> <span class="nf">testing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fit_params</span><span class="p">,</span> <span class="n">split_params</span><span class="o">=</span><span class="p">{},</span> <span class="n">cv_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="s1">&#39;hommel&#39;</span><span class="p">,</span> <span class="n">inf_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DnnT.testing"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.testing">[docs]</a>	<span class="k">def</span> <span class="nf">testing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fit_params</span><span class="p">,</span> <span class="n">split_params</span><span class="o">=</span><span class="p">{},</span> <span class="n">cv_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="s1">&#39;hommel&#39;</span><span class="p">,</span> <span class="n">inf_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Return p-values for hypothesis testing for inf_cov in class Dnn.</span>
 
@@ -765,6 +771,9 @@
 		<span class="n">split_params_default</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">split_params</span><span class="p">)</span>
 		<span class="n">split_params</span> <span class="o">=</span> <span class="n">split_params_default</span>
 
+		<span class="c1">## save initial weights</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">save_init</span><span class="p">()</span>
+
 		<span class="n">P_value</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">)):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">reset_model</span><span class="p">()</span>
@@ -783,7 +792,7 @@
 				<span class="k">else</span><span class="p">:</span>
 					<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inf_ratio</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">inf_ratio</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;split method must be &#39;one-split&#39; or &#39;two-split&#39;!&quot;</span><span class="p">)</span>
+				<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;split method must be &#39;one-split&#39; or &#39;two-split&#39;!&quot;</span><span class="p">)</span>
 
 			<span class="n">P_value_cv</span> <span class="o">=</span> <span class="p">[]</span>
 			<span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cv_num</span><span class="p">):</span>
@@ -795,10 +804,15 @@
 				<span class="c1">## prediction and inference in full model</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">reset_model</span><span class="p">()</span>
 				<span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
-
+				<span class="c1">## save and load model</span>
+				<span class="n">path_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/model&#39;</span><span class="o">+</span><span class="s1">&#39;_inf&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_cv&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span>
+				<span class="n">mask_path_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_path</span><span class="o">+</span><span class="s1">&#39;/model_mask&#39;</span><span class="o">+</span><span class="s1">&#39;_inf&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_cv&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">path_tmp</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">mask_path_tmp</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">path_tmp</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">mask_path_tmp</span><span class="p">)</span>
 				<span class="n">pred_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict_on_batch</span><span class="p">(</span><span class="n">X_inf</span><span class="p">)</span>
 				<span class="n">metric_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="n">y_inf</span><span class="p">,</span> <span class="n">pred_y</span><span class="p">)</span>
-
 				<span class="c1"># prediction and inference in mask model</span>
 				<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">change</span> <span class="o">==</span> <span class="s1">&#39;mask&#39;</span><span class="p">:</span>
 					<span class="n">Z_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_cov</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -816,8 +830,6 @@
 				<span class="n">pred_y_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_mask</span><span class="o">.</span><span class="n">predict_on_batch</span><span class="p">(</span><span class="n">Z_inf</span><span class="p">)</span>
 				<span class="n">metric_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="n">y_inf_mask</span><span class="p">,</span> <span class="n">pred_y_mask</span><span class="p">)</span>
 
-				<span class="c1"># if ((np.mean(metric_mask) &gt; 3) or (np.mean(metric_full) &gt; 3)):</span>
-				<span class="c1"># 	fit_err = 1</span>
 				<span class="c1">## compute p-value</span>
 				<span class="k">if</span> <span class="n">split_params</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;one-split&#39;</span><span class="p">:</span>
 					<span class="k">if</span> <span class="n">perturb_level</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
@@ -869,8 +881,44 @@
 
 			<span class="n">P_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_value_mean</span><span class="p">)</span>
 		<span class="c1"># return P_value, fit_err, P_value_cv</span>
-		<span class="k">return</span> <span class="n">P_value</span></div></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">p_values</span> <span class="o">=</span> <span class="n">P_value</span>
+		<span class="k">return</span> <span class="n">P_value</span></div>
 
+<div class="viewcode-block" id="DnnT.visual"><a class="viewcode-back" href="../../python-api/Dnn.html#dnn_inference.DnnT.DnnT.visual">[docs]</a>	<span class="k">def</span> <span class="nf">visual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Visualization for the inference results based on one illustrative example</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		X : array-like</span>
+<span class="sd">		demo instances.</span>
+
+<span class="sd">		y : array-like</span>
+<span class="sd">		demo labels</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sorry, visual function only work for image data.&#39;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">num_class</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">demo_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_class</span><span class="p">)])</span>
+			<span class="n">X_demo</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">demo_ind</span><span class="p">]</span>
+
+			<span class="n">cols</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inf_cov</span><span class="p">),</span> <span class="n">num_class</span>
+			<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+			<span class="n">spec</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="n">rows</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+					<span class="n">X_mask_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">X_demo</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+					<span class="n">X_mask_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_cov</span><span class="p">(</span><span class="n">X_mask_tmp</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">col</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+					<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">])</span>
+					<span class="n">im1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_demo</span><span class="p">[</span><span class="n">row</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+					<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+					<span class="n">im2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_mask_tmp</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;OrRd&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+					<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+						<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;p_values: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">p_values</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

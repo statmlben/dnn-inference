@@ -15,7 +15,7 @@ import tensorflow as tf
 from sklearn.model_selection import KFold
 from scipy.stats import hmean, gmean
 import scipy.optimize
-from keras.models import load_model
+import matplotlib.pyplot as plt
 
 class DnnT(object):
 	"""Class for one-split/two-split test based on deep neural networks. 
@@ -43,15 +43,20 @@ class DnnT(object):
 	
 	eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}
 	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
+	
+	cp_path: {string}, default='./checkpoints'
+	 The checkpoints path to save the models
 	"""
 
-	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse'):
+	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse', cp_path = './checkpoints'):
 		self.inf_cov = inf_cov
 		self.model = model
 		self.model_mask = model_mask
 		self.alpha = alpha
 		self.change = change
 		self.eva_metric = eva_metric
+		self.p_values = []
+		self.cp_path = cp_path
 
 	def metric(self, y_true, y_pred):
 		if self.eva_metric == 'mse':
@@ -69,83 +74,85 @@ class DnnT(object):
 			metric_tmp = self.eva_metric(y_true, y_pred)
 		return metric_tmp
 
-	# def reset_model(self):
-	# 	initial_weights = self.model.get_weights()
-	# 	backend_name = K.backend()
-	# 	if backend_name == 'tensorflow': 
-	# 		k_eval = lambda placeholder: placeholder.eval(session=K.get_session())
-	# 	elif backend_name == 'theano': 
-	# 		k_eval = lambda placeholder: placeholder.eval()
-	# 	else: 
-	# 		raise ValueError("Unsupported backend")
-	# 	new_weights = [k_eval(glorot_uniform()(w.shape)) for w in initial_weights]
-	# 	self.model.set_weights(new_weights)
+	def save_init(self):
+		"""
+		Save the initialization for full and mask network models under class Dnn
+		"""
+		self.model.save_weights(self.cp_path+'/model_init.h5')
+		self.model_mask.save_weights(self.cp_path+'/model_mask_init.h5')
 
 	def reset_model(self):
 		"""
 		Reset the full and mask network models under class Dnn
 		"""
-		if int(tf.__version__[0]) == 2:
-			for layer in self.model.layers:
-				if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
-					reset_weights(layer) #apply function recursively
-					continue
-				#where are the initializers?
-				if hasattr(layer, 'cell'):
-					init_container = layer.cell
-				else:
-					init_container = layer
+		self.model.load_weights(self.cp_path+'/model_init.h5')
+		self.model_mask.load_weights(self.cp_path+'/model_mask_init.h5')
 
-				for key, initializer in init_container.__dict__.items():
-					if "initializer" not in key: #is this item an initializer?
-					  continue #if no, skip it
-					# find the corresponding variable, like the kernel or the bias
-					if key == 'recurrent_initializer': #special case check
-						var = getattr(init_container, 'recurrent_kernel')
-					else:
-						var = getattr(init_container, key.replace("_initializer", ""))
+	# def reset_model(self):
+	# 	"""
+	# 	Reset the full and mask network models under class Dnn
+	# 	"""
+	# 	if int(tf.__version__[0]) == 2:
+	# 		for layer in self.model.layers:
+	# 			if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
+	# 				reset_weights(layer) #apply function recursively
+	# 				continue
+	# 			#where are the initializers?
+	# 			if hasattr(layer, 'cell'):
+	# 				init_container = layer.cell
+	# 			else:
+	# 				init_container = layer
+
+	# 			for key, initializer in init_container.__dict__.items():
+	# 				if "initializer" not in key: #is this item an initializer?
+	# 				  continue #if no, skip it
+	# 				# find the corresponding variable, like the kernel or the bias
+	# 				if key == 'recurrent_initializer': #special case check
+	# 					var = getattr(init_container, 'recurrent_kernel')
+	# 				else:
+	# 					var = getattr(init_container, key.replace("_initializer", ""))
 					
-					if var is None:
-						continue
-					else:
-						var.assign(initializer(var.shape, var.dtype))
+	# 				if var is None:
+	# 					continue
+	# 				else:
+	# 					var.assign(initializer(var.shape, var.dtype))
 
-		for layer in self.model_mask.layers:
-			if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
-				reset_weights(layer) #apply function recursively
-				continue
-			#where are the initializers?
-			if hasattr(layer, 'cell'):
-				init_container = layer.cell
-			else:
-				init_container = layer
+	# 	for layer in self.model_mask.layers:
+	# 		if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
+	# 			reset_weights(layer) #apply function recursively
+	# 			continue
+	# 		#where are the initializers?
+	# 		if hasattr(layer, 'cell'):
+	# 			init_container = layer.cell
+	# 		else:
+	# 			init_container = layer
 
-			for key, initializer in init_container.__dict__.items():
-				if "initializer" not in key: #is this item an initializer?
-				  continue #if no, skip it
-				# find the corresponding variable, like the kernel or the bias
-				if key == 'recurrent_initializer': #special case check
-					var = getattr(init_container, 'recurrent_kernel')
-				else:
-					var = getattr(init_container, key.replace("_initializer", ""))
+	# 		for key, initializer in init_container.__dict__.items():
+	# 			if "initializer" not in key: #is this item an initializer?
+	# 			  continue #if no, skip it
+	# 			# find the corresponding variable, like the kernel or the bias
+	# 			if key == 'recurrent_initializer': #special case check
+	# 				var = getattr(init_container, 'recurrent_kernel')
+	# 			else:
+	# 				var = getattr(init_container, key.replace("_initializer", ""))
 				
-				if var is None:
-					continue
-				else:
-					var.assign(initializer(var.shape, var.dtype))
+	# 			if var is None:
+	# 				continue
+	# 			else:
+	# 				var.assign(initializer(var.shape, var.dtype))
 		
-		if int(tf.__version__[0]) == 1:
-			session = K.get_session()
-			for layer in self.model.layers:
-				if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
-					layer.kernel.initializer.run(session=session)
-				if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
-					layer.bias.initializer.run(session=session)	 
-			for layer in self.model_mask.layers:
-				if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
-					layer.kernel.initializer.run(session=session)
-				if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
-					layer.bias.initializer.run(session=session)  
+	# 	if int(tf.__version__[0]) == 1:
+	# 		session = K.get_session()
+	# 		for layer in self.model.layers:
+	# 			if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
+	# 				layer.kernel.initializer.run(session=session)
+	# 			if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
+	# 				layer.bias.initializer.run(session=session)	 
+	# 		for layer in self.model_mask.layers:
+	# 			if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
+	# 				layer.kernel.initializer.run(session=session)
+	# 			if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
+	# 				layer.bias.initializer.run(session=session)
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0):
@@ -155,10 +162,10 @@ class DnnT(object):
 		Parameters
 		----------
 		X : array-like
-		Target instances.
+		 Target instances.
 
 		k : integer, default = 0
-		k-th hypothesized features in inf_cov
+		 k-th hypothesized features in inf_cov
 		"""
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
@@ -175,10 +182,10 @@ class DnnT(object):
 		Parameters
 		----------
 		X : array-like
-		Target instances.
+		 Target instances.
 
 		k : integer, default = 0
-		k-th hypothesized features in inf_cov
+		 k-th hypothesized features in inf_cov
 		"""
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
@@ -193,7 +200,7 @@ class DnnT(object):
 		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[0.001, 0.005, .01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
 				if_reverse=0, min_inf=0, min_est=0, ratio_method='fuse', num_perm=100, cv_num=1, cp='hommel', verbose=1):
 		"""
 		Return a data-adaptive splitting ratio and perturbation level.
@@ -280,10 +287,8 @@ class DnnT(object):
 					self.reset_model()
 					P_value_cv = []
 					## generate permutated samples
-					# index_perm = np.random.permutation(range(len(y)))
 					X_perm = X.copy()
 					X_perm = self.perm_cov(X_perm, k)
-					# X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]
 					## split sample
 					X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=1)
 					# training for full model
@@ -296,10 +301,12 @@ class DnnT(object):
 						Z_train = self.perm_cov(X_train, k)
 					history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
 					## save model
-					# self.model.save_weights('model.h5')
-					# self.model_mask.save_weights('model_mask.h5')
-					# self.model = load_model('model.h5', compile=False)
-					# self.model_mask = load_model('model_mask.h5', compile=False)
+					path_tmp = self.cp_path+'/ratio_tmp_model.h5'
+					mask_path_tmp = self.cp_path+'/ratio_tmp_model_mask.h5'
+					self.model.save_weights(path_tmp)
+					self.model_mask.save_weights(mask_path_tmp)
+					self.model.load_weights(path_tmp)
+					self.model_mask.load_weights(mask_path_tmp)
 					if self.change == 'mask':
 						Z_test = self.mask_cov(X_test, k)
 					if self.change == 'perm':
@@ -422,10 +429,12 @@ class DnnT(object):
 							Z_train = self.perm_cov(X_train, k)
 						history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
 						## save and load models
-						# self.model.save('model.h5')
-						# self.model_mask.save('model_mask.h5')
-						# model_tmp = load_model('model.h5', compile=False)
-						# model_mask_tmp = load_model('model_mask.h5', compile=False)
+						path_tmp = self.cp_path+'/ratio_tmp_model.h5'
+						mask_path_tmp = self.cp_path+'/ratio_tmp_model_mask.h5'
+						self.model.save_weights(path_tmp)
+						self.model_mask.save_weights(mask_path_tmp)
+						self.model.load_weights(path_tmp)
+						self.model_mask.load_weights(mask_path_tmp)
 						# if stopping_metric == 'p-value':
 						if self.change == 'mask':
 							Z_test = self.mask_cov(X_test, k)
@@ -611,6 +620,9 @@ class DnnT(object):
 		split_params_default.update(split_params)
 		split_params = split_params_default
 
+		## save initial weights
+		self.save_init()
+
 		P_value = []
 		for k in range(len(self.inf_cov)):
 			self.reset_model()
@@ -629,7 +641,7 @@ class DnnT(object):
 				else:
 					m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
 			else:
-				warnings.warn("split method must be 'one-split' or 'two-split'!")
+				raise Exception("split method must be 'one-split' or 'two-split'!")
 
 			P_value_cv = []
 			for h in range(cv_num):
@@ -641,10 +653,15 @@ class DnnT(object):
 				## prediction and inference in full model
 				self.reset_model()
 				history = self.model.fit(X_train, y_train, **fit_params)
-
+				## save and load model
+				path_tmp = self.cp_path+'/model'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
+				mask_path_tmp = self.cp_path+'/model_mask'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
+				self.model.save_weights(path_tmp)
+				self.model_mask.save_weights(mask_path_tmp)
+				self.model.load_weights(path_tmp)
+				self.model_mask.load_weights(mask_path_tmp)
 				pred_y = self.model.predict_on_batch(X_inf)
 				metric_full = self.metric(y_inf, pred_y)
-
 				# prediction and inference in mask model
 				if self.change == 'mask':
 					Z_train = self.mask_cov(X_train, k)
@@ -662,8 +679,6 @@ class DnnT(object):
 				pred_y_mask = self.model_mask.predict_on_batch(Z_inf)
 				metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
-				# if ((np.mean(metric_mask) > 3) or (np.mean(metric_full) > 3)):
-				# 	fit_err = 1
 				## compute p-value
 				if split_params['split'] == 'one-split':
 					if perturb_level == 'auto':
@@ -715,5 +730,41 @@ class DnnT(object):
 
 			P_value.append(p_value_mean)
 		# return P_value, fit_err, P_value_cv
+		self.p_values = P_value
 		return P_value
 
+	def visual(self, X, y):
+		"""
+		Visualization for the inference results based on one illustrative example
+
+		Parameters
+		----------
+		X : array-like
+		demo instances.
+
+		y : array-like
+		demo labels
+		"""
+		if len(X.shape) == 2:
+			print('sorry, visual function only work for image data.')
+		else:
+			num_class = y.shape[1]
+			demo_ind = np.array([np.where(y[:,k]==1)[0][0] for k in range(num_class)])
+			X_demo = X[demo_ind]
+
+			cols, rows = len(self.inf_cov), num_class
+			fig = plt.figure(constrained_layout=False)
+			spec = fig.add_gridspec(ncols=cols, nrows=rows)
+			for row in range(rows):
+				for col in range(cols):
+					X_mask_tmp = np.nan*np.ones(X_demo.shape)
+					X_mask_tmp = self.mask_cov(X_mask_tmp, k=col)[0]
+					ax = fig.add_subplot(spec[row, col])
+					im1 = ax.imshow(X_demo[row], vmin=0, vmax=1)
+					ax.axis('off')
+					im2 = ax.imshow(X_mask_tmp, vmin=0, vmax=1, cmap='OrRd', alpha=0.6)
+					ax.axis('off')
+					if row == 0:
+						ax.set_title('p_values: %.3f' %self.p_values[col])
+			plt.subplots_adjust(top = 0.9, bottom=0.1, hspace=0.1, wspace=0.1, right=0.9)
+			plt.show()

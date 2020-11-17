@@ -25,14 +25,17 @@ Dnn-Inference
 
 .. image:: ./logo/logo_header.png
    :align: center
-   :width: 100
+   :width: 800
 
 Dnn-Inference is a Python module for hypothesis testing based on deep neural networks. 
 
 Website: https://dnn-inference.readthedocs.io
 
-
 This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
+
+.. image:: ./logo/demo_result.png
+   :align: center
+   :width: 800
 
 Installation
 ------------
@@ -331,7 +334,7 @@ Example
 	es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=10, restore_best_weights=True)
 
 	fit_params = {'callbacks': [es],
-				  'epochs': 20,
+				  'epochs': 5,
 				  'batch_size': 32,
 				  'validation_split': .2,
 				  'verbose': 1}
@@ -344,3 +347,4 @@ Example
 	p_value_tmp = shiing.testing(X, y, fit_params=fit_params)
 	toc = time.perf_counter()
 	print('testing time: %.3f' %(toc-tic))
+	shiing.visual(X, y)

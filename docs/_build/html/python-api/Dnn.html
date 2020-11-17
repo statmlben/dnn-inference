@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Dnn-Inference" href="../README.html" /> 
+    <link rel="prev" title="Welcome to Dnn-Inference’s documentation!" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,13 +81,7 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../README.html">Dnn-Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../README.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../README.html#documentation">Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../README.html#example">Example</a></li>
-</ul>
-<ul class="current">
+              <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Python-API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#api-reference-for-dnnt-class">API reference for DnnT class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-reference-for-permt-class">API reference for PermT class</a></li>
@@ -164,7 +158,7 @@
 <h2>API reference for DnnT class<a class="headerlink" href="#api-reference-for-dnnt-class" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="dnn_inference.DnnT">
-<em class="property">class </em><code class="sig-prename descclassname">dnn_inference.</code><code class="sig-name descname">DnnT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf_cov</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_mask</span></em>, <em class="sig-param"><span class="n">change</span><span class="o">=</span><span class="default_value">'mask'</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">eva_metric</span><span class="o">=</span><span class="default_value">'mse'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dnn_inference.</code><code class="sig-name descname">DnnT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inf_cov</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_mask</span></em>, <em class="sig-param"><span class="n">change</span><span class="o">=</span><span class="default_value">'mask'</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">eva_metric</span><span class="o">=</span><span class="default_value">'mse'</span></em>, <em class="sig-param"><span class="n">cp_path</span><span class="o">=</span><span class="default_value">'./checkpoints'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for one-split/two-split test based on deep neural networks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -176,12 +170,13 @@
 <li><p><strong>alpha</strong> (<em>float</em><em> (</em><em>0</em><em>,</em><em>1</em><em>)</em><em>, </em><em>default=0.05</em>) – The nominal level of the hypothesis testing</p></li>
 <li><p><strong>verbose</strong> (<em>{0</em><em>, </em><em>1}</em><em>, </em><em>default=0</em>) – If print the testing results, 1 indicates YES, 0 indicates NO.</p></li>
 <li><p><strong>eva_metric</strong> (<em>{'mse'</em><em>, </em><em>'zero-one'</em><em>, </em><em>'cross-entropy'</em><em>, or </em><em>custom metric function}</em>) – The evaluation metric, <code class="docutils literal notranslate"><span class="pre">'mse'</span></code> is the l2-loss for regression, <code class="docutils literal notranslate"><span class="pre">'zero-one'</span></code> is the zero-one loss for classification, <code class="docutils literal notranslate"><span class="pre">'cross-entropy'</span></code> is log-loss for classification. It can also be custom metric function as <code class="docutils literal notranslate"><span class="pre">eva_metric(y_true,</span> <span class="pre">y_pred)</span></code>.</p></li>
+<li><p><strong>cp_path</strong> (<em>{string}</em><em>, </em><em>default='./checkpoints'</em>) – The checkpoints path to save the models</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="dnn_inference.DnnT.adaRatio">
-<code class="sig-name descname">adaRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fit_params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">perturb</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'one-split'</span></em>, <em class="sig-param"><span class="n">perturb_grid</span><span class="o">=</span><span class="default_value">[0.01, 0.05, 0.1, 0.5, 1.0]</span></em>, <em class="sig-param"><span class="n">ratio_grid</span><span class="o">=</span><span class="default_value">[0.2, 0.4, 0.6, 0.8]</span></em>, <em class="sig-param"><span class="n">if_reverse</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_inf</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_est</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ratio_method</span><span class="o">=</span><span class="default_value">'fuse'</span></em>, <em class="sig-param"><span class="n">num_perm</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">cv_num</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">cp</span><span class="o">=</span><span class="default_value">'hommel'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT.adaRatio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT.adaRatio" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">adaRatio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fit_params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">perturb</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'one-split'</span></em>, <em class="sig-param"><span class="n">perturb_grid</span><span class="o">=</span><span class="default_value">[0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0]</span></em>, <em class="sig-param"><span class="n">ratio_grid</span><span class="o">=</span><span class="default_value">[0.2, 0.4, 0.6, 0.8]</span></em>, <em class="sig-param"><span class="n">if_reverse</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_inf</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_est</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ratio_method</span><span class="o">=</span><span class="default_value">'fuse'</span></em>, <em class="sig-param"><span class="n">num_perm</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">cv_num</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">cp</span><span class="o">=</span><span class="default_value">'hommel'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT.adaRatio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT.adaRatio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a data-adaptive splitting ratio and perturbation level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -221,10 +216,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array-like</em>) – </p></li>
-<li><p><strong>instances.</strong> (<em>Target</em>) – </p></li>
-<li><p><strong>k</strong> (<em>integer</em><em>, </em><em>default = 0</em>) – </p></li>
-<li><p><strong>hypothesized features in inf_cov</strong> (<em>k-th</em>) – </p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Target instances.</p></li>
+<li><p><strong>k</strong> (<em>integer</em><em>, </em><em>default = 0</em>) – k-th hypothesized features in inf_cov</p></li>
 </ul>
 </dd>
 </dl>
@@ -237,10 +230,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array-like</em>) – </p></li>
-<li><p><strong>instances.</strong> (<em>Target</em>) – </p></li>
-<li><p><strong>k</strong> (<em>integer</em><em>, </em><em>default = 0</em>) – </p></li>
-<li><p><strong>hypothesized features in inf_cov</strong> (<em>k-th</em>) – </p></li>
+<li><p><strong>X</strong> (<em>array-like</em>) – Target instances.</p></li>
+<li><p><strong>k</strong> (<em>integer</em><em>, </em><em>default = 0</em>) – k-th hypothesized features in inf_cov</p></li>
 </ul>
 </dd>
 </dl>
@@ -250,6 +241,12 @@
 <dt id="dnn_inference.DnnT.reset_model">
 <code class="sig-name descname">reset_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT.reset_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT.reset_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the full and mask network models under class Dnn</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dnn_inference.DnnT.save_init">
+<code class="sig-name descname">save_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT.save_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT.save_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the initialization for full and mask network models under class Dnn</p>
 </dd></dl>
 
 <dl class="py method">
@@ -307,6 +304,22 @@ Output vector/matrix relative to X.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="dnn_inference.DnnT.visual">
+<code class="sig-name descname">visual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dnn_inference/DnnT.html#DnnT.visual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dnn_inference.DnnT.visual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualization for the inference results based on one illustrative example</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em>) – </p></li>
+<li><p><strong>instances.</strong> (<em>demo</em>) – </p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – </p></li>
+<li><p><strong>labels</strong> (<em>demo</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -329,7 +342,7 @@ Output vector/matrix relative to X.</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../README.html" class="btn btn-neutral float-left" title="Dnn-Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to Dnn-Inference’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
