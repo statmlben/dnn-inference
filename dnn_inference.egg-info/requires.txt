@@ -1,5 +1,6 @@
-numpy
 keras
-tensorflow>=1.14
+matplotlib
+numpy
 scipy
 sklearn
+tensorflow>=2.3.1

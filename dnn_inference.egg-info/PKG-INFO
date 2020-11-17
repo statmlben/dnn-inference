@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: dnn-inference
-Version: 0.5
+Version: 0.6
 Summary: Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.
 Home-page: https://github.com/statmlben/dnn-inference
 Author: Ben Dai
@@ -8,7 +8,10 @@ Author-email: bdai@umn.edu
 License: MIT
 Description: .. -*- mode: rst -*-
         
-        |Keras|_ |MIT| |Python3| |tensorflow|_
+        |PyPi|_ |Keras|_ |MIT| |Python3| |tensorflow|_ |downloads|_ |downloads_month|_
+        
+        .. |PyPi| image:: https://badge.fury.io/py/dnn-inference.svg
+        .. _PyPi: https://badge.fury.io/py/dnn-inference
         
         .. |Keras| image:: https://img.shields.io/badge/keras-tf.keras-red.svg
         .. _Keras: https://keras.io/
@@ -20,12 +23,27 @@ Description: .. -*- mode: rst -*-
         .. |tensorflow| image:: https://img.shields.io/badge/keras-tensorflow-blue.svg
         .. _tensorflow: https://www.tensorflow.org/
         
+        .. |downloads| image:: https://pepy.tech/badge/dnn-inference
+        .. _downloads: https://pepy.tech/project/dnn-inference
+        .. |downloads_month| image:: https://pepy.tech/badge/dnn-inference/month
+        .. _downloads_month: https://pepy.tech/project/dnn-inference
+        
         Dnn-Inference
         =============
         
+        .. image:: ./logo/logo_header.png
+           :align: center
+           :width: 800
+        
         Dnn-Inference is a Python module for hypothesis testing based on deep neural networks. 
         
-        This project was created by `Ben Dai <http://users.stat.umn.edu/~bdai/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
+        Website: https://dnn-inference.readthedocs.io
+        
+        This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is any problem and suggestion please contact me via <bdai@umn.edu>.
+        
+        .. image:: ./logo/demo_result.png
+           :align: center
+           :width: 800
         
         Installation
         ------------
@@ -324,7 +342,7 @@ Description: .. -*- mode: rst -*-
         	es = EarlyStopping(monitor='val_accuracy', mode='max', verbose=1, patience=10, restore_best_weights=True)
         
         	fit_params = {'callbacks': [es],
-        				  'epochs': 20,
+        				  'epochs': 5,
         				  'batch_size': 32,
         				  'validation_split': .2,
         				  'verbose': 1}
@@ -337,6 +355,7 @@ Description: .. -*- mode: rst -*-
         	p_value_tmp = shiing.testing(X, y, fit_params=fit_params)
         	toc = time.perf_counter()
         	print('testing time: %.3f' %(toc-tic))
+        	shiing.visual(X, y)
         
 Platform: UNKNOWN
 Description-Content-Type: text/x-rst

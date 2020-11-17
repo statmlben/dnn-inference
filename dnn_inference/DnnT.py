@@ -16,6 +16,7 @@ from sklearn.model_selection import KFold
 from scipy.stats import hmean, gmean
 import scipy.optimize
 import matplotlib.pyplot as plt
+import os
 
 class DnnT(object):
 	"""Class for one-split/two-split test based on deep neural networks. 
@@ -619,7 +620,9 @@ class DnnT(object):
 								'verbose': 1}
 		split_params_default.update(split_params)
 		split_params = split_params_default
-
+		## create checkpoints path
+		if not os.path.exists(self.cp_path):
+			os.mkdir(self.cp_path)
 		## save initial weights
 		self.save_init()
 
