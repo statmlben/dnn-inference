@@ -171,7 +171,7 @@ class DnnT(object):
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
 			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
-			Z[:, self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0] = 0.
+			Z[:, self.inf_cov[k][0][:,None], self.inf_cov[k][1], :] = 0.
 		else:
 			Z[:,self.inf_cov[k]]= 0.
 		return Z
@@ -191,7 +191,7 @@ class DnnT(object):
 		Z = X.copy()
 		if type(self.inf_cov[k]) is list:
 			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
-			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0])
+			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], :]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], :])
 		else:
 			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
 		return Z
@@ -313,13 +313,13 @@ class DnnT(object):
 					if self.change == 'perm':
 						Z_test = self.perm_cov(X_test, k)
 					# evaluation
-					pred_y_mask = self.model_mask.predict_on_batch(Z_test)
+					pred_y_mask = self.model_mask.predict(Z_test)
 					for j in range(num_perm):
 						# ind_test_perm = np.random.permutation(range(len(y_test)))
 						X_test_perm = X_test.copy()
 						X_test_perm = self.perm_cov(X_test_perm, k)
 						# X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
-						pred_y = self.model.predict_on_batch(X_test_perm)
+						pred_y = self.model.predict(X_test_perm)
 						ind_inf, ind_inf_mask = train_test_split(range(len(pred_y)), train_size=m_tmp, random_state=42)
 
 						metric_tmp = self.metric(y_test[ind_inf], pred_y[ind_inf])
@@ -441,15 +441,15 @@ class DnnT(object):
 							Z_test = self.mask_cov(X_test, k)
 						if self.change == 'perm':
 							Z_test = self.perm_cov(X_test, k)
-						# pred_y = self.model.predict_on_batch(X_test)
-						pred_y_mask = self.model_mask.predict_on_batch(Z_test)
+						# pred_y = self.model.predict(X_test)
+						pred_y_mask = self.model_mask.predict(Z_test)
 						# evaluation
 						for j in range(num_perm):
 							# ind_test_perm = np.random.permutation(range(len(y_test)))
 							X_test_perm = X_test.copy()
 							X_test_perm = self.perm_cov(X_test_perm, k)
 							# X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
-							pred_y = self.model.predict_on_batch(X_test_perm)
+							pred_y = self.model.predict(X_test_perm)
 							metric_tmp = self.metric(y_test, pred_y)
 							metric_mask_tmp = self.metric(y_test, pred_y_mask)
 							diff_tmp = metric_tmp - metric_mask_tmp
@@ -663,7 +663,7 @@ class DnnT(object):
 				self.model_mask.save_weights(mask_path_tmp)
 				self.model.load_weights(path_tmp)
 				self.model_mask.load_weights(mask_path_tmp)
-				pred_y = self.model.predict_on_batch(X_inf)
+				pred_y = self.model.predict(X_inf)
 				metric_full = self.metric(y_inf, pred_y)
 				# prediction and inference in mask model
 				if self.change == 'mask':
@@ -679,7 +679,7 @@ class DnnT(object):
 				if self.change == 'perm':
 					Z_inf = self.perm_cov(X_inf_mask, k)
 				
-				pred_y_mask = self.model_mask.predict_on_batch(Z_inf)
+				pred_y_mask = self.model_mask.predict(Z_inf)
 				metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
 				## compute p-value
@@ -736,7 +736,7 @@ class DnnT(object):
 		self.p_values = P_value
 		return P_value
 
-	def visual(self, X, y):
+	def visual(self, X, y, plt_params={'cmap': 'RdBu', 'alpha':0.6}):
 		"""
 		Visualization for the inference results based on one illustrative example
 
@@ -747,6 +747,9 @@ class DnnT(object):
 
 		y : array-like
 		demo labels
+
+		plt_params: dict
+		dictory of parameters for the imshow see: https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html
 		"""
 		if len(X.shape) == 2:
 			print('sorry, visual function only work for image data.')
@@ -765,7 +768,7 @@ class DnnT(object):
 					ax = fig.add_subplot(spec[row, col])
 					im1 = ax.imshow(X_demo[row], vmin=0, vmax=1)
 					ax.axis('off')
-					im2 = ax.imshow(X_mask_tmp, vmin=0, vmax=1, cmap='OrRd', alpha=0.6)
+					im2 = ax.imshow(X_mask_tmp, vmin=0, vmax=1, **plt_params)
 					ax.axis('off')
 					if row == 0:
 						ax.set_title('p_values: %.3f' %self.p_values[col])
