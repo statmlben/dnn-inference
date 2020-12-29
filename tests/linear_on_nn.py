@@ -23,7 +23,7 @@ y = sim_data.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1.)
 
 from sklearn.linear_model import LinearRegression
 reg = LinearRegression().fit(X0, y)
-y_pred = reg.predict(X0)
+y_pred_linear = reg.predict(X0)
 
 ## report r_square for linear model
 SSR = np.mean((y_pred - y)**2)
@@ -37,7 +37,8 @@ def Reg_model(p, d, L=3):
 	hidden_layer = Dense(d, use_bias=False, input_dim=p, activation='relu')(inputs)
 	for l in range(L-2):
 		hidden_layer = Dense(d, use_bias=False, activation='relu')(hidden_layer)
-	outputs = Dense(1, use_bias=False, activation='relu')(hidden_layer)
+	outputs = Dense(1, use_bias=False)(hidden_layer)
+	# outputs = Dense(1, use_bias=False, activation='relu')(hidden_layer)
 	model = Model(inputs, outputs)
 	# model.compile(loss='mean_squared_error', optimizer=optimizer)
 	return model
@@ -51,3 +52,20 @@ SSR_nn = np.mean((y_pred_nn - y)**2)
 r_sqaure_nn = 1 - SSR_nn/SST
 
 print('r_square for linear model: %.3f; nerual network: %.3f' %(r_sqaure_linear, r_sqaure_nn))
+
+
+y_pred = []
+y_pred.extend(y_pred_linear)
+y_pred.extend(y_pred_nn)
+y_pred = np.array(y_pred)
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+sns.set()
+
+d = {'y_true': list(y)*2, 'y_predict': y_pred, 'method': ['linear']*N + ['nerual network']*N}
+df = pd.DataFrame(data=d)
+sns.scatterplot(data=df, x="y_true", y="y_predict", s=20, hue="method", style='method')
+plt.show()
+
