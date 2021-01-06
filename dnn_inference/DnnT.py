@@ -19,8 +19,8 @@ import matplotlib.pyplot as plt
 import os
 
 class DnnT(object):
-	"""Class for one-split/two-split test based on deep neural networks. 
-	
+	"""Class for one-split/two-split test based on deep neural networks.
+
 	Parameters
 	----------
 
@@ -29,7 +29,7 @@ class DnnT(object):
 
 	model : {keras-defined neural network}
 	 A neural network for original full dataset
-	
+
 	model_mask : {keras-defined neural network}
 	 A neural network for masked dataset by masking/changing the features under hypothesis testing
 
@@ -38,13 +38,13 @@ class DnnT(object):
 
 	alpha: float (0,1), default=0.05
 	 The nominal level of the hypothesis testing
-	
+
 	verbose: {0, 1}, default=0
 	 If print the testing results, 1 indicates YES, 0 indicates NO.
-	
+
 	eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}
 	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
-	
+
 	cp_path: {string}, default='./checkpoints'
 	 The checkpoints path to save the models
 	"""
@@ -112,7 +112,7 @@ class DnnT(object):
 	# 					var = getattr(init_container, 'recurrent_kernel')
 	# 				else:
 	# 					var = getattr(init_container, key.replace("_initializer", ""))
-					
+
 	# 				if var is None:
 	# 					continue
 	# 				else:
@@ -136,19 +136,19 @@ class DnnT(object):
 	# 				var = getattr(init_container, 'recurrent_kernel')
 	# 			else:
 	# 				var = getattr(init_container, key.replace("_initializer", ""))
-				
+
 	# 			if var is None:
 	# 				continue
 	# 			else:
 	# 				var.assign(initializer(var.shape, var.dtype))
-		
+
 	# 	if int(tf.__version__[0]) == 1:
 	# 		session = K.get_session()
 	# 		for layer in self.model.layers:
 	# 			if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
 	# 				layer.kernel.initializer.run(session=session)
 	# 			if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
-	# 				layer.bias.initializer.run(session=session)	 
+	# 				layer.bias.initializer.run(session=session)
 	# 		for layer in self.model_mask.layers:
 	# 			if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
 	# 				layer.kernel.initializer.run(session=session)
@@ -201,7 +201,7 @@ class DnnT(object):
 		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[0.001, 0.005, .01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8], 
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[0.001, 0.005, .01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8],
 				if_reverse=0, min_inf=0, min_est=0, ratio_method='fuse', num_perm=100, cv_num=1, cp='hommel', verbose=1):
 		"""
 		Return a data-adaptive splitting ratio and perturbation level.
@@ -209,7 +209,7 @@ class DnnT(object):
 		Parameters
 		----------
 		X : array-like | shape=(n_samples, dim1, dim2, ...)
-			Features. 
+			Features.
 
 		y : array-like | shape=(n_samples, dim)
 			Outcomes.
@@ -222,7 +222,7 @@ class DnnT(object):
 
 		perturb : float | default=None
 			Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
-		
+
 		split : {'one-split', 'two-split'}
 			one-split or two-split test statistic.
 
@@ -246,16 +246,16 @@ class DnnT(object):
 
 		cv_num: int, default=1
 			The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
-		
+
 		cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'} | default = 'hommel'
 			A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
-		
+
 		verbose: {0,1} | default=1
 			If print the adaptive splitting process.
 
 		Returns
 		-------
-		
+
 		n_opt : integer
 			A reasonable estimation sample size.
 
@@ -270,7 +270,7 @@ class DnnT(object):
 		ratio_grid.sort()
 		if if_reverse == 1:
 			ratio_grid = list(reversed(ratio_grid))
-		
+
 		candidate, Err1_lst, ratio_lst, P_value_lst = [], [], [], []
 		found = 0
 		if split == 'two-split':
@@ -294,7 +294,7 @@ class DnnT(object):
 					X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=1)
 					# training for full model
 					history = self.model.fit(x=X_train, y=y_train, **fit_params)
-					
+
 					# training for mask model
 					if self.change == 'mask':
 						Z_train = self.mask_cov(X_train, k)
@@ -329,11 +329,11 @@ class DnnT(object):
 						p_value_tmp = norm.cdf(Lambda_tmp)
 						P_value_cv.append(p_value_tmp)
 					P_value.append(P_value_cv)
-					
+
 					# if verbose == 1:
 					# 	print('(AdaRatio) cv: %d; p_value: %.3f, inference sample ratio: %.3f' %(h, p_value_tmp, ratio_tmp))
 					# 	print('(AdaRatio) diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
-			
+
 				P_value = np.array(P_value)
 				# print(P_value)
 				if cv_num > 1:
@@ -391,7 +391,7 @@ class DnnT(object):
 				# print('err list for the TS test: %s' %Err1_lst)
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - 2*m_opt
-			
+
 			return n_opt, m_opt
 
 		if split == 'one-split':
@@ -461,7 +461,7 @@ class DnnT(object):
 						# 	print('(AdaRatio) diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(diff_tmp.mean(), diff_tmp.std(), metric_tmp.mean(), metric_tmp.std(), metric_mask_tmp.mean(), metric_mask_tmp.std()))
 						# 	print('(AdaRatio) cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, p_value_tmp, ratio_tmp, perturb_tmp))
 						P_value.append(P_value_cv)
-				
+
 					P_value = np.array(P_value)
 					# print(P_value)
 					if cv_num > 1:
@@ -495,15 +495,15 @@ class DnnT(object):
 					# print('p_value: %s' %P_value_cp)
 					Err1 = len(P_value_cp[P_value_cp<=self.alpha])/len(P_value_cp)
 					Err1_lst.append(Err1)
-					
+
 					if verbose==1:
 						print('(AdaRatio) Est. Type 1 error: %.3f; p_value_mean: %.3f, inference sample ratio: %.3f, perturb: %s' %(Err1, P_value_cp.mean(), ratio_tmp, perturb_tmp))
 						# print('(AdaRatio) p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(P_value.mean(), ratio_tmp, perturb_tmp))
-					
+
 					P_value_lst.append(P_value_cp)
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
-				
+
 					# if P_value > self.alpha:
 					if Err1 < self.alpha:
 						found = 1
@@ -512,14 +512,14 @@ class DnnT(object):
 							n_opt = len(X) - m_opt
 							perturb_opt = perturb_tmp
 							break
-				
+
 				if found == 1:
 					if ratio_method == 'min':
 						Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 						m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 						n_opt = len(X) - m_opt
 						perturb_opt = perturb_tmp
-						
+
 					if ratio_method == 'close':
 						P_value_lst = np.array(P_value_lst)
 						ratio_lst, perturb_lst = np.array(ratio_lst), np.array(perturb_lst)
@@ -534,7 +534,7 @@ class DnnT(object):
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - m_opt
 				perturb_opt = perturb_lst[np.argmin(Err1_lst)]
-		
+
 			return n_opt, m_opt, perturb_opt
 
 	def testing(self, X, y, fit_params, split_params={}, cv_num=5, cp='hommel', inf_ratio=None):
@@ -549,59 +549,59 @@ class DnnT(object):
 			 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
 			 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.	- **y: {array-like} of shape (n_samples,)**
 			 Output vector/matrix relative to X.
-	
+
 		fit_params: {dict of fitting parameters}**
 	 		See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
-	
+
 		split_params: {dict of splitting parameters}**
 
 			split: {'one-split', 'two-split'}, default='one-split'**
 				one-split or two-split test statistic.
-		
+
 			perturb: float, default=None**
 				Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
-			
+
 			num_perm: int, default=100**
 				Number of permutation for determine the splitting ratio.
-			
+
 			ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
 				A list of estimation/inference ratios under searching.
-			
+
 			if_reverse: {0,1}, default=0**
 				``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
-			
+
 			perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
-				A list of perturb levels under searching. 
-			
+				A list of perturb levels under searching.
+
 			min_inf: int, default=0**
 				The minimal size for inference sample.
-			
+
 			min_est: int, default=0**
 				The minimal size for estimation sample.
-			
+
 			ratio_method: {'fuse', 'close'}, default='fuse'**
 				The adaptive splitting method to determine the optimal estimation/inference ratios.
-			
+
 			cv_num: int, default=1**
 				The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
-			
+
 			cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 				A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
-			
+
 			verbose: {0,1}, default=1**
 
 		cv_num: int, default=1**
 			The number of cross-validation to shuffle the estimation/inference samples in testing.
-		
+
 		cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 			A method to combine p-values obtained from cross-validation.
-		
+
 		inf_ratio: float, default=None**
 			A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
 
 		Return
 		------
-		
+
 		P_value: array of float [0, 1]**
 			The p_values for target hypothesis testings.
 
@@ -636,7 +636,7 @@ class DnnT(object):
 				else:
 					m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
 					perturb_level = split_params['perturb']
-			
+
 			elif split_params['split'] == 'two-split':
 				if inf_ratio == None:
 					n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
@@ -670,15 +670,15 @@ class DnnT(object):
 					Z_train = self.mask_cov(X_train, k)
 				if self.change == 'perm':
 					Z_train = self.perm_cov(X_train, k)
-				
+
 				self.reset_model()
 				history_mask = self.model_mask.fit(Z_train, y_train, **fit_params)
-				
+
 				if self.change == 'mask':
 					Z_inf = self.mask_cov(X_inf_mask, k)
 				if self.change == 'perm':
 					Z_inf = self.perm_cov(X_inf_mask, k)
-				
+
 				pred_y_mask = self.model_mask.predict(Z_inf)
 				metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
@@ -688,10 +688,10 @@ class DnnT(object):
 						diff_tmp = metric_full - metric_mask + metric_full.std() * np.random.randn(len(metric_full))
 					else:
 						diff_tmp = metric_full - metric_mask + perturb_level * np.random.randn(len(metric_full))
-				
+
 				if split_params['split'] == 'two-split':
 					diff_tmp = metric_full - metric_mask
-				
+
 				Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 				p_value_tmp = norm.cdf(Lambda)
 				print('cv: %d; p_value: %.3f; diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(h, p_value_tmp, diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
@@ -736,7 +736,7 @@ class DnnT(object):
 		self.p_values = P_value
 		return P_value
 
-	def visual(self, X, y, plt_params={'cmap': 'RdBu', 'alpha':0.6}):
+	def visual(self, X, y, plt_params={'cmap': 'RdBu', 'alpha':0.6}, plt_mask_params={'cmap': 'RdBu', 'alpha':0.6}):
 		"""
 		Visualization for the inference results based on one illustrative example
 
@@ -766,9 +766,9 @@ class DnnT(object):
 					X_mask_tmp = np.nan*np.ones(X_demo.shape)
 					X_mask_tmp = self.mask_cov(X_mask_tmp, k=col)[0]
 					ax = fig.add_subplot(spec[row, col])
-					im1 = ax.imshow(X_demo[row], vmin=0, vmax=1)
+					im1 = ax.imshow(X_demo[row], vmin=0, vmax=1, **plt_params)
 					ax.axis('off')
-					im2 = ax.imshow(X_mask_tmp, vmin=0, vmax=1, **plt_params)
+					im2 = ax.imshow(X_mask_tmp, vmin=0, vmax=1, **plt_mask_params)
 					ax.axis('off')
 					if row == 0:
 						ax.set_title('p_values: %.3f' %self.p_values[col])
