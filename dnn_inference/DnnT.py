@@ -743,13 +743,17 @@ class DnnT(object):
 		Parameters
 		----------
 		X : array-like
-		demo instances.
+		 demo instances.
 
 		y : array-like
-		demo labels
+		 demo labels
 
 		plt_params: dict
-		dictory of parameters for the imshow see: https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html
+		 dictory of parameters for the imshow for original image see: https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html
+
+		plt_mask_params: dict
+		 dictory of parameters for the imshow for mask see: https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html
+
 		"""
 		if len(X.shape) == 2:
 			print('sorry, visual function only work for image data.')
