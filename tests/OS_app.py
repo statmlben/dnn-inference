@@ -78,11 +78,15 @@ split_params = {'split': 'one-split',
 				'cp': 'min',
 				'verbose': 1}
 
-inf_cov = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],[np.arange(7,16), np.arange(9,16)]]
+inf_feats = [[np.arange(19,28), np.arange(13,20)], [np.arange(21,28), np.arange(4, 13)],[np.arange(7,16), np.arange(9,16)]]
 # inf_cov = [[np.arange(19,28), np.arange(13,20)]]
-shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
+shiing = DnnT(inf_feats=inf_feats, model=model, model_mask=model_mask, change='mask', eva_metric='zero-one')
 p_value_tmp = shiing.testing(X, y, cv_num=3, cp='hommel', fit_params=fit_params, split_params=split_params)
 toc = time.perf_counter()
 shiing.visual(X,y)
 print('testing time: %.3f' %(toc-tic))
 print('P-values: %s' %p_value_tmp)
+
+## test for holdout permutation tests
+shiing = HPermT(inf_cov=inf_cov, model=model, eva_metric='zero-one')
+shiing.testing(X, y, fit_params)

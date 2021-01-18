@@ -24,7 +24,7 @@ class DnnT(object):
 	Parameters
 	----------
 
-	inf_cov : list-like of shape (num of tests, dim of features)
+	inf_feats : list-like | shape = (num of tests, dim of features)
 	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
 
 	model : {keras-defined neural network}
@@ -45,12 +45,12 @@ class DnnT(object):
 	eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}
 	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
 
-	cp_path: {string}, default='./checkpoints'
+	cp_path: string, default='./dnnT_checkpoints'
 	 The checkpoints path to save the models
 	"""
 
-	def __init__(self, inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse', cp_path = './checkpoints'):
-		self.inf_cov = inf_cov
+	def __init__(self, inf_feats, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse', cp_path = './dnnT_checkpoints'):
+		self.inf_feats = inf_feats
 		self.model = model
 		self.model_mask = model_mask
 		self.alpha = alpha
@@ -166,14 +166,14 @@ class DnnT(object):
 		 Target instances.
 
 		k : integer, default = 0
-		 k-th hypothesized features in inf_cov
+		 k-th hypothesized features in inf_feats
 		"""
 		Z = X.copy()
-		if type(self.inf_cov[k]) is list:
+		if type(self.inf_feats[k]) is list:
 			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
-			Z[:, self.inf_cov[k][0][:,None], self.inf_cov[k][1], :] = 0.
+			Z[:, self.inf_feats[k][0][:,None], self.inf_feats[k][1], :] = 0.
 		else:
-			Z[:,self.inf_cov[k]]= 0.
+			Z[:,self.inf_feats[k]]= 0.
 		return Z
 
 	def perm_cov(self, X, k=0):
@@ -186,19 +186,19 @@ class DnnT(object):
 		 Target instances.
 
 		k : integer, default = 0
-		 k-th hypothesized features in inf_cov
+		 k-th hypothesized features in inf_feats
 		"""
 		Z = X.copy()
-		if type(self.inf_cov[k]) is list:
+		if type(self.inf_feats[k]) is list:
 			## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
-			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], :]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], :])
+			Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], :]= np.random.permutation(Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], :])
 		else:
-			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
+			Z[:,self.inf_feats[k]]= np.random.permutation(Z[:,self.inf_feats[k]])
 		return Z
 
 	def noise_cov(self, X, k=0):
 		Z = X.copy()
-		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
+		Z[:,self.inf_feats[k]] = np.random.randn(len(X), len(self.inf_feats[k]))
 		return Z
 
 	def adaRatio(self, X, y, k=0, fit_params={}, perturb=None, split='one-split', perturb_grid=[0.001, 0.005, .01, .05, .1, .5, 1.], ratio_grid=[.2, .4, .6, .8],
@@ -215,7 +215,7 @@ class DnnT(object):
 			Outcomes.
 
 		k : integer, default = 0
-			k-th hypothesized features in inf_cov
+			k-th hypothesized features in inf_feats
 
 		fit_params : dict | shape = dict of fitting parameters
 			See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``.
@@ -318,7 +318,7 @@ class DnnT(object):
 						# ind_test_perm = np.random.permutation(range(len(y_test)))
 						X_test_perm = X_test.copy()
 						X_test_perm = self.perm_cov(X_test_perm, k)
-						# X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
+						# X_test_perm[:,self.inf_feats[k]] = X_test_perm[:,self.inf_feats[k]][ind_test_perm,:]
 						pred_y = self.model.predict(X_test_perm)
 						ind_inf, ind_inf_mask = train_test_split(range(len(pred_y)), train_size=m_tmp, random_state=42)
 
@@ -418,7 +418,7 @@ class DnnT(object):
 						# index_perm = np.random.permutation(range(len(y)))
 						X_perm = X.copy()
 						X_perm = self.perm_cov(X_perm, k)
-						# X_perm[:,self.inf_cov[k]] = X_perm[:,self.inf_cov[k]][index_perm,:]
+						# X_perm[:,self.inf_feats[k]] = X_perm[:,self.inf_feats[k]][index_perm,:]
 						# split samples
 						X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=h)
 						# training for full model
@@ -448,7 +448,7 @@ class DnnT(object):
 							# ind_test_perm = np.random.permutation(range(len(y_test)))
 							X_test_perm = X_test.copy()
 							X_test_perm = self.perm_cov(X_test_perm, k)
-							# X_test_perm[:,self.inf_cov[k]] = X_test_perm[:,self.inf_cov[k]][ind_test_perm,:]
+							# X_test_perm[:,self.inf_feats[k]] = X_test_perm[:,self.inf_feats[k]][ind_test_perm,:]
 							pred_y = self.model.predict(X_test_perm)
 							metric_tmp = self.metric(y_test, pred_y)
 							metric_mask_tmp = self.metric(y_test, pred_y_mask)
@@ -539,7 +539,7 @@ class DnnT(object):
 
 	def testing(self, X, y, fit_params, split_params={}, cv_num=5, cp='hommel', inf_ratio=None):
 		"""
-		Return p-values for hypothesis testing for inf_cov in class Dnn.
+		Return p-values for hypothesis testing for inf_feats in class Dnn.
 
 		Parameters
 		----------
@@ -590,7 +590,7 @@ class DnnT(object):
 
 			verbose: {0,1}, default=1**
 
-		cv_num: int, default=1**
+		cv_num: int, default=5**
 			The number of cross-validation to shuffle the estimation/inference samples in testing.
 
 		cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
@@ -627,7 +627,7 @@ class DnnT(object):
 		self.save_init()
 
 		P_value = []
-		for k in range(len(self.inf_cov)):
+		for k in range(len(self.inf_feats)):
 			self.reset_model()
 			if split_params['split'] == 'one-split':
 				if ((inf_ratio == None) or (split_params['perturb'] == None)):
@@ -762,7 +762,7 @@ class DnnT(object):
 			demo_ind = np.array([np.where(y[:,k]==1)[0][0] for k in range(num_class)])
 			X_demo = X[demo_ind]
 
-			cols, rows = len(self.inf_cov), num_class
+			cols, rows = len(self.inf_feats), num_class
 			fig = plt.figure(constrained_layout=False)
 			spec = fig.add_gridspec(ncols=cols, nrows=rows)
 			for row in range(rows):

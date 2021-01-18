@@ -9,8 +9,8 @@ import tensorflow as tf
 from sklearn.model_selection import KFold
 
 class PermT(object):
-	def __init__(self, inf_cov, model, model_perm, alpha=.05, num_folds=5, num_perm=100, verbose=0, eva_metric='mse'):
-		self.inf_cov = inf_cov
+	def __init__(self, inf_feats, model, model_perm, alpha=.05, num_folds=5, num_perm=100, verbose=0, eva_metric='mse'):
+		self.inf_feats = inf_feats
 		self.model = model
 		self.model_perm = model_perm
 		self.alpha = alpha
@@ -36,7 +36,7 @@ class PermT(object):
 
 	def reset_model(self):
 		if int(tf.__version__[0]) == 2:
-			# for layer in self.model.layers: 
+			# for layer in self.model.layers:
 			# 	if isinstance(layer, tf.keras.Model):
 			# 		reset_weights(layer)
 			# 		continue
@@ -67,50 +67,50 @@ class PermT(object):
 						var = getattr(init_container, 'recurrent_kernel')
 					else:
 						var = getattr(init_container, key.replace("_initializer", ""))
-					
+
 					if var is None:
 						continue
 					else:
 						var.assign(initializer(var.shape, var.dtype))
-		
+
 		if int(tf.__version__[0]) == 1:
 			session = K.get_session()
 			for layer in self.model.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
 				if hasattr(layer, 'bias_initializer'):
-					layer.bias.initializer.run(session=session)     
+					layer.bias.initializer.run(session=session)
 			for layer in self.model_perm.layers:
 				if hasattr(layer, 'kernel_initializer'):
 					layer.kernel.initializer.run(session=session)
 				if hasattr(layer, 'bias_initializer'):
-					layer.bias.initializer.run(session=session)  
+					layer.bias.initializer.run(session=session)
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0):
 		Z = X.copy()
-		if type(self.inf_cov[k]) is list:
-			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0] = 0.
+		if type(self.inf_feats[k]) is list:
+			Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], 0] = 0.
 		else:
-			Z[:,self.inf_cov[k]]= 0.
+			Z[:,self.inf_feats[k]]= 0.
 		return Z
 
 	def perm_cov(self, X, k=0):
 		Z = X.copy()
-		if type(self.inf_cov[k]) is list:
-			Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0]= np.random.permutation(Z[:,self.inf_cov[k][0][:,None], self.inf_cov[k][1], 0])
+		if type(self.inf_feats[k]) is list:
+			Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], 0]= np.random.permutation(Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], 0])
 		else:
-			Z[:,self.inf_cov[k]]= np.random.permutation(Z[:,self.inf_cov[k]])
+			Z[:,self.inf_feats[k]]= np.random.permutation(Z[:,self.inf_feats[k]])
 		return Z
 
 	def noise_cov(self, X, k=0):
 		Z = X.copy()
-		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
+		Z[:,self.inf_feats[k]] = np.random.randn(len(X), len(self.inf_feats[k]))
 		return Z
 
 	def testing(self, X, y, fit_params={}):
 		P_value = []
-		for k in range(len(self.inf_cov)):
+		for k in range(len(self.inf_feats)):
 			kfold = KFold(n_splits=self.num_folds, shuffle=True)
 			self.reset_model()
 			print('%d-th permutation inference' %k)
