@@ -70,7 +70,7 @@ class DnnT(object):
 			metric_tmp = 1. - 1.*(label_true == label_pred)
 		elif self.eva_metric == 'cross-entropy':
 			label_true = np.argmax(y_true, 1)
-			metric_tmp = np.log(y_pred[range(len(y_pred)),label_true])
+			metric_tmp = -np.log(y_pred[range(len(y_pred)),label_true])
 		else:
 			metric_tmp = self.eva_metric(y_true, y_pred)
 		return metric_tmp

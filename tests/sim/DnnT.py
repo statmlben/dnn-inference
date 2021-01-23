@@ -36,11 +36,11 @@ class DnnT(object):
 	# def reset_model(self):
 	# 	initial_weights = self.model.get_weights()
 	# 	backend_name = K.backend()
-	# 	if backend_name == 'tensorflow': 
+	# 	if backend_name == 'tensorflow':
 	# 		k_eval = lambda placeholder: placeholder.eval(session=K.get_session())
-	# 	elif backend_name == 'theano': 
+	# 	elif backend_name == 'theano':
 	# 		k_eval = lambda placeholder: placeholder.eval()
-	# 	else: 
+	# 	else:
 	# 		raise ValueError("Unsupported backend")
 	# 	new_weights = [k_eval(glorot_uniform()(w.shape)) for w in initial_weights]
 	# 	self.model.set_weights(new_weights)
@@ -65,7 +65,7 @@ class DnnT(object):
 						var = getattr(init_container, 'recurrent_kernel')
 					else:
 						var = getattr(init_container, key.replace("_initializer", ""))
-					
+
 					if var is None:
 						continue
 					else:
@@ -89,24 +89,24 @@ class DnnT(object):
 						var = getattr(init_container, 'recurrent_kernel')
 					else:
 						var = getattr(init_container, key.replace("_initializer", ""))
-					
+
 					if var is None:
 						continue
 					else:
 						var.assign(initializer(var.shape, var.dtype))
-		
+
 		if int(tf.__version__[0]) == 1:
 			session = K.get_session()
 			for layer in self.model.layers:
 				if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
 					layer.kernel.initializer.run(session=session)
 				if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
-					layer.bias.initializer.run(session=session)     
+					layer.bias.initializer.run(session=session)
 			for layer in self.model_mask.layers:
 				if ((hasattr(layer, 'kernel_initializer')) and (layer.kernel != None)):
 					layer.kernel.initializer.run(session=session)
 				if ((hasattr(layer, 'bias_initializer')) and (layer.bias != None)):
-					layer.bias.initializer.run(session=session)  
+					layer.bias.initializer.run(session=session)
 
 	## can be extent to @abstractmethod
 	def mask_cov(self, X, k=0):
@@ -130,8 +130,8 @@ class DnnT(object):
 		Z[:,self.inf_cov[k]] = np.random.randn(len(X), len(self.inf_cov[k]))
 		return Z
 
-	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='two-sample', 
-				num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .3, .4], 
+	def adaRatio(self, X, y, k=0, fit_params={}, perturb=.001, split='two-sample',
+				num_perm=100, perturb_grid=[.01, .05, .1, .5, 1.], ratio_grid=[.2, .3, .4],
 				min_inf=0, min_est=0, ratio_method='fuse', cv_num=1, verbose=0):
 		candidate, Err1_lst, ratio_lst = [], [], []
 		found = 0
@@ -153,20 +153,20 @@ class DnnT(object):
 					y_train_perm = np.random.permutation(y_train)
 					# training for full model
 					history = self.model.fit(x=X_train, y=y_train_perm, **fit_params)
-					
+
 					# training for mask model
 					if self.change == 'mask':
 						Z_train = self.mask_cov(X_train, k)
 					if self.change == 'perm':
 						Z_train = self.perm_cov(X_train, k)
 					history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
-					
+
 					## evaluate the performance
 					if self.change == 'mask':
 						Z_test = self.mask_cov(X_test, k)
 					if self.change == 'perm':
 						Z_test = self.perm_cov(X_test, k)
-					
+
 					pred_y = self.model.predict(X_test)
 					pred_y_mask = self.model_mask.predict(Z_test)
 					for j in range(num_perm):
@@ -182,17 +182,17 @@ class DnnT(object):
 						p_value_tmp = norm.cdf(Lambda_tmp)
 						P_value_cv.append(p_value_tmp)
 					P_value.append(P_value_cv)
-				
+
 				P_value = np.array(P_value)
 				P_value = np.mean(P_value, 0)
 				## compute the type 1 error
 				Err1 = len(P_value[P_value < self.alpha]) / len(P_value)
 				Err1_lst.append(Err1)
 				ratio_lst.append(ratio_tmp)
-				
+
 				if verbose==1:
 					print('Type 1 error: %.3f; p_value: %.3f, inference sample ratio: %.3f' %(Err1, P_value.mean(), ratio_tmp))
-				
+
 				if Err1 <= self.alpha:
 					found = 1
 					if ratio_method == 'fuse':
@@ -212,7 +212,7 @@ class DnnT(object):
 				Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - 2*m_opt
-			
+
 			return n_opt, m_opt
 
 		if split == 'one-sample':
@@ -246,7 +246,7 @@ class DnnT(object):
 						if self.change == 'perm':
 							Z_train = self.perm_cov(X_train, k)
 						history_mask = self.model_mask.fit(x=Z_train, y=y_train_perm, **fit_params)
-						
+
 						## evaluate the performance
 						if self.change == 'mask':
 							Z_test = self.mask_cov(X_test, k)
@@ -267,16 +267,16 @@ class DnnT(object):
 								diff_tmp = metric_tmp - metric_mask_tmp + metric_tmp.std()*np.random.randn(len(metric_tmp))
 							else:
 								diff_tmp = metric_tmp - metric_mask_tmp + perturb_tmp*np.random.randn(len(metric_tmp))
-							
+
 							Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 							p_value_tmp = norm.cdf(Lambda_tmp)
 							P_value_cv.append(p_value_tmp)
-						
+
 						if verbose==1:
 							print('cv: %d; p_value: %.3f, inference sample ratio: %.3f, perturb: %s' %(h, np.mean(P_value_cv), ratio_tmp, perturb_tmp))
 
 						P_value.append(P_value_cv)
-				
+
 					P_value = np.array(P_value)
 					P_value = np.mean(P_value, 0)
 					## compute the type 1 error
@@ -287,7 +287,7 @@ class DnnT(object):
 					Err1_lst.append(Err1)
 					ratio_lst.append(ratio_tmp)
 					perturb_lst.append(perturb_tmp)
-				
+
 
 					if Err1 <= self.alpha:
 						found = 1
@@ -296,14 +296,14 @@ class DnnT(object):
 							n_opt = len(X) - m_opt
 							perturb_opt = perturb_tmp
 							break
-				
+
 				if found == 1:
 					if ratio_method == 'min':
 						Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
 						m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 						n_opt = len(X) - m_opt
 						perturb_opt = perturb_tmp
-						
+
 					if ratio_method == 'close':
 						Err1_lst, ratio_lst, perturb_lst = np.array(Err1_lst), np.array(ratio_lst), np.array(perturb_lst)
 						Err1_lst, ratio_lst, perturb_lst = Err1_lst[Err1_lst <= self.alpha], ratio_lst[Err1_lst <= self.alpha], perturb_lst[Err1_lst <= self.alpha]
@@ -318,7 +318,7 @@ class DnnT(object):
 				m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
 				n_opt = len(X) - m_opt
 				perturb_opt = perturb_lst[np.argmin(Err1_lst)]
-		
+
 			return n_opt, m_opt, perturb_opt
 
 	def testing(self, X, y, fit_params, split_params, cv_num=1, est_size=None, inf_size=None):
@@ -331,14 +331,14 @@ class DnnT(object):
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
 				else:
 					n, m, perturb_level = est_size, inf_size, split_params['perturb']
-			
+
 			if split_params['split'] == 'two-sample':
 				if (est_size == None) or (inf_size == None):
 					n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 				else:
 					n, m = est_size, inf_size
-			
+
 			P_value_cv = []
 			for h in range(cv_num):
 				X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=h)
@@ -358,15 +358,15 @@ class DnnT(object):
 					Z_train = self.mask_cov(X_train, k)
 				if self.change == 'perm':
 					Z_train = self.perm_cov(X_train, k)
-				
+
 				self.reset_model()
 				history_mask = self.model_mask.fit(Z_train, y_train, **fit_params)
-				
+
 				if self.change == 'mask':
 					Z_inf = self.mask_cov(X_inf_mask, k)
 				if self.change == 'perm':
 					Z_inf = self.perm_cov(X_inf_mask, k)
-				
+
 				pred_y_mask = self.model_mask.predict(Z_inf)
 				metric_mask = self.metric(y_inf_mask, pred_y_mask)
 
@@ -376,10 +376,10 @@ class DnnT(object):
 						diff_tmp = metric_full - metric_mask + metric_full.std() * np.random.randn(len(metric_full))
 					else:
 						diff_tmp = metric_full - metric_mask + perturb_level * np.random.randn(len(metric_full))
-				
+
 				if split_params['split'] == 'two-sample':
 					diff_tmp = metric_full - metric_mask
-				
+
 				Lambda = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
 				p_value_tmp = norm.cdf(Lambda)
 				print('cv: %d; p_value: %.3f; diff: %.3f(%.3f); metric: %.3f(%.3f); metric_mask: %.3f(%.3f)' %(h, p_value_tmp, diff_tmp.mean(), diff_tmp.std(), metric_full.mean(), metric_full.std(), metric_mask.mean(), metric_mask.std()))
