@@ -90,7 +90,7 @@ for i in range(100):
 
     shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask', eva_metric=log_loss)
 
-    p_value_tmp = shiing.testing(X, y, cv_num=1, fit_params=fit_params, split_params=split_params)
+    p_value_tmp = shiing.testing(X, y, cv_num=5, fit_params=fit_params, split_params=split_params)
     toc = time.perf_counter()
     P_value.append(p_value_tmp)
     time_lst.append(toc - tic)
