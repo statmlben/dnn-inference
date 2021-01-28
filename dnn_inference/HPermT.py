@@ -242,7 +242,7 @@ class HPermT(object):
 			score_perm_cv = np.array(score_perm_cv)
 			cv_ave_score, cv_ave_score_perm = score_cv.mean(), np.mean(score_perm_cv, axis=0)
 			## compute p-value
-			print("%d th inf-feats perf score: %.3f, perf permutation score: %.3f(%.3f)" %(k, cv_ave_score, cv_ave_score_perm.mean(), cv_ave_score_perm.std()))
+			print("%d th inf-feats perf score: %.3f, perf permutation score: %.3f(%.3f); num_perm: %d" %(k, cv_ave_score, cv_ave_score_perm.mean(), cv_ave_score_perm.std(), len(cv_ave_score_perm) ))
 			p_value_tmp = (np.sum(cv_ave_score_perm <= cv_ave_score) + 1.0) / (self.num_perm + 1.0)
 			if p_value_tmp < self.alpha:
 				print('reject %d th H0 with p_value: %.3f' %(k, p_value_tmp))
