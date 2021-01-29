@@ -18,7 +18,7 @@ import keras.backend as K
 from keras.initializers import glorot_uniform
 import tensorflow as tf
 from sklearn.model_selection import KFold
-import itertools 
+import itertools
 
 array32 = partial(np.array, dtype=np.float32)
 
