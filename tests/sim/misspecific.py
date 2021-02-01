@@ -24,7 +24,7 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 L0, d0 = 2, 32
-N, p = 1000, 10
+N, p = 2000, 10
 print('the number of sample: %d; number of dim: %d' %(N, p))
 
 verbose = 0
@@ -67,7 +67,7 @@ for i in range(100):
                   'validation_split': .2,
                   'verbose': 0}
 
-    split_params = {'split': 'one-split',
+    split_params = {'split': 'two-split',
                     'perturb': None,
                     'if_reverse': 0,
                     'perturb_grid': [.01, .05, .1, .5, 1.],
