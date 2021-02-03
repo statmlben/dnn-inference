@@ -24,7 +24,7 @@ array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
 
 L0, d0 = 2, 32
-N, p = 2000, 10
+N, p = 6000, 10
 print('the number of sample: %d; number of dim: %d' %(N, p))
 
 verbose = 0
@@ -76,7 +76,7 @@ for i in range(100):
     shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask,
                     change='mask', cp_path='./missp_checkpoints')
 
-    p_value_tmp = shiing.testing(X, y, cv_num=5, fit_params=fit_params,
+    p_value_tmp = shiing.testing(X, y, cv_num=1, fit_params=fit_params,
                                 split_params=split_params, inf_ratio=None)
     toc = time.perf_counter()
     P_value.append(p_value_tmp)
