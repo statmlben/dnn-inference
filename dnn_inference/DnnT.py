@@ -17,6 +17,10 @@ from scipy.stats import hmean, gmean
 import scipy.optimize
 import matplotlib.pyplot as plt
 import os
+from scipy.optimize import brentq
+
+def size_fun(x, N, min_N=2000):
+	return x + min_N * np.log(x) / 2 / np.log(min_N/2) - N
 
 class DnnT(object):
 	"""Class for one-split/two-split test based on deep neural networks.
@@ -631,15 +635,35 @@ class DnnT(object):
 			self.reset_model()
 			if split_params['split'] == 'one-split':
 				if ((inf_ratio == None) or (split_params['perturb'] == None)):
-					n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
-					print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
+					if split_params['ratio_method'] == 'fuse':
+						n, m, perturb_level = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
+						print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
+					elif split_params['ratio_method'] == 'log-ratio':
+						root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
+						inf_ratio = 1 - root / len(X)
+						if split_params['perturb'] == None:
+							perturb_level = 0.001
+						else:
+							perturb_level = split_params['perturb']
+						m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
+						print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
+					else:
+						raise Exception("inf ratio method must be 'fuse' or 'log-ratio' if inf_ratio is not given!")
 				else:
 					m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
 					perturb_level = split_params['perturb']
+					print('%d-th inference; fix data splitting: n: %d; m: %d' %(k, n, m))
 
 			elif split_params['split'] == 'two-split':
 				if inf_ratio == None:
-					n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
+					if split_params['ratio_method'] == 'fuse':
+						n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
+					elif split_params['ratio_method'] == 'log-ratio':
+						root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
+						inf_ratio = 1 - root / len(X)
+						m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
+					else:
+						raise Exception("inf ratio method must be 'fuse' or 'log-ratio' if inf_ratio is not given!")
 					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 				else:
 					m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
