@@ -751,9 +751,9 @@ class DnnT(object):
 			p_value_mean = min(1, p_value_mean)
 
 			if p_value_mean < self.alpha:
-				print('reject H0 with p_value: %.3f' %p_value_mean)
+				print('%d-th inf: reject H0 with p_value: %.3f' %(k, p_value_mean))
 			else:
-				print('accept H0 with p_value: %.3f' %p_value_mean)
+				print('%d-th inf: accept H0 with p_value: %.3f' %(k, p_value_mean))
 
 			P_value.append(p_value_mean)
 		# return P_value, fit_err, P_value_cv
