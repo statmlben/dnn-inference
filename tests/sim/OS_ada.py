@@ -17,14 +17,10 @@ from scipy.optimize import brentq
 
 array32 = partial(np.array, dtype=np.float32)
 np.random.seed(0)
-## one-split test: 0.030
-## two-split test: 0.040
-## Comb. one-split test: 0.010
-## Comb. two-split test: 0.010
 
 p, L0, d0, K0 = 100, 3, 128, 5
 tau, x_max, pho = 2., .4, 0.25
-N = 2000
+N = 10000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -73,7 +69,7 @@ for i in range(100):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'split': 'one-split',
+	split_params = {'split': 'two-split',
 					'num_perm': 100,
 					'perturb': 0.01,
 					'perturb_grid': [.01, .05, .1, .5, 1.],
@@ -81,7 +77,7 @@ for i in range(100):
 
 	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
 	# inf_cov = [range(K0)]
-	root, info = brentq(size_fun, 3, N, args=(N, 2000), full_output=True)
+	root, info = brentq(size_fun, 3, N, args=(N, 1000), full_output=True)
 	inf_ratio = 1 - root / N
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 
@@ -95,7 +91,7 @@ P_value = np.array(P_value)
 time_lst = np.array(time_lst)
 
 # print('MSE: %.3f(%.3f)' %(SE_list.mean(), SE_list.std()))
-print('Time: %.3f(%.3f)' %(time_lst.mean(), time_lst.std()))
+print('Time: %.1f(%.1f)' %(time_lst.mean(), time_lst.std()))
 print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= shiing.alpha])/len(P_value)))
 # print('CASE 1: Type 1 error: %.3f' %(len(P_value[:,1][P_value[:,1] <= .05])/len(P_value)))
 
