@@ -31,7 +31,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-for i in range(100):
+for i in range(500):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
@@ -75,8 +75,8 @@ for i in range(100):
 					'perturb_grid': [.01, .05, .1, .5, 1.],
 					'verbose': 0}
 
-	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
-	# inf_cov = [range(K0)]
+	# inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
+	inf_cov = [range(K0)]
 	root, info = brentq(size_fun, 3, N, args=(N, 1000), full_output=True)
 	inf_ratio = 1 - root / N
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
@@ -95,5 +95,5 @@ print('Time: %.1f(%.1f)' %(time_lst.mean(), time_lst.std()))
 print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= shiing.alpha])/len(P_value)))
 # print('CASE 1: Type 1 error: %.3f' %(len(P_value[:,1][P_value[:,1] <= .05])/len(P_value)))
 
-for i in [1, 2, 3]:
-	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
+# for i in [1, 2, 3]:
+# 	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
