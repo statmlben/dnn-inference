@@ -69,7 +69,7 @@ for i in range(500):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'split': 'two-split',
+	split_params = {'split': 'one-split',
 					'num_perm': 100,
 					'perturb': 0.01,
 					'perturb_grid': [.01, .05, .1, .5, 1.],
@@ -81,7 +81,7 @@ for i in range(500):
 	inf_ratio = 1 - root / N
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 
-	p_value_tmp = shiing.testing(X, y, cv_num=5, fit_params=fit_params,
+	p_value_tmp = shiing.testing(X, y, cv_num=1, fit_params=fit_params,
 						split_params=split_params, inf_ratio=inf_ratio)
 	toc = time.perf_counter()
 	P_value.append(p_value_tmp)

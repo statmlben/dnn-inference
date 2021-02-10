@@ -17,7 +17,7 @@ Welcome to Dnn-Inference's documentation!
 .. |MIT| image:: https://img.shields.io/pypi/l/varsvm.svg
 
 .. |Python3| image:: https://img.shields.io/badge/python-3-green.svg
-	
+
 .. |tensorflow| image:: https://img.shields.io/badge/keras-tensorflow-blue.svg
 .. _tensorflow: https://www.tensorflow.org/
 
