@@ -20,7 +20,7 @@ np.random.seed(0)
 
 p, L0, d0, K0 = 100, 3, 128, 5
 tau, x_max, pho = 2., .4, 0.25
-N = 10000
+N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
@@ -31,7 +31,7 @@ verbose = 0
 # specify model
 P_value, SE_list, time_lst = [], [], []
 
-for i in range(500):
+for i in range(100):
 	K.clear_session()
 
 	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
@@ -69,20 +69,23 @@ for i in range(500):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'split': 'one-split',
+	split_params = {'split': 'two-split',
 					'num_perm': 100,
-					'perturb': 0.01,
-					'perturb_grid': [.01, .05, .1, .5, 1.],
+					'ratio_grid': [.2, .6],
+					# 'ratio_grid': [.2, .3, .4, .5, .6, .7, .8, .9],
+					# 'perturb': 0.01,
+					# 'perturb_grid': [.01, .05, .1, .5, 1.],
+					# 'perturb_grid': [.01, .1, 1.],
 					'verbose': 0}
 
-	# inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
-	inf_cov = [range(K0)]
+	inf_cov = [range(0, K0), range(int(K0/2), int(K0/2)+K0), range(int(p/2), int(p/2)+K0), range(p-K0, p)]
+	# inf_cov = [range(K0)]
 	root, info = brentq(size_fun, 3, N, args=(N, 1000), full_output=True)
 	inf_ratio = 1 - root / N
 	shiing = DnnT(inf_cov=inf_cov, model=model, model_mask=model_mask, change='mask')
 
 	p_value_tmp = shiing.testing(X, y, cv_num=1, fit_params=fit_params,
-						split_params=split_params, inf_ratio=inf_ratio)
+						split_params=split_params)
 	toc = time.perf_counter()
 	P_value.append(p_value_tmp)
 	time_lst.append(toc - tic)
@@ -95,5 +98,5 @@ print('Time: %.1f(%.1f)' %(time_lst.mean(), time_lst.std()))
 print('CASE 0: Type 1 error: %.3f' %(len(P_value[:,0][P_value[:,0] <= shiing.alpha])/len(P_value)))
 # print('CASE 1: Type 1 error: %.3f' %(len(P_value[:,1][P_value[:,1] <= .05])/len(P_value)))
 
-# for i in [1, 2, 3]:
-# 	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
+for i in [1, 2, 3]:
+	print('CASE %d: Power: %.3f' %(i, len(P_value[:,i][P_value[:,i] <= shiing.alpha])/len(P_value)))
