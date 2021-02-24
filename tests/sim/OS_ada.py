@@ -24,7 +24,7 @@ N = 6000
 n_params = p*d0 + (L0-2)*d0**2 + d0
 print('the number of sample: %d; number of parameters: %d' %(N, n_params))
 
-def size_fun(x, N, min_N=2000):
+def size_fun(x, N, min_N = 2000):
 	return x + min_N * np.log(x) / 2 / np.log(min_N/2) - N
 
 verbose = 0
@@ -71,8 +71,8 @@ for i in range(100):
 
 	split_params = {'split': 'two-split',
 					'num_perm': 100,
-					'ratio_grid': [.2, .6],
-					# 'ratio_grid': [.2, .3, .4, .5, .6, .7, .8, .9],
+					# 'ratio_grid': [.2, .6],
+					'ratio_grid': [.2, .3, .4, .5, .6, .7, .8, .9],
 					# 'perturb': 0.01,
 					# 'perturb_grid': [.01, .05, .1, .5, 1.],
 					# 'perturb_grid': [.01, .1, 1.],
