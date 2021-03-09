@@ -37,7 +37,9 @@ This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is an
    :align: center
    :width: 800
 
-*If you use this code please star the repository and cite the following paper:* ::
+**If you use this code please star the repository and cite the following paper:**
+
+.. code:: bib
 
   @misc{dai2021significance,
         title={Significance tests of feature relevance for a blackbox learner},
