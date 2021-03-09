@@ -37,6 +37,8 @@ This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is an
    :align: center
    :width: 800
 
+Reference
+---------
 **If you use this code please star the repository and cite the following paper:**
 
 .. code:: bib
