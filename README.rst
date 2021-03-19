@@ -39,9 +39,7 @@ This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is an
 
 Three-lines-of-code
 -------------------
-.. only:: html
-
-	.. figure:: ./logo/dnn_inf.gif
+.. figure:: ./logo/dnn_inf.gif
 
 
 Reference
