@@ -39,10 +39,9 @@ This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is an
 
 Three-lines-of-code
 -------------------
+.. only:: html
 
-.. image:: ./logo/dnn_inf.gif
-   :align: center
-   :width: 800
+	.. figure:: ./logo/dnn_inf.gif
 
 
 Reference
