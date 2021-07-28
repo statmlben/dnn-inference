@@ -1,6 +1,9 @@
 .. -*- mode: rst -*-
 
-|PyPi|_ |Keras|_ |MIT| |Python3| |tensorflow|_ |downloads|_ |downloads_month|_
+|dAI|_ |PyPi|_ |Keras|_ |MIT| |Python3| |tensorflow|_ |downloads|_ |downloads_month|_
+
+.. |dAI| image:: https://img.shields.io/badge/Powered%20by-cuhk%40dAI-purple.svg
+.. _dAI: https://www.bendai.org
 
 .. |PyPi| image:: https://badge.fury.io/py/dnn-inference.svg
 .. _PyPi: https://badge.fury.io/py/dnn-inference
