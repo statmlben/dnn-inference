@@ -22,7 +22,6 @@
 .. _downloads: https://pepy.tech/project/dnn-inference
 .. |downloads_month| image:: https://pepy.tech/badge/dnn-inference/month
 .. _downloads_month: https://pepy.tech/project/dnn-inference
-<a href="https://bendai.org"><img src="https://img.shields.io/badge/Powered%20by-cuhk%40dAI-purple.svg"/></a>
 
 Dnn-Inference
 =============
