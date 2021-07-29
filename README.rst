@@ -377,7 +377,10 @@ Contributors
 ------------
 
 .. raw:: html
+	
+	<embed>
 	<a href = "https://github.com/statmlben/dnn-inference/graphs/contributors">
 	<img src = "https://contrib.rocks/image?repo=statmlben/dnn-inference"/>
 	</a>
+	</embed>
 
