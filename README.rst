@@ -371,3 +371,11 @@ Example
 	toc = time.perf_counter()
 	print('testing time: %.3f' %(toc-tic))
 	shiing.visual(X, y)
+
+
+Contributors
+------------
+<a href = "https://github.com/statmlben/dnn-inference/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=statmlben/dnn-inference"/>
+</a>
+
