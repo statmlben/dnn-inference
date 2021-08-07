@@ -1,6 +1,6 @@
 .. -*- mode: rst -*-
 
-|dAI|_ |PyPi|_ |Keras|_ |MIT| |Python3| |tensorflow|_ |downloads|_ |downloads_month|_
+|PyPi|_ |Keras|_ |MIT| |Python3| |tensorflow|_ |downloads|_ |downloads_month|_
 
 .. |dAI| image:: https://img.shields.io/badge/Powered%20by-cuhk%40dAI-purple.svg
 .. _dAI: https://www.bendai.org
