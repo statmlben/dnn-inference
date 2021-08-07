@@ -34,6 +34,7 @@ sys.path.insert(0, os.path.abspath('../'))
 #                 'nbsphinx_link', 'recommonmark', 'sphinx_git']
 
 extensions = [
+    'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.todo',

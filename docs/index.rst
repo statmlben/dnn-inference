@@ -33,7 +33,7 @@ Dnn-Inference
    :align: center
    :width: 800
 
-Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.
+Dnn-inference is a Python module for hypothesis testing based on deep neural networks.
 
 This project was created by `Ben Dai <https://www.bendai.org/>`_. If there is any question and suggestion please contact me via <bdai@umn.edu>.
 

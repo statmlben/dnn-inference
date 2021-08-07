@@ -86,204 +86,204 @@ You can check the latest sources with the command::
     git clone https://github.com/statmlben/dnn-inference.git
 
 
-Documentation
--------------
+.. Documentation
+.. -------------
 
-DnnT
-~~~~
-Class for one-split/two-split test based on deep neural networks.
+.. DnnT
+.. ~~~~
+.. Class for one-split/two-split test based on deep neural networks.
 
-.. code:: python
+.. .. code:: python
 
-	class dnn_inference.DnnT(inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse')
+.. 	class dnn_inference.DnnT(inf_cov, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse')
 
-- Parameters:
+.. - Parameters:
 
-	- **inf_cov: {list-like of shape (num of tests, dim of features)}**
+.. 	- **inf_cov: {list-like of shape (num of tests, dim of features)}**
 
-	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
+.. 	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
 
-	- **model: {keras-defined neural network}**
+.. 	- **model: {keras-defined neural network}**
 
-	 A neural network for original full dataset
+.. 	 A neural network for original full dataset
 
-	- **model_mask: {keras-defined neural network}**
+.. 	- **model_mask: {keras-defined neural network}**
 
-	 A neural network for masked dataset by masking/changing the features under hypothesis testing
+.. 	 A neural network for masked dataset by masking/changing the features under hypothesis testing
 
-	- **change: {'mask', 'perm'}, default='mask'**
+.. 	- **change: {'mask', 'perm'}, default='mask'**
 
-	 The way to change the testing features, ``'mask'`` replaces testing features as zeros, while ``'perm'`` permutes features via instances.
+.. 	 The way to change the testing features, ``'mask'`` replaces testing features as zeros, while ``'perm'`` permutes features via instances.
 
-	- **alpha: float (0,1), default=0.05**
+.. 	- **alpha: float (0,1), default=0.05**
 
-	 The nominal level of the hypothesis testing
+.. 	 The nominal level of the hypothesis testing
 
-	- **verbose: {0, 1}, default=0**
+.. 	- **verbose: {0, 1}, default=0**
 
-	 If print the testing results, 1 indicates YES, 0 indicates NO.
+.. 	 If print the testing results, 1 indicates YES, 0 indicates NO.
 
-	- **eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}**
+.. 	- **eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}**
 
-	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
+.. 	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
 
-- **Method**:
+.. - **Method**:
 
-.. code:: python
+.. .. code:: python
 
-	def testing(self, X, y, cv_num=5, cp='hommel', fit_params, split_params, inf_ratio=None)
+.. 	def testing(self, X, y, cv_num=5, cp='hommel', fit_params, split_params, inf_ratio=None)
 
-Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
+.. Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 
-- Parameters:
+.. - Parameters:
 
-	- **X: {array-like} of shape (n_samples, dim_features)**
+.. 	- **X: {array-like} of shape (n_samples, dim_features)**
 
-	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
-	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
-	 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.	- **y: {array-like} of shape (n_samples,)**
-	 Output vector/matrix relative to X.
+.. 	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+.. 	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+.. 	 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.	- **y: {array-like} of shape (n_samples,)**
+.. 	 Output vector/matrix relative to X.
 
-	- **fit_params: {dict of fitting parameters}**
+.. 	- **fit_params: {dict of fitting parameters}**
 
-	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
+.. 	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
 
-	- **split_params: {dict of splitting parameters}**
+.. 	- **split_params: {dict of splitting parameters}**
 
-		- **split: {'one-split', 'two-split'}, default='one-split'**
+.. 		- **split: {'one-split', 'two-split'}, default='one-split'**
 
-		 one-split or two-split test statistic.
+.. 		 one-split or two-split test statistic.
 
-		- **perturb: float, default=None**
+.. 		- **perturb: float, default=None**
 
-		 Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
+.. 		 Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 
-		- **num_perm: int, default=100**
+.. 		- **num_perm: int, default=100**
 
-		 Number of permutation for determine the splitting ratio.
+.. 		 Number of permutation for determine the splitting ratio.
 
-		- **ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
+.. 		- **ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
 
-		 A list of estimation/inference ratios under searching.
+.. 		 A list of estimation/inference ratios under searching.
 
-		- **if_reverse: {0,1}, default=0**
+.. 		- **if_reverse: {0,1}, default=0**
 
-		 ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
+.. 		 ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
 
-		- **perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
+.. 		- **perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
 
-		 A list of perturb levels under searching.
+.. 		 A list of perturb levels under searching.
 
-		- **min_inf: int, default=0**
+.. 		- **min_inf: int, default=0**
 
-		 The minimal size for inference sample.
+.. 		 The minimal size for inference sample.
 
-		- **min_est: int, default=0**
+.. 		- **min_est: int, default=0**
 
-		 The minimal size for estimation sample.
+.. 		 The minimal size for estimation sample.
 
-		- **ratio_method: {'fuse', 'close'}, default='fuse'**
+.. 		- **ratio_method: {'fuse', 'close'}, default='fuse'**
 
-		 The adaptive splitting method to determine the optimal estimation/inference ratios.
+.. 		 The adaptive splitting method to determine the optimal estimation/inference ratios.
 
-		- **cv_num: int, default=1**
+.. 		- **cv_num: int, default=1**
 
-		 The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
+.. 		 The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
 
-		- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
+.. 		- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 
-		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
+.. 		 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 
-		- **verbose: {0,1}, default=1**
+.. 		- **verbose: {0,1}, default=1**
 
-	- **cv_num: int, default=1**
+.. 	- **cv_num: int, default=1**
 
-	 The number of cross-validation to shuffle the estimation/inference samples in testing.
+.. 	 The number of cross-validation to shuffle the estimation/inference samples in testing.
 
-	- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
+.. 	- **cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
 
-	 A method to combine p-values obtained from cross-validation.
+.. 	 A method to combine p-values obtained from cross-validation.
 
-	- **inf_ratio: float, default=None**
+.. 	- **inf_ratio: float, default=None**
 
-	 A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
+.. 	 A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
 
-- Return:
+.. - Return:
 
-	- **P_value: array of float [0, 1]**
+.. 	- **P_value: array of float [0, 1]**
 
-	 The p_values for target hypothesis testings.
+.. 	 The p_values for target hypothesis testings.
 
 
-PermT
-~~~~~
-Class for permutation testing based on deep neural networks.
+.. PermT
+.. ~~~~~
+.. Class for permutation testing based on deep neural networks.
 
-**Remark:** *permutation testing break the dependence of the features, which may lead to incorrect p-values*.
+.. **Remark:** *permutation testing break the dependence of the features, which may lead to incorrect p-values*.
 
-.. code:: python
+.. .. code:: python
 
-	class dnn_inference.PermT(inf_cov, model, model_mask, alpha=.05, num_folds=5, num_perm=100, eva_metric='mse', verbose=0)
+.. 	class dnn_inference.PermT(inf_cov, model, model_mask, alpha=.05, num_folds=5, num_perm=100, eva_metric='mse', verbose=0)
 
-- Parameters:
+.. - Parameters:
 
-	- **inf_cov: {list-like of shape (num of tests, dim of features)}**
+.. 	- **inf_cov: {list-like of shape (num of tests, dim of features)}**
 
-	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
+.. 	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
 
-	- **model: {keras-defined neural network}**
+.. 	- **model: {keras-defined neural network}**
 
-	 A neural network for original full dataset
+.. 	 A neural network for original full dataset
 
-	- **model_mask: {keras-defined neural network}**
+.. 	- **model_mask: {keras-defined neural network}**
 
-	 A neural network for masked dataset by masking/changing the features under hypothesis testing
+.. 	 A neural network for masked dataset by masking/changing the features under hypothesis testing
 
-	- **alpha: float (0,1), default=0.05**
+.. 	- **alpha: float (0,1), default=0.05**
 
-	 The nominal level of the hypothesis testing
+.. 	 The nominal level of the hypothesis testing
 
-	- **num_folds: int, default=5**
+.. 	- **num_folds: int, default=5**
 
-	 Number of CV-folds to compute the score.
+.. 	 Number of CV-folds to compute the score.
 
-	- **verbose: {0, 1}, default=0**
+.. 	- **verbose: {0, 1}, default=0**
 
-	 If print the testing results, 1 indicates YES, 0 indicates NO.
+.. 	 If print the testing results, 1 indicates YES, 0 indicates NO.
 
-	- **eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}**
+.. 	- **eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}**
 
-	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
+.. 	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
 
-- **Method**:
+.. - **Method**:
 
-.. code:: python
+.. .. code:: python
 
-	def testing(self, X, y, fit_params)
+.. 	def testing(self, X, y, fit_params)
 
-Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
+.. Method under class ``DnnT``, conduct the hypothesis testings according to the given data.
 
-- Parameters:
+.. - Parameters:
 
-	- **X: {array-like}**
+.. 	- **X: {array-like}**
 
-	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
-	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
-	 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.
+.. 	 Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+.. 	 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+.. 	 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.
 
-	- **y: {array-like} of shape (n_samples,)**
+.. 	- **y: {array-like} of shape (n_samples,)**
 
-	 Output vector/matrix relative to X.
+.. 	 Output vector/matrix relative to X.
 
-	- **fit_params: {dict of fitting parameters}**
+.. 	- **fit_params: {dict of fitting parameters}**
 
-	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
+.. 	 See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
 
-- Return:
+.. - Return:
 
-	- **P_value: array of float [0, 1]**
+.. 	- **P_value: array of float [0, 1]**
 
-	 The p_values for target hypothesis testings.
+.. 	 The p_values for target hypothesis testings.
 
 Example
 ~~~~~~~
