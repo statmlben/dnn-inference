@@ -3,3 +3,4 @@ sphinx_rtd_theme
 hachibee_sphinx_theme
 numpydoc
 nbsphinx
+ipython
