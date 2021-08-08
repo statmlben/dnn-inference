@@ -57,7 +57,7 @@ Specifically, the proposed testing is:
 
 .. math::
 
-   H_0: R(f^*) - R_{\mathcal{S}}(g^*) = 0;, \quad \text{versus} \quad H_a: R(f^*) - R_{\mathcal{S}}(g^*) < 0,
+   H_0: R(f^*) - R_{\mathcal{S}}(g^*) = 0, \quad \text{versus} \quad H_a: R(f^*) - R_{\mathcal{S}}(g^*) < 0,
 
 
 where :math:`\mathcal{S}` is a collection of hypothesized features, 
