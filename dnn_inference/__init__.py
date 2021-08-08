@@ -1,3 +1,12 @@
-from dnn_inference.DnnT import DnnT
-from dnn_inference.PermT import PermT
-from dnn_inference.HPermT import HPermT
+from . import DnnT, PermT, HPermT
+import sys
+sys.path.append('../..')
+sys.path.append('..')
+
+__all__ = [
+	"DnnT", 
+	"PermT",
+	"HPermT"
+	]
+
+

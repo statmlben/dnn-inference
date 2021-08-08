@@ -71,7 +71,7 @@ Deep-Inference requires:
 - Python
 - Numpy
 - Keras
-- Tensorflow>=1.15
+- Tensorflow>=2.0
 - sklearn
 - SciPy
 
