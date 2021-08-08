@@ -19,6 +19,7 @@ import sys, os
 sys.path.append(os.path.abspath('../dnn_inference'))
 sys.path.append('../..')
 sys.path.append('..')
+master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'dnn-inference'
