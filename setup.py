@@ -13,7 +13,7 @@ if __name__ == "__main__":
         # Needed to actually package something
         packages=['dnn_inference'],
         # Needed for dependencies
-        install_requires=['numpy', 'keras', 'tensorflow>=2.3.1', 'scipy', 'sklearn', 'matplotlib', 'hachibee_sphinx_theme'],
+        install_requires=['numpy', 'keras', 'tensorflow>=2.3.1', 'scipy', 'sklearn', 'matplotlib'],
         # *strongly* suggested for sharing
         version='0.10',
         # The license can be anything you like
