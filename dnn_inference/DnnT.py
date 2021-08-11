@@ -7,10 +7,10 @@ Statistical inference based on deep nerual networks
 import numpy as np
 from scipy.stats import norm
 from sklearn.model_selection import train_test_split
-from keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping
 import warnings
-import keras.backend as K
-from keras.initializers import glorot_uniform
+import tensorflow.keras.backend as K
+from tensorflow.keras.initializers import glorot_uniform
 import tensorflow as tf
 from sklearn.model_selection import KFold
 from scipy.stats import hmean, gmean
@@ -646,7 +646,7 @@ class DnnT(object):
 						else:
 							perturb_level = split_params['perturb']
 						m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
-						print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
+						print('%d-th inference; log ratio data splitting: n: %d; m: %d; perturb: %s' %(k, n, m, perturb_level))
 					else:
 						raise Exception("inf ratio method must be 'fuse' or 'log-ratio' if inf_ratio is not given!")
 				else:
@@ -658,13 +658,14 @@ class DnnT(object):
 				if inf_ratio == None:
 					if split_params['ratio_method'] == 'fuse':
 						n, m = self.adaRatio(X, y, k, fit_params=fit_params, **split_params)
+						print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 					elif split_params['ratio_method'] == 'log-ratio':
 						root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
 						inf_ratio = 1 - root / len(X)
 						m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
+						print('%d-th inference; log-ratio data splitting: n: %d; m: %d' %(k, n, m))
 					else:
 						raise Exception("inf ratio method must be 'fuse' or 'log-ratio' if inf_ratio is not given!")
-					print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
 				else:
 					m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
 			else:

@@ -1,10 +1,10 @@
 import numpy as np
 from scipy.stats import norm
 from sklearn.model_selection import train_test_split
-from keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping
 import warnings
-import keras.backend as K
-from keras.initializers import glorot_uniform
+import tensorflow.keras.backend as K
+from tensorflow.keras.initializers import glorot_uniform
 import tensorflow as tf
 from sklearn.model_selection import KFold
 
