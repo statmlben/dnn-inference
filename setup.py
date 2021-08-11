@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 
 with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()
@@ -21,6 +21,6 @@ if __name__ == "__main__":
         description='Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.',
         #cmdclass={"build_ext": build_ext},
         # We will also need a readme eventually (there will be a warning)
-        long_description_content_type='text/x-rst',
-        long_description=LONG_DESCRIPTION,
+        # long_description_content_type='text/x-rst',
+        # long_description=LONG_DESCRIPTION,
     )

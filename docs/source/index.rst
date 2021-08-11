@@ -75,6 +75,21 @@ Please check more details in our paper `arXiv:2103.04985 <https://arxiv.org/abs/
    .. figure:: ./logo/dnn_inf.gif
 
 
+Reference
+---------
+**If you use this code please star the repository and cite the following paper:**
+
+.. code:: bib
+
+   @misc{dai2021significance,
+         title={Significance tests of feature relevance for a blackbox learner},
+         author={Ben Dai and Xiaotong Shen and Wei Pan},
+         year={2021},
+         eprint={2103.04985},
+         archivePrefix={arXiv},
+         primaryClass={stat.ML}
+   }
+
 📒 Contents
 -----------
 
