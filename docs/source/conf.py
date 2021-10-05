@@ -28,6 +28,7 @@ import sys, os
 sys.path.append('..')
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(1, os.path.dirname(os.path.abspath("../")) + os.sep + "feature_engine")
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -41,7 +42,7 @@ extensions = [
 
 nbsphinx_execute = 'never'
 nbsphinx_allow_errors = True
-
+# autodoc_mock_imports = ['numpy']
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
