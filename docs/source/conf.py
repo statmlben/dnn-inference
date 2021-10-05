@@ -28,7 +28,7 @@ import sys, os
 sys.path.append('..')
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../'))
-sys.path.insert(1, os.path.dirname(os.path.abspath("../")) + os.sep + "feature_engine")
+# sys.path.insert(1, os.path.dirname(os.path.abspath("../")) + os.sep + "feature_engine")
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
