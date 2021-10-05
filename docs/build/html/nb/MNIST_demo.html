@@ -13,7 +13,7 @@
         <meta name=viewport content="width=device-width,initial-scale=1.0">
         <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-        <title>dnn-inference in MNIST dataset &mdash; dnn-inference 0.10 documentation</title>
+        <title>dnn-inference in MNIST dataset &mdash; dnn-inference  documentation</title>
 
         
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.10',
+        VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -46,7 +46,7 @@
             <div class="left">
     <ul class="breadcrumb">
         <li>
-            <a href="../index.html">dnn-inference 0.10 documentation</a>
+            <a href="../index.html">dnn-inference  documentation</a>
              &raquo;
         </li>
         <li>
@@ -363,18 +363,15 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">keras</span>
-<span class="kn">from</span> <span class="nn">keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
-<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span>
 <span class="kn">from</span> <span class="nn">tensorflow.python.keras</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span><span class="p">,</span> <span class="n">SGD</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span><span class="p">,</span> <span class="n">SGD</span>
 </pre></div>
 </div>
 </div>
@@ -441,7 +438,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1">## fitting param</span>
-<span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
 <span class="n">es</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">fit_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;callbacks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">es</span><span class="p">],</span>
@@ -473,7 +470,7 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">dnn_inference</span> <span class="kn">import</span> <span class="n">DnnT</span>
 <span class="c1">## testing based on learning models</span>
 <span class="n">inf_feats</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">28</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">20</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="mi">28</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">16</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">16</span><span class="p">)]]</span>
-<span class="n">shiing</span> <span class="o">=</span> <span class="n">DnnT</span><span class="p">(</span><span class="n">inf_cov</span><span class="o">=</span><span class="n">inf_feats</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="o">=</span><span class="n">model_mask</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;zero-one&#39;</span><span class="p">)</span>
+<span class="n">shiing</span> <span class="o">=</span> <span class="n">DnnT</span><span class="p">(</span><span class="n">inf_feats</span><span class="o">=</span><span class="n">inf_feats</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">model_mask</span><span class="o">=</span><span class="n">model_mask</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">eva_metric</span><span class="o">=</span><span class="s1">&#39;zero-one&#39;</span><span class="p">)</span>
 <span class="n">p_value_tmp</span> <span class="o">=</span> <span class="n">shiing</span><span class="o">.</span><span class="n">testing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv_num</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="s1">&#39;hommel&#39;</span><span class="p">,</span> <span class="n">fit_params</span><span class="o">=</span><span class="n">fit_params</span><span class="p">,</span> <span class="n">split_params</span><span class="o">=</span><span class="n">split_params</span><span class="p">)</span>
 <span class="c1">## visualize testing results</span>
 <span class="n">shiing</span><span class="o">.</span><span class="n">visual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
@@ -535,7 +532,7 @@ P-values: [0.9008369329524851, 0.38855124291861903, 1.0087345089116913e-15]
                 &copy; Copyright 2021, Ben Dai.
             </p>
             <p class="show-sphinx">
-              Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
+              Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.2.0.
             </p>
             
               <p class="theme-info"><a href="https://pypi.python.org/pypi/hachibee-sphinx-theme">Sphinx-hachibee-theme</a> is hosted on <a href="https://github.com/hachibeeDI/Sphinx-hachibee-theme">Github</a></p>

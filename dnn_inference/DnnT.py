@@ -28,13 +28,13 @@ class DnnT(object):
 	Parameters
 	----------
 
-	inf_feats : list-like | shape = (num of tests, dim of features)
+	inf_feats: list-like | shape = (num of tests, dim of features)
 	 List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
 
-	model : {keras-defined neural network}
+	model: {keras-defined neural network}
 	 A neural network for original full dataset
 
-	model_mask : {keras-defined neural network}
+	model_mask: {keras-defined neural network}
 	 A neural network for masked dataset by masking/changing the features under hypothesis testing
 
 	change: {'mask', 'perm'}, default='mask'
@@ -64,6 +64,17 @@ class DnnT(object):
 		self.cp_path = cp_path
 
 	def metric(self, y_true, y_pred):
+		"""
+		Return the loss for `self.eva_metric`
+
+		Parameter
+		---------
+		y_true: the ground truth
+
+		y_pred: the predicted label
+
+		"""
+
 		if self.eva_metric == 'mse':
 			metric_tmp = ((y_true - y_pred)**2).flatten()
 		elif self.eva_metric == 'mae':
@@ -166,10 +177,10 @@ class DnnT(object):
 
 		Parameters
 		----------
-		X : array-like
+		X: array-like
 		 Target instances.
 
-		k : integer, default = 0
+		k: integer, default = 0
 		 k-th hypothesized features in inf_feats
 		"""
 		Z = X.copy()
@@ -186,10 +197,10 @@ class DnnT(object):
 
 		Parameters
 		----------
-		X : array-like
+		X: array-like
 		 Target instances.
 
-		k : integer, default = 0
+		k: integer, default = 0
 		 k-th hypothesized features in inf_feats
 		"""
 		Z = X.copy()
@@ -201,6 +212,17 @@ class DnnT(object):
 		return Z
 
 	def noise_cov(self, X, k=0):
+		"""
+		Return instances with niosed k-th hypothesized features.
+
+		Parameters
+		----------
+		X: array-like
+		 Target instances.
+
+		k: integer, default = 0
+		 k-th hypothesized features in inf_feats
+		"""
 		Z = X.copy()
 		Z[:,self.inf_feats[k]] = np.random.randn(len(X), len(self.inf_feats[k]))
 		return Z
@@ -212,28 +234,28 @@ class DnnT(object):
 
 		Parameters
 		----------
-		X : array-like | shape=(n_samples, dim1, dim2, ...)
+		X: array-like | shape=(n_samples, dim1, dim2, ...)
 			Features.
 
-		y : array-like | shape=(n_samples, dim)
+		y: array-like | shape=(n_samples, dim)
 			Outcomes.
 
-		k : integer, default = 0
+		k: integer, default = 0
 			k-th hypothesized features in inf_feats
 
-		fit_params : dict | shape = dict of fitting parameters
+		fit_params: dict | shape = dict of fitting parameters
 			See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``.
 
-		perturb : float | default=None
+		perturb: float | default=None
 			Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 
-		split : {'one-split', 'two-split'}
+		split: {'one-split', 'two-split'}
 			one-split or two-split test statistic.
 
-		perturb_grid : list of float | default=[.01, .05, .1, .5, 1.]
+		perturb_grid: list of float | default=[.01, .05, .1, .5, 1.]
 			A list of perturb levels under searching.
 
-		ratio_grid : list of float (0,1) | default=[.2, .4, .6, .8]
+		ratio_grid: list of float (0,1) | default=[.2, .4, .6, .8]
 			A list of estimation/inference ratios under searching.
 
 		if_reverse: {0,1} | default = 0
@@ -260,13 +282,13 @@ class DnnT(object):
 		Returns
 		-------
 
-		n_opt : integer
+		n_opt: integer
 			A reasonable estimation sample size.
 
-		m_opt : integer
+		m_opt: integer
 			A reasonable inference sample size.
 
-		perturb_opt : float
+		perturb_opt: float
 			A reasonable perturbation level.
 
 		"""
@@ -548,7 +570,7 @@ class DnnT(object):
 		Parameters
 		----------
 
-		X : {array-like} of shape (n_samples, dim_features)**
+		X: {array-like} of shape (n_samples, dim_features)**
 	 		Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
 			 If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
 			 If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, **X must channel_last image data**.	- **y: {array-like} of shape (n_samples,)**
@@ -767,10 +789,10 @@ class DnnT(object):
 
 		Parameters
 		----------
-		X : array-like
+		X: array-like
 		 demo instances.
 
-		y : array-like
+		y: array-like
 		 demo labels
 
 		plt_params: dict

@@ -13,7 +13,7 @@
         <meta name=viewport content="width=device-width,initial-scale=1.0">
         <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-        <title>API Reference &mdash; dnn-inference 0.10 documentation</title>
+        <title>API Reference &mdash; dnn-inference  documentation</title>
 
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.10',
+        VERSION:     '',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -44,7 +44,7 @@
             <div class="left">
     <ul class="breadcrumb">
         <li>
-            <a href="index.html">dnn-inference 0.10 documentation</a>
+            <a href="index.html">dnn-inference  documentation</a>
              &raquo;
         </li> 
     </ul>
@@ -117,6 +117,262 @@
 </div>
 <section id="dnn-inference-dnnt">
 <h2><a class="toc-backref" href="#id2">dnn_inference.DnnT</a><a class="headerlink" href="#dnn-inference-dnnt" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dnn_inference.DnnT.</span></span><span class="sig-name descname"><span class="pre">DnnT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf_feats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mask'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eva_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./dnnT_checkpoints'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for one-split/two-split test based on deep neural networks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>inf_feats: list-like | shape = (num of tests, dim of features)</strong></dt><dd><p>List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.</p>
+</dd>
+<dt><strong>model: {keras-defined neural network}</strong></dt><dd><p>A neural network for original full dataset</p>
+</dd>
+<dt><strong>model_mask: {keras-defined neural network}</strong></dt><dd><p>A neural network for masked dataset by masking/changing the features under hypothesis testing</p>
+</dd>
+<dt><strong>change: {‘mask’, ‘perm’}, default=’mask’</strong></dt><dd><p>The way to change the testing features, <code class="docutils literal notranslate"><span class="pre">'mask'</span></code> replaces testing features as zeros, while <code class="docutils literal notranslate"><span class="pre">'perm'</span></code> permutes features via instances.</p>
+</dd>
+<dt><strong>alpha: float (0,1), default=0.05</strong></dt><dd><p>The nominal level of the hypothesis testing</p>
+</dd>
+<dt><strong>verbose: {0, 1}, default=0</strong></dt><dd><p>If print the testing results, 1 indicates YES, 0 indicates NO.</p>
+</dd>
+<dt><strong>eva_metric: {‘mse’, ‘zero-one’, ‘cross-entropy’, or custom metric function}</strong></dt><dd><p>The evaluation metric, <code class="docutils literal notranslate"><span class="pre">'mse'</span></code> is the l2-loss for regression, <code class="docutils literal notranslate"><span class="pre">'zero-one'</span></code> is the zero-one loss for classification, <code class="docutils literal notranslate"><span class="pre">'cross-entropy'</span></code> is log-loss for classification. It can also be custom metric function as <code class="docutils literal notranslate"><span class="pre">eva_metric(y_true,</span> <span class="pre">y_pred)</span></code>.</p>
+</dd>
+<dt><strong>cp_path: string, default=’./dnnT_checkpoints’</strong></dt><dd><p>The checkpoints path to save the models</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.adaRatio" title="dnn_inference.DnnT.DnnT.adaRatio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adaRatio</span></code></a>(X, y[, k, fit_params, perturb, ...])</p></td>
+<td><p>Return a data-adaptive splitting ratio and perturbation level.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.mask_cov" title="dnn_inference.DnnT.DnnT.mask_cov"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask_cov</span></code></a>(X[, k])</p></td>
+<td><p>Return instances with masked k-th hypothesized features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.metric" title="dnn_inference.DnnT.DnnT.metric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Return the loss for <cite>self.eva_metric</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.noise_cov" title="dnn_inference.DnnT.DnnT.noise_cov"><code class="xref py py-obj docutils literal notranslate"><span class="pre">noise_cov</span></code></a>(X[, k])</p></td>
+<td><p>Return instances with niosed k-th hypothesized features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.perm_cov" title="dnn_inference.DnnT.DnnT.perm_cov"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perm_cov</span></code></a>(X[, k])</p></td>
+<td><p>Return instances with permuted k-th hypothesized features.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.reset_model" title="dnn_inference.DnnT.DnnT.reset_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_model</span></code></a>()</p></td>
+<td><p>Reset the full and mask network models under class Dnn</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.save_init" title="dnn_inference.DnnT.DnnT.save_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_init</span></code></a>()</p></td>
+<td><p>Save the initialization for full and mask network models under class Dnn</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.testing" title="dnn_inference.DnnT.DnnT.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a>(X, y, fit_params[, split_params, ...])</p></td>
+<td><p>Return p-values for hypothesis testing for inf_feats in class Dnn.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dnn_inference.DnnT.DnnT.visual" title="dnn_inference.DnnT.DnnT.visual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visual</span></code></a>(X, y[, plt_params, plt_mask_params])</p></td>
+<td><p>Visualization for the inference results based on one illustrative example</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.adaRatio">
+<span class="sig-name descname"><span class="pre">adaRatio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'one-split'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturb_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.001,</span> <span class="pre">0.005,</span> <span class="pre">0.01,</span> <span class="pre">0.05,</span> <span class="pre">0.1,</span> <span class="pre">0.5,</span> <span class="pre">1.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.2,</span> <span class="pre">0.4,</span> <span class="pre">0.6,</span> <span class="pre">0.8]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">if_reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_inf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_est</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fuse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_perm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hommel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.adaRatio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a data-adaptive splitting ratio and perturbation level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X: array-like | shape=(n_samples, dim1, dim2, …)</strong></dt><dd><p>Features.</p>
+</dd>
+<dt><strong>y: array-like | shape=(n_samples, dim)</strong></dt><dd><p>Outcomes.</p>
+</dd>
+<dt><strong>k: integer, default = 0</strong></dt><dd><p>k-th hypothesized features in inf_feats</p>
+</dd>
+<dt><strong>fit_params: dict | shape = dict of fitting parameters</strong></dt><dd><p>See keras <code class="docutils literal notranslate"><span class="pre">fit</span></code>: (<a class="reference external" href="https://keras.rstudio.com/reference/fit.html">https://keras.rstudio.com/reference/fit.html</a>), including <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, <code class="docutils literal notranslate"><span class="pre">epoch</span></code>, <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_split</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_data</span></code>.</p>
+</dd>
+<dt><strong>perturb: float | default=None</strong></dt><dd><p>Perturb level for the one-split test, if <code class="docutils literal notranslate"><span class="pre">perturb</span> <span class="pre">=</span> <span class="pre">None</span></code>, then the perturb level is determined by adaptive tunning.</p>
+</dd>
+<dt><strong>split: {‘one-split’, ‘two-split’}</strong></dt><dd><p>one-split or two-split test statistic.</p>
+</dd>
+<dt><strong>perturb_grid: list of float | default=[.01, .05, .1, .5, 1.]</strong></dt><dd><p>A list of perturb levels under searching.</p>
+</dd>
+<dt><strong>ratio_grid: list of float (0,1) | default=[.2, .4, .6, .8]</strong></dt><dd><p>A list of estimation/inference ratios under searching.</p>
+</dd>
+<dt><strong>if_reverse: {0,1} | default = 0</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">if_reverse</span> <span class="pre">=</span> <span class="pre">0</span></code> indicates the loop of <code class="docutils literal notranslate"><span class="pre">ratio_grid</span></code> starts from smallest one to largest one; <code class="docutils literal notranslate"><span class="pre">if_reverse</span> <span class="pre">=</span> <span class="pre">1</span></code> indicates the loop of <code class="docutils literal notranslate"><span class="pre">ratio_grid</span></code> starts from largest one to smallest one.</p>
+</dd>
+<dt><strong>min_inf: integer | default = 0</strong></dt><dd><p>The minimal size for inference sample.</p>
+</dd>
+<dt><strong>min_est: integer | default = 0</strong></dt><dd><p>The minimal size for estimation sample.</p>
+</dd>
+<dt><strong>ratio_method: {‘close’, ‘fuse’} | default = ‘fuse’</strong></dt><dd><p>The adaptive splitting method to determine the optimal estimation/inference ratios.</p>
+</dd>
+<dt><strong>cv_num: int, default=1</strong></dt><dd><p>The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.</p>
+</dd>
+<dt><strong>cp: {‘gmean’, ‘min’, ‘hmean’, ‘Q1’, ‘hommel’, ‘cauchy’} | default = ‘hommel’</strong></dt><dd><p>A method to combine p-values obtained from cross-validation. see (<a class="reference external" href="https://arxiv.org/pdf/1212.4966.pdf">https://arxiv.org/pdf/1212.4966.pdf</a>) for more detail.</p>
+</dd>
+<dt><strong>verbose: {0,1} | default=1</strong></dt><dd><p>If print the adaptive splitting process.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>n_opt: integer</dt><dd><p>A reasonable estimation sample size.</p>
+</dd>
+<dt>m_opt: integer</dt><dd><p>A reasonable inference sample size.</p>
+</dd>
+<dt>perturb_opt: float</dt><dd><p>A reasonable perturbation level.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.mask_cov">
+<span class="sig-name descname"><span class="pre">mask_cov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.mask_cov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return instances with masked k-th hypothesized features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X: array-like</strong></dt><dd><p>Target instances.</p>
+</dd>
+<dt><strong>k: integer, default = 0</strong></dt><dd><p>k-th hypothesized features in inf_feats</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.metric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the loss for <cite>self.eva_metric</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.noise_cov">
+<span class="sig-name descname"><span class="pre">noise_cov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.noise_cov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return instances with niosed k-th hypothesized features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X: array-like</strong></dt><dd><p>Target instances.</p>
+</dd>
+<dt><strong>k: integer, default = 0</strong></dt><dd><p>k-th hypothesized features in inf_feats</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.perm_cov">
+<span class="sig-name descname"><span class="pre">perm_cov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.perm_cov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return instances with permuted k-th hypothesized features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X: array-like</strong></dt><dd><p>Target instances.</p>
+</dd>
+<dt><strong>k: integer, default = 0</strong></dt><dd><p>k-th hypothesized features in inf_feats</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.reset_model">
+<span class="sig-name descname"><span class="pre">reset_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.reset_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the full and mask network models under class Dnn</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.save_init">
+<span class="sig-name descname"><span class="pre">save_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.save_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the initialization for full and mask network models under class Dnn</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.testing">
+<span class="sig-name descname"><span class="pre">testing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hommel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inf_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.testing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return p-values for hypothesis testing for inf_feats in class Dnn.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X: {array-like} of shape (n_samples, dim_features)**</strong></dt><dd><dl class="simple">
+<dt>Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.</dt><dd><p>If X is vectorized feature, <code class="docutils literal notranslate"><span class="pre">shape</span></code> should be <code class="docutils literal notranslate"><span class="pre">(#Samples,</span> <span class="pre">dim</span> <span class="pre">of</span> <span class="pre">feaures)</span></code>
+If X is image/matrix data, <code class="docutils literal notranslate"><span class="pre">shape</span></code> should be <code class="docutils literal notranslate"><span class="pre">(#samples,</span> <span class="pre">img_rows,</span> <span class="pre">img_cols,</span> <span class="pre">channel)</span></code>, that is, <strong>X must channel_last image data</strong>.       - <strong>y: {array-like} of shape (n_samples,)</strong>
+Output vector/matrix relative to X.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>fit_params: {dict of fitting parameters}**</strong></dt><dd><p>See keras <code class="docutils literal notranslate"><span class="pre">fit</span></code>: (<a class="reference external" href="https://keras.rstudio.com/reference/fit.html">https://keras.rstudio.com/reference/fit.html</a>), including <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, <code class="docutils literal notranslate"><span class="pre">epoch</span></code>, <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_split</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_data</span></code>, and so on.</p>
+</dd>
+<dt><strong>split_params: {dict of splitting parameters}</strong></dt><dd><dl class="simple">
+<dt>split: {‘one-split’, ‘two-split’}, default=’one-split’</dt><dd><p>one-split or two-split test statistic.</p>
+</dd>
+<dt>perturb: float, default=None</dt><dd><p>Perturb level for the one-split test, if <code class="docutils literal notranslate"><span class="pre">perturb</span> <span class="pre">=</span> <span class="pre">None</span></code>, then the perturb level is determined by adaptive tunning.</p>
+</dd>
+<dt>num_perm: int, default=100</dt><dd><p>Number of permutation for determine the splitting ratio.</p>
+</dd>
+<dt>ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**</dt><dd><p>A list of estimation/inference ratios under searching.</p>
+</dd>
+<dt>if_reverse: {0,1}, default=0</dt><dd><p><code class="docutils literal notranslate"><span class="pre">if_reverse</span> <span class="pre">=</span> <span class="pre">0</span></code> indicates the loop of <code class="docutils literal notranslate"><span class="pre">ratio_grid</span></code> starts from smallest one to largest one; <code class="docutils literal notranslate"><span class="pre">if_reverse</span> <span class="pre">=</span> <span class="pre">1</span></code> indicates the loop of <code class="docutils literal notranslate"><span class="pre">ratio_grid</span></code> starts from largest one to smallest one.</p>
+</dd>
+<dt>perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**</dt><dd><p>A list of perturb levels under searching.</p>
+</dd>
+<dt>min_inf: int, default=0</dt><dd><p>The minimal size for inference sample.</p>
+</dd>
+<dt>min_est: int, default=0</dt><dd><p>The minimal size for estimation sample.</p>
+</dd>
+<dt>ratio_method: {‘fuse’, ‘close’}, default=’fuse’</dt><dd><p>The adaptive splitting method to determine the optimal estimation/inference ratios.</p>
+</dd>
+<dt>cv_num: int, default=1</dt><dd><p>The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.</p>
+</dd>
+<dt>cp: {‘gmean’, ‘min’, ‘hmean’, ‘Q1’, ‘hommel’, ‘cauchy’}, default =’hommel’**</dt><dd><p>A method to combine p-values obtained from cross-validation. see (<a class="reference external" href="https://arxiv.org/pdf/1212.4966.pdf">https://arxiv.org/pdf/1212.4966.pdf</a>) for more detail.</p>
+</dd>
+</dl>
+<p>verbose: {0,1}, default=1**</p>
+</dd>
+<dt><strong>cv_num: int, default=5</strong></dt><dd><p>The number of cross-validation to shuffle the estimation/inference samples in testing.</p>
+</dd>
+<dt><strong>cp: {‘gmean’, ‘min’, ‘hmean’, ‘Q1’, ‘hommel’, ‘cauchy’}, default =’hommel’**</strong></dt><dd><p>A method to combine p-values obtained from cross-validation.</p>
+</dd>
+<dt><strong>inf_ratio: float, default=None**</strong></dt><dd><p>A pre-specific inference sample ratio, if <code class="docutils literal notranslate"><span class="pre">est_size=None</span></code>, then it is determined by adaptive splitting method <code class="docutils literal notranslate"><span class="pre">metric</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dnn_inference.DnnT.DnnT.visual">
+<span class="sig-name descname"><span class="pre">visual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'alpha':</span> <span class="pre">0.6,</span> <span class="pre">'cmap':</span> <span class="pre">'RdBu'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_mask_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'alpha':</span> <span class="pre">0.6,</span> <span class="pre">'cmap':</span> <span class="pre">'RdBu'}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dnn_inference.DnnT.DnnT.visual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualization for the inference results based on one illustrative example</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X: array-like</strong></dt><dd><p>demo instances.</p>
+</dd>
+<dt><strong>y: array-like</strong></dt><dd><p>demo labels</p>
+</dd>
+<dt><strong>plt_params: dict</strong></dt><dd><p>dictory of parameters for the imshow for original image see: <a class="reference external" href="https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html">https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html</a></p>
+</dd>
+<dt><strong>plt_mask_params: dict</strong></dt><dd><p>dictory of parameters for the imshow for mask see: <a class="reference external" href="https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html">https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="dnn-inference-permt">
 <h2><a class="toc-backref" href="#id3">dnn_inference.PermT</a><a class="headerlink" href="#dnn-inference-permt" title="Permalink to this headline">¶</a></h2>
@@ -135,7 +391,7 @@
                 &copy; Copyright 2021, Ben Dai.
             </p>
             <p class="show-sphinx">
-              Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
+              Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.2.0.
             </p>
             
               <p class="theme-info"><a href="https://pypi.python.org/pypi/hachibee-sphinx-theme">Sphinx-hachibee-theme</a> is hosted on <a href="https://github.com/hachibeeDI/Sphinx-hachibee-theme">Github</a></p>

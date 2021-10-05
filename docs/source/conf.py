@@ -15,21 +15,17 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import hachibee_sphinx_theme
-import sys, os
-sys.path.append(os.path.abspath('../dnn_inference'))
-sys.path.append('../..')
-sys.path.append('..')
-master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'dnn-inference'
 copyright = '2021, Ben Dai'
 author = 'Ben Dai'
-
+master_doc = 'index'
 # The full version, including alpha/beta/rc tags
-release = '0.10'
+# release = '0.10'
 
-
+import sys, os
+sys.path.append('..')
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be

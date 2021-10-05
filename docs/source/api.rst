@@ -7,9 +7,12 @@ API Reference
 dnn_inference.DnnT
 -------------------
 
-.. .. autoclass:: dnn_inference.DnnT
-..    :members:
-..    :show-inheritance:
+.. autoclass:: dnn_inference.DnnT.DnnT
+   :members:
+   :show-inheritance:
 
 dnn_inference.PermT
 -------------------
+.. .. autoclass:: dnn_inference.PermT.PermT
+..    :members:
+..    :show-inheritance:
