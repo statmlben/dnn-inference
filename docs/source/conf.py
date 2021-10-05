@@ -26,6 +26,8 @@ master_doc = 'index'
 
 import sys, os
 sys.path.append('..')
+sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../'))
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
