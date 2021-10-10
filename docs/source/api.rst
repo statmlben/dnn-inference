@@ -5,7 +5,7 @@ API Reference
 	:depth: 2
 
 dnn_inference.DnnT
--------------------
+------------------
 
 .. autoclass:: dnn_inference.DnnT.DnnT
    :members:
