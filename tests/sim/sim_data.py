@@ -44,28 +44,31 @@ def gen_X(n, p, pho, x_max=1., distribution='uniform'):
 		X = x_max*np.random.multivariate_normal(np.zeros(p), cov, n)
 	return X
 
-def gen_W(p, d, L, tau, K0=5):
+def gen_W(p, d, L, tau, K0=5, if_norm=True):
 	W_tmp = array32(np.random.random(size=(d,p)))
 	# W_tmp[:,:K0] = 0.
-	col_sums = np.sqrt(np.sum(W_tmp**2, axis=0))
-	# col_sums[col_sums==0] = 1.
-	W_tmp = W_tmp/col_sums[np.newaxis, :]
-	W_tmp = W_tmp / np.sqrt(p)*tau
+	if if_norm:
+		col_sums = np.sqrt(np.sum(W_tmp**2, axis=0))
+		# col_sums[col_sums==0] = 1.
+		W_tmp = W_tmp/col_sums[np.newaxis, :]
+		W_tmp = W_tmp / np.sqrt(p)*tau
 	W = [W_tmp]
 	for l in range(L-2):
 		W_tmp = array32(np.random.random(size=(d,d)))
-		col_sums = np.sqrt(np.sum(W_tmp**2, axis=0))
-		W_tmp = W_tmp/col_sums[np.newaxis, :]
-		W_tmp = W_tmp/np.sqrt(d)*tau
+		if if_norm:
+			col_sums = np.sqrt(np.sum(W_tmp**2, axis=0))
+			W_tmp = W_tmp/col_sums[np.newaxis, :]
+			W_tmp = W_tmp/np.sqrt(d)*tau
 		W.append(W_tmp)
 	W_tmp = array32(np.ones((1,d)))
-	W_tmp = W_tmp / np.sqrt(d)*tau
+	if if_norm:
+		W_tmp = W_tmp / np.sqrt(d)*tau
 	W.append(W_tmp)
 	return W
 
-def gen_Y(p, d, L, X, tau, K0=5, noise=.1):
+def gen_Y(p, d, L, X, tau, K0=5, noise=.1, if_norm=True):
 	n = len(X)
-	W = gen_W(p, d, L, tau, K0)
+	W = gen_W(p, d, L, tau, K0, if_norm=True)
 	Y_tmp = X.T
 	for l in range(L):
 		Y_tmp = relu(np.dot(W[l], Y_tmp))
