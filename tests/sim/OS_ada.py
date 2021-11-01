@@ -57,7 +57,7 @@ for i in range(500):
 	tic = time.perf_counter()
 	## Define the full model
 	# d, L = d0, L0
-	L, d = 3, 64
+	L, d = 2, 128
 	model = Reg_model(p=p, d=d, L=L)
 	model_mask = Reg_model(p=p, d=d, L=L)
 
