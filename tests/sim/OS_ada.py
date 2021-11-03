@@ -52,7 +52,7 @@ for i in range(500):
 	# print('mean y: %.3f' %np.mean(y))
 
 	# import matplotlib.pyplot as plt
-	# plt.hist(Y, bins=50)
+	# plt.hist(Y, bins=50)wwww
 	# plt.show()
 	tic = time.perf_counter()
 	## Define the full model
