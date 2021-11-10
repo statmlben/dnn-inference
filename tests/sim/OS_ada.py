@@ -34,7 +34,7 @@ P_value, SE_list, time_lst = [], [], []
 for i in range(300):
 	K.clear_session()
 
-	def Reg_model(p, d, L=3, optimizer=Adam(lr=.0005)):
+	def Reg_model(p, d, L=3, optimizer=Adam(learning_rate=.0005)):
 		model = Sequential()
 		model.add(Dense(d, use_bias=False, input_dim=p, activation='relu'))
 		for l in range(L-2):
@@ -47,7 +47,8 @@ for i in range(300):
 	X = sim_data.gen_X(n=N, p=p, pho=pho, x_max=x_max, distribution='normal')
 	X0 = X.copy()
 	X0[:,:K0] = 0.
-	y = sim_data.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, noise=1., if_norm=False)
+	y = sim_data.gen_Y(p=p, d=d0, L=L0, X=X0, tau=tau, K0=K0, 
+						noise=1., if_norm=False)
 	y = y[:,np.newaxis]
 	# print('mean y: %.3f' %np.mean(y))
 
@@ -57,7 +58,7 @@ for i in range(300):
 	tic = time.perf_counter()
 	## Define the full model
 	# d, L = d0, L0
-	L, d = 3, 64
+	L, d = 3, 32
 	model = Reg_model(p=p, d=d, L=L)
 	model_mask = Reg_model(p=p, d=d, L=L)
 
@@ -71,12 +72,12 @@ for i in range(300):
 				  'validation_split': .2,
 				  'verbose': 0}
 
-	split_params = {'split': 'one-split',
+	split_params = {'split': 'two-split',
 					'num_perm': 100,
 					# 'ratio_grid': [.2, .4, .6],
 					'ratio_grid': [.2, .3, .4, .5, .6, .7, .8, .9],
 					# 'perturb': 0.01,
-					'perturb_grid': [.01, .05, .1, .5, 1.],
+					# 'perturb_grid': [.01, .05, .1, .5, 1.],
 					# 'perturb_grid': [.01, .1, 1.],
 					'verbose': 0}
 
@@ -85,7 +86,8 @@ for i in range(300):
 	# inf_cov = [range(K0)]
 	root, info = brentq(size_fun, 3, N, args=(N, 1000), full_output=True)
 	inf_ratio = 1 - root / N
-	shiing = DnnT(inf_feats=inf_cov, model=model, model_mask=model_mask, change='mask')
+	shiing = DnnT(inf_feats=inf_cov, model=model, model_mask=model_mask, \
+					change='mask')
 
 	p_value_tmp = shiing.testing(X, y, cv_num=5, fit_params=fit_params,
 						split_params=split_params)
