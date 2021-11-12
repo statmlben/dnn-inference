@@ -27,7 +27,7 @@ model_full = tf.keras.applications.resnet.ResNet152(
     include_top = True,
     weights=None, input_shape=(48, 48, 1), classes=7)
 
-model_full.compile(optimizer=Adam(learning_rate=1e-4), 
+model_full.compile(optimizer=Adam(learning_rate=1e-3),
               loss='categorical_crossentropy', 
               metrics=['accuracy'])
 
@@ -45,14 +45,14 @@ tic = time.perf_counter()
 
 from keras.callbacks import EarlyStopping
 es = EarlyStopping(monitor='val_accuracy', mode='max', 
-                   verbose=0, patience=15,
+                   verbose=1, patience=15,
                    restore_best_weights=True)
 
 fit_params = {'callbacks': [es],
               'epochs': 500,
-              'batch_size': 16,
+              'batch_size': 8,
               'validation_split': .2,
-              'verbose': 0}
+              'verbose': 2}
 
 split_params = {'split': 'one-split',
                 'perturb': None,
@@ -62,7 +62,7 @@ split_params = {'split': 'one-split',
                 'min_inf': 100,
                 'min_est': 1000,
                 'ratio_method': 'fuse',
-                'verbose': 1}
+                'verbose': 2}
 
 inf_feats = [[np.arange(14,22), np.arange(12,24)],
              [np.arange(14,22), np.arange(30,42)],
@@ -79,6 +79,9 @@ p_value_tmp = shiing.testing(image_array, oh_label,
                             split_params=split_params)
 
 toc = time.perf_counter()
-shiing.visual(image_array[100:],oh_label[200:],plt_params={'cmap': 'gray', 'alpha':1.})
+
+shiing.visual(image_array[100:],oh_label[200:],
+              plt_params={'cmap': 'gray', 'alpha':1.})
+
 print('testing time: %.3f' %(toc-tic))
 print('P-values: %s' %p_value_tmp)
