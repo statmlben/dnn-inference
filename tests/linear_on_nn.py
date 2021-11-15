@@ -68,4 +68,3 @@ d = {'y_true': list(y)*2, 'y_predict': y_pred, 'method': ['linear']*N + ['nerual
 df = pd.DataFrame(data=d)
 sns.scatterplot(data=df, x="y_true", y="y_predict", s=20, hue="method", style='method')
 plt.show()
-
