@@ -31,7 +31,7 @@ class HPermT(object):
 	 The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
 
 	cp_path: {string}, default='./HPT_checkpoints'
-	 The checkpoints path to save the models
+	 The checkpoints path to save the models 
 	"""
 
 	def __init__(self, inf_feats, model, alpha=.05, num_perm=1000, verbose=0, eva_metric='mse', cp_path = './HPT_checkpoints'):
