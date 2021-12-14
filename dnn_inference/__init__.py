@@ -1,8 +1,11 @@
-from . import DnnT, PermT, HPermT
+from dnn_inference.BBoxTest import split_test, perm_test, Hperm_test
 import sys
 
+sys.path.append('..')
+
 __all__ = [
-	"DnnT", 
-	"PermT",
-	"HPermT"
+    "BBoxTest",
+	"split_test", 
+	"perm_test",
+	"Hperm_test"
 	]

@@ -25,10 +25,12 @@ master_doc = 'index'
 # release = '0.10'
 
 import sys, os
+sys.path.append('.')
 sys.path.append('..')
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../'))
-sys.path.insert(1, os.path.dirname(os.path.abspath("../")) + os.sep + "feature_engine")
+sys.path.insert(0, os.path.abspath('../..'))
+# sys.path.insert(1, os.path.dirname(os.path.abspath("../")) + os.sep + "feature_engine")
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -36,10 +38,16 @@ sys.path.insert(1, os.path.dirname(os.path.abspath("../")) + os.sep + "feature_e
 # ones.
 extensions = [
 	'sphinx.ext.autodoc',
+    # "sphinx.ext.linkcode",
+    # "sphinx.ext.intersphinx",
+    "sphinx_autodoc_typehints",
+    'sphinx.ext.autosummary',
 	'numpydoc',
 	'nbsphinx'
 	]
 
+autosummary_generate = True
+numpydoc_show_class_members = False
 nbsphinx_execute = 'never'
 nbsphinx_allow_errors = True
 # autodoc_mock_imports = ['numpy']
@@ -56,12 +64,39 @@ exclude_patterns = []
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-html_theme = 'hachibee'
-html_theme_path = [hachibee_sphinx_theme.get_html_themes_path()]
 
+# html_theme = 'hachibee'
+# html_theme_path = [hachibee_sphinx_theme.get_html_themes_path()]
+
+
+# html_theme = 'karma_sphinx_theme'
+# html_theme = 'sphinx_book_theme'
+# html_theme = 'python_docs_theme'
+# html_theme = 'sphinx_material'
+# html_theme = 'insegel'
+# html_theme = 'furo'
+# html_theme = 'yummy_sphinx_theme'
+# html_theme = 'groundwork'
+
+# html_permalinks_icon = '§'
+# html_theme = 'insipid'
+
+# html_permalinks_icon = 'alpha'
+# html_theme = 'sphinxawesome_theme'
+
+import sphinx_theme_pd
+html_theme = 'sphinx_theme_pd'
+html_theme_path = [sphinx_theme_pd.get_html_theme_path()]
+
+# import solar_theme
+# html_theme = 'solar_theme'
+# html_theme_path = [solar_theme.theme_path]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
+
+# html_css_files = [
+#     'css/custom.css',
+# ]

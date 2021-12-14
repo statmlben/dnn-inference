@@ -6,6 +6,8 @@
 🔬 dnn-inference
 ================
 
+.. attention:: This is a test!
+
 .. -*- mode: rst -*-
 
 |dAI|_ |PyPi|_ |Keras|_ |MIT|_ |Python3|_ |tensorflow|_ |downloads|_ |downloads_month|_
@@ -35,7 +37,7 @@
 .. _downloads_month: https://pepy.tech/project/dnn-inference
 
 .. image:: ./logo/logo_header.png
-   :width: 1030
+   :width: 900
 
 **dnn-inference** is a Python module for hypothesis testing based on blackbox models, including **deep neural networks**. 
 
@@ -70,10 +72,6 @@ Please check more details in our paper `arXiv:2103.04985 <https://arxiv.org/abs/
 - Only `a small number of fitting` on neural networks is required, and the number can be as small as 1.
 - Asymptotically Type I error control and power consistency.
 
-.. only:: html
-
-   .. figure:: ./logo/dnn_inf.gif
-
 
 Reference
 ---------
@@ -104,7 +102,6 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-.. * :ref:`modindex`
 * :ref:`search`
    
 .. quickstart
