@@ -10,5 +10,4 @@ tensorflow
 numpy
 sklearn
 scipy
-copy
 matplotlib
