@@ -6,3 +6,9 @@ nbsphinx
 ipython
 sphinx_theme_pd
 sphinx_autodoc_typehints
+tensorflow
+numpy
+sklearn
+scipy
+copy
+matplotlib
