@@ -318,6 +318,7 @@ class split_test(object):
                 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 
             verbose: {0,1}, default=1
+                if print the results the adaptive tuning procedure.
 
         cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'} | default = 'hommel'
             A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
@@ -599,6 +600,7 @@ class split_test(object):
                 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 
             verbose: {0,1}, default=1
+                if print the results the adaptive tuning procedure.
 
         cv_num: int, default=5
             The number of cross-validation to shuffle the estimation/inference samples in testing.

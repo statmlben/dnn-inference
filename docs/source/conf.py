@@ -65,8 +65,8 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 
-# html_theme = 'hachibee'
-# html_theme_path = [hachibee_sphinx_theme.get_html_themes_path()]
+html_theme = 'hachibee'
+html_theme_path = [hachibee_sphinx_theme.get_html_themes_path()]
 
 
 # html_theme = 'karma_sphinx_theme'
@@ -84,9 +84,9 @@ exclude_patterns = []
 # html_permalinks_icon = 'alpha'
 # html_theme = 'sphinxawesome_theme'
 
-import sphinx_theme_pd
-html_theme = 'sphinx_theme_pd'
-html_theme_path = [sphinx_theme_pd.get_html_theme_path()]
+# import sphinx_theme_pd
+# html_theme = 'sphinx_theme_pd'
+# html_theme_path = [sphinx_theme_pd.get_html_theme_path()]
 
 # import solar_theme
 # html_theme = 'solar_theme'
