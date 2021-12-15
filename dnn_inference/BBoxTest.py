@@ -282,32 +282,42 @@ class split_test(object):
         fit_params: dict | shape = dict of fitting parameters
             See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``.
 
-        perturb: float | default=None
-            Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
+        split_params: {dict of splitting parameters}
 
-        split: {'one-split', 'two-split'}
-            one-split or two-split test statistic.
+            split: {'one-split', 'two-split'}, default='one-split'
+                one-split or two-split tests.
 
-        perturb_grid: list of float | default=[.01, .05, .1, .5, 1.]
-            A list of perturb levels under searching.
+            perturb: float, default=None
+                Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 
-        ratio_grid: list of float (0,1) | default=[.2, .4, .6, .8]
-            A list of estimation/inference ratios under searching.
+            num_perm: int, default=100
+                Number of permutation for determine the splitting ratio.
 
-        if_reverse: {0,1} | default = 0
-            ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
+            ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
+                A list of estimation/inference ratios under searching.
 
-        min_inf: integer | default = 0
-            The minimal size for inference sample.
+            if_reverse: {0,1}, default=0
+                ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
 
-        min_est: integer | default = 0
-            The minimal size for estimation sample.
+            perturb_scale: integer, default=5
+                The scale of perturb, and the perturbation grid is generated based on 2**range(-perturb_scale, perturb_scale)*var(losses by full model)
 
-        ratio_method: {'close', 'fuse'} | default = 'fuse'
-            The adaptive splitting method to determine the optimal estimation/inference ratios.
+            min_inf: int, default=0
+                The minimal size for inference sample.
 
-        cv_num: int, default=1
-            The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
+            min_est: int, default=0
+                The minimal size for estimation sample.
+
+            ratio_method: {'fuse', 'close'}, default='fuse'
+                The adaptive splitting method to determine the optimal estimation/inference ratios.
+
+            cv_num: int, default=1
+                The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting. We recommend to set **cv_num** in **adaRatio** as same as **cv_num** in **testing**.
+
+            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'
+                A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
+
+            verbose: {0,1}, default=1
 
         cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'} | default = 'hommel'
             A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
@@ -570,8 +580,8 @@ class split_test(object):
             if_reverse: {0,1}, default=0
                 ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
 
-            perturb_grid: list of float, default=[.01, .05, .1, .5, 1.]**
-                A list of perturb levels under searching.
+            perturb_scale: integer, default=5
+                The scale of perturb, and the perturbation grid is generated based on 2**range(-perturb_scale, perturb_scale)*var(losses by full model)
 
             min_inf: int, default=0
                 The minimal size for inference sample.
@@ -582,18 +592,18 @@ class split_test(object):
             ratio_method: {'fuse', 'close'}, default='fuse'
                 The adaptive splitting method to determine the optimal estimation/inference ratios.
 
-            cv_num: int, default=1
+            cv_num: int, default=*cv_num*
                 The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
 
-            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
+            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default = *cp*
                 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 
-            verbose: {0,1}, default=1**
+            verbose: {0,1}, default=1
 
         cv_num: int, default=5
             The number of cross-validation to shuffle the estimation/inference samples in testing.
 
-        cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'**
+        cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'
             A method to combine p-values obtained from cross-validation.
 
         inf_ratio: float, default=None**
@@ -615,8 +625,8 @@ class split_test(object):
                                 'min_inf': 0,
                                 'min_est': 0,
                                 'ratio_method': 'fuse',
-                                'cv_num': 1,
-                                'cp': 'hommel',
+                                'cv_num': cv_num,
+                                'cp': cp,
                                 'verbose': 1}
         
         split_params_default.update(split_params)
