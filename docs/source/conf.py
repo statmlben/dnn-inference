@@ -20,7 +20,6 @@ import hachibee_sphinx_theme
 project = 'dnn-inference'
 copyright = '2021, Ben Dai'
 author = 'Ben Dai'
-master_doc = 'index'
 # The full version, including alpha/beta/rc tags
 # release = '0.10'
 

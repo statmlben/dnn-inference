@@ -6,8 +6,6 @@
 🔬 dnn-inference
 ================
 
-.. attention:: This is a test!
-
 .. -*- mode: rst -*-
 
 |dAI|_ |PyPi|_ |Keras|_ |MIT|_ |Python3|_ |tensorflow|_ |downloads|_ |downloads_month|_
