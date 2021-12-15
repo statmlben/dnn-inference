@@ -208,24 +208,28 @@ class split_test(object):
          Target instances.
 
         cat_feats: list-like, default = []
-         The col-index for categorical features
+         The col-index for categorical features; now it's only work for tabular data
 
         k: integer, default = 0
          k-th hypothesized features in inf_feats
         """
         Z = X.copy()
         n_sample = len(Z)
-        cat_inf_feats = set(self.inf_feats[k]).intersection(set(cat_feats))
-        cont_inf_feats = set(self.inf_feats[k]) - set(cat_inf_feats)
-        cat_inf_feats, cont_inf_feats = list(cat_inf_feats), list(cont_inf_feats)
-        if type(self.inf_feats[k]) is list:
+
+        if len(self.inf_feats[k].shape) > 1:
             ## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
+            if len(cat_feats):
+                warnings.warn("cat_feats is ignored. cat_feats only works for tabular data, whereas a image dataset is given.")
             Z[:, self.inf_feats[k][0][:,None], self.inf_feats[k][1], :] = 0.
         else:
+            ## this for tabular data
+            cat_inf_feats = set(self.inf_feats[k]).intersection(set(cat_feats))
+            cont_inf_feats = set(self.inf_feats[k]) - set(cat_inf_feats)
+            cat_inf_feats, cont_inf_feats = list(cat_inf_feats), list(cont_inf_feats)
+            
             Z[:,cont_inf_feats] = np.array([np.mean(Z[:,cont_inf_feats], axis=0)]*n_sample)
             if len(cat_inf_feats) > 0:
                 Z[:,cat_inf_feats] = np.array([mode(Z[:,cat_inf_feats], axis=0)[0][0]]*n_sample)
-            # Z[:,self.inf_feats[k]]= 0.
         return Z
 
     def perm_cov(self, X, k=0):
@@ -241,7 +245,7 @@ class split_test(object):
          k-th hypothesized features in inf_feats
         """
         Z = X.copy()
-        if type(self.inf_feats[k]) is list:
+        if len(self.inf_feats[k].shape) > 1:
             ## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
             Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], :]= np.random.permutation(Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], :])
         else:
@@ -560,6 +564,9 @@ class split_test(object):
 
         y: {array-like} of shape (n_samples,)
              Output vector/matrix relative to X.
+        
+        cat_feats: list, default = []
+            The col-index for categorical features; **now it's only work for tabular data**
 
         fit_params: {dict of fitting parameters}
             See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
@@ -575,7 +582,7 @@ class split_test(object):
             num_perm: int, default=100
                 Number of permutation for determine the splitting ratio.
 
-            ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
+            ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]
                 A list of estimation/inference ratios under searching.
 
             if_reverse: {0,1}, default=0
@@ -741,10 +748,15 @@ class split_test(object):
             P_value_cv = np.array(P_value_cv)
             p_value_mean = comb_p_value(P_value_cv, cp=cp)
             
+
+            print('#'*50)
+
             if p_value_mean < self.alpha:
                 print('%d-th inf: reject H0 with p_value: %.3f' %(k, p_value_mean))
             else:
                 print('%d-th inf: accept H0 with p_value: %.3f' %(k, p_value_mean))
+
+            print('#'*50)
 
             P_value.append(p_value_mean)
         # return P_value, fit_err, P_value_cv
@@ -783,7 +795,7 @@ class split_test(object):
             for row in range(rows):
                 for col in range(cols):
                     X_mask_tmp = np.nan*np.ones(X_demo.shape)
-                    X_mask_tmp = self.mask_cov(X_mask_tmp, cat_feats, k=col)[0]
+                    X_mask_tmp = self.mask_cov(X_mask_tmp, k=col)[0]
                     ax = fig.add_subplot(spec[row, col])
                     im1 = ax.imshow(X_demo[row], vmin=0, vmax=1, **plt_params)
                     ax.axis('off')

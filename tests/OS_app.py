@@ -1,6 +1,3 @@
-import sys
-sys.path.append('..')
-
 import numpy as np
 import tensorflow.keras as keras 
 from tensorflow.keras.datasets import mnist
@@ -10,7 +7,7 @@ from tensorflow.python.keras import backend as K
 import time
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.optimizers import Adam, SGD
-from dnn_inference import DnnT
+from dnn_inference.BBoxTest import split_test
 
 np.random.seed(0)
 num_classes = 2
@@ -74,7 +71,7 @@ split_params = {'split': 'two-split',
 				'perturb': None,
 				'num_perm': 100,
 				'ratio_grid': [.2, .4, .6, .8],
-				'perturb_grid': [.001, .005, .01, .05, .1],
+				'perturb_scale': 5,
 				'min_inf': 100,
 				'min_est': 1000,
 				'ratio_method': 'fuse',
@@ -88,12 +85,12 @@ inf_feats = [
 			[np.arange(7,16), np.arange(9,16)]
 			]
 
-shiing = DnnT.DnnT(inf_feats=inf_feats, 
+shiing = split_test(inf_feats=inf_feats, 
 			model=model, model_mask=model_mask, 
 			change='mask', eva_metric='zero-one')
 
 p_value_tmp = shiing.testing(X, y, 
-							cv_num=1, cp='hommel', 
+							cv_num=3, cp='hommel', 
 							fit_params=fit_params, 
 							split_params=split_params)
 

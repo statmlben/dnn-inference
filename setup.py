@@ -15,7 +15,7 @@ if __name__ == "__main__":
         # Needed for dependencies
         install_requires=['numpy', 'keras', 'tensorflow>=2.3.1', 'scipy', 'sklearn', 'matplotlib'],
         # *strongly* suggested for sharing
-        version='0.12',
+        version='0.14',
         # The license can be anything you like
         license='MIT',
         description='Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.',
