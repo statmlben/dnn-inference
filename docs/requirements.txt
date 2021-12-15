@@ -1,4 +1,4 @@
-sphinx==4.3.1
+Sphinx==4.3.1
 sphinx_rtd_theme
 hachibee_sphinx_theme
 numpydoc
