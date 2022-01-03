@@ -5,6 +5,9 @@
 .. |dAI| image:: https://img.shields.io/badge/Powered%20by-cuhk%40dAI-purple.svg
 .. _dAI: https://www.bendai.org
 
+.. |dAI| image:: https://img.shields.io/badge/Powered%20by-umn-red.svg
+.. _dAI: https://www.bendai.org
+
 .. |PyPi| image:: https://badge.fury.io/py/dnn-inference.svg
 .. _PyPi: https://badge.fury.io/py/dnn-inference
 
