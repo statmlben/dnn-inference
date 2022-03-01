@@ -525,7 +525,7 @@ class ada_split_test(object):
                 warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and the inference sample ratio is set as the min of ratio_grid.")
                 Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
                 ratio_opt = ratio_lst[np.argmin(Err1_lst)]    
-                
+
             return ratio_opt, None
 
 
