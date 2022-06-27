@@ -20,47 +20,8 @@ import matplotlib.pyplot as plt
 import os
 from scipy.optimize import brentq
 from copy import deepcopy
-import time
-
-
-def comb_p_value(P_value, cp):
-    """
-    combining p-values
-    """
-    P_value = np.array(P_value)
-    P_value
-    cv_num = len(P_value)
-    # print(P_value)
-    if cv_num > 1:
-        P_value = np.array(P_value)
-        if cp == 'gmean':
-            P_value_cp = np.e*gmean(P_value, 0)
-        elif cp == 'median':
-            P_value_cp = 2*np.median(P_value, 0)
-        elif cp == 'Q1':
-            P_value_cp = cv_num/2.*np.partition(P_value, 1)[1]
-        elif cp == 'min':
-            P_value_cp = cv_num*np.min(P_value, 0)
-        elif cp == 'hmean':
-            P_value_cp = np.e * np.log(cv_num) * hmean(P_value, 0)
-        elif cp == 'hommel':
-            const = np.sum(1. / (np.arange(cv_num) + 1.))
-            order_const = const*(cv_num/(np.arange(cv_num) + 1.))
-            P_value_cp = np.sort(P_value)*order_const
-            P_value_cp = np.min(P_value_cp)
-        elif cp == 'cauchy':
-            t0 = np.mean(np.tan((.5 - P_value)*np.pi))
-            P_value_cp = .5 - np.arctan(t0)/np.pi
-        else:
-            warnings.warn("cp should be {geometric, min, median, Q1, hmean, hommel, cauchy}")
-    else:
-        P_value_cp = np.mean(P_value, 0)
-    P_value_cp = np.minimum(P_value_cp, 1.)
-    return P_value_cp
-
-
-def size_fun(x, N, min_N=2000):
-    return x + min_N * np.log(x) / 2 / np.log(min_N/2) - N
+import time, datetime
+from base import comb_p_value, size_fun
 
 class split_test(object):
     """
@@ -69,16 +30,19 @@ class split_test(object):
     Parameters
     ----------
 
-    inf_feats: list-like | shape = (num of tests, dim of features)
-     List of covariates/Features under hypothesis testings, one element corresponding to a hypothesis testing.
+    inf_feats: list-like | shape = (num of tests, dim of hypothesized features)
+     List of covariates/features under hypothesis testings, `inf_feats[k]` corresponding to the k-th hypothesis testing. 
+     `len(inf_feats[k]) == 2` indicates hypothesis for image data; where `inf_feats[k][0]` is the hypothesized rows;
+     and `inf_feats[k][1]` is the hypothesized columns.
+     `len(inf_feats[k]) == 1` indicates hypothesis for tabular data; where `inf_feats[k]` is the hypothesized features.
 
     model: {keras-defined neural network}
      A neural network for original full dataset
 
-    model_mask: {keras-defined neural network}
+    model_alter: {keras-defined neural network}
      A neural network for masked dataset by masking/changing the features under hypothesis testing
 
-    change: {'mask', 'perm'}, default='mask'
+    change: {'mask', 'perm'}, default='perm'
      The way to change the testing features, ``'mask'`` replaces testing features as zeros, while ``'perm'`` permutes features via instances.
 
     alpha: float (0,1), default=0.05
@@ -87,34 +51,115 @@ class split_test(object):
     verbose: {0, 1}, default=0
      If print the testing results, 1 indicates YES, 0 indicates NO.
 
-    eva_metric: {'mse', 'zero-one', 'cross-entropy', or custom metric function}
-     The evaluation metric, ``'mse'`` is the l2-loss for regression, ``'zero-one'`` is the zero-one loss for classification, ``'cross-entropy'`` is log-loss for classification. It can also be custom metric function as ``eva_metric(y_true, y_pred)``.
+    eva_metric: {'zero-one' or custom loss function in `tf.keras.losses`}
+     The evaluation metric, ``'zero-one'`` is the zero-one loss for classification, 
+     It can also be custom loss function as ``eva_metric(y_true, y_pred)`` see `tf.keras.losses`.
+     Please specify `from_logits=False`, `reduction='none'`
 
-    cp_path: string, default='./splitTest_checkpoints'
+    cp_path: string, default='./saved'
      The checkpoints path to save the models
 
     Methods
     -------
     adaRatio
-    dual_feat
+    alter_feat
     testing
     visual
     """
 
-    def __init__(self, inf_feats, model, model_mask, change='mask', alpha=.05, verbose=0, eva_metric='mse', cp_path='./splitTest_checkpoints'):
+    def __init__(self, inf_feats, model_null, model_alter, change='perm', alpha=.05, verbose=0, eva_metric='zero-one', cp_path='./saved'):
+        self.name = 'split_test'
         self.inf_feats = inf_feats
-        self.model = model
-        self.model_mask = model_mask
+        self.model_null = model_null
+        self.model_alter = model_alter
         self.alpha = alpha
         self.change = change
         self.eva_metric = eva_metric
         self.p_values = []
         self.p_values_comb = []
         self.cp_path = cp_path
+        self.test_params = {}
+        self.tune_params = {}
+
+    def update_cp_dir():
+        """
+        Update checkpoint dir by using datetime
+        """
+        start_time = datetime.datetime.now().strftime('%m-%d_%H-%M')
+        self.cp_path = os.path.join(self.cp_path, self.name, start_time)
+
+    def update_test_params(test_params):
+        """
+        Update test params
+        """
+        test_params_default = { 'split': 'one-split',
+                                'inf_ratio': None,
+                                'perturb': None,
+                                'cv_num': 5,
+                                'cp': 'hommel',
+                                # 'min_inf': 0,
+                                # 'min_est': 0,
+                                'verbose': 1}
+        ## update testing params
+        test_params_default.update(test_params)
+        test_params = test_params_default
+
+        if test_params['split'] == "two-split":
+            test_params['perturb'] = 0.
+
+        ## check everything
+        # assert isinstance(test_params['min_inf'], int), "'min_inf' must be int."
+        # assert isinstance(test_params['min_est'], int), "'min_est' must be int."
+        assert test_params['split'] in ['one-split', 'two-split'], "'split' must be 'one-split' or 'two-split'!"
+        if test_params['inf_ratio'] is not None:
+            assert (test_params['inf_ratio'] > 0) and ((test_params['inf_ratio'] < 1.)), "'inf_ratio' must be in (0,1)"
+        if test_params['perturb'] is not None:
+            assert test_params['perturb'] >= 0., "'perturb' must be nonnegative."
+        assert isinstance(test_params['cv_num'], int), "'cv_num' must be int."
+        assert test_params['cp'] in ['gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'], "combing method `cp` must in ['gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy']."
+
+        self.test_params = test_params
+        return test_params
+
+    def update_tune_params(tune_params):
+        """
+        Update tune params
+        """
+        tune_params_default = { 'num_perm': 100,
+                                'ratio_grid': [.2, .4, .6, .8],
+                                'if_reverse': 0,
+                                'perturb_range': 2.**np.arange(-5,5),
+                                'ratio_method': 'fuse',
+                                'cv_num': 1,
+                                'cp': 'hommel',
+                                'verbose': 1}
+        ## update tune params
+        tune_params_default.update(tune_params)
+        tune_params = test_params_default
+
+        tune_params['ratio_grid'].sort()
+        tune_params['perturb_range'].sort()
+        if tune_params['if_reverse'] == 1:
+            tune_params['ratio_grid'] = list(reversed(tune_params['ratio_grid']))
+        
+        ## check everything
+        assert isinstance(tune_params['num_perm'], int), "'num_perm' must be int."
+        assert (min(tune_params['ratio_grid']) > 0.0) and (max(tune_params['ratio_grid']) > 1.0), "'ratio_grid' in `tune_params` must in (0,1)."
+        assert tune_params['if_reverse'] in [0, 1], "`if_reverse` in `tune_params` must be 0 or 1."
+        assert (min(tune_params['perturb_range']) > 0.0), "'perturb_range' in `tune_params` must in nonnegative."
+        assert tune_params['ratio_method'] in ['log-ratio', 'fuse'], "`ratio_method` in `tune_params` must be `log-ratio` or `fuse`."
+        assert tune_params['cp'] in ['gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'], "combing method `cp` in `tune_params` must in ['gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy']."
+        assert isinstance(tune_params['cv_num'], int), "'cv_num' must be int."
+        assert isinstance(tune_params['verbose'], int), "'verbose' must be int."
+
+        self.tune_params = tune_params
+        return tune_params
 
     def metric(self, y_true, y_pred):
         """
-        Return the loss for `self.eva_metric`
+        Return the loss for `self.eva_metric`.
+        Use a `loss` class in ``https://www.tensorflow.org/api_docs/python/tf/keras/losses/Loss``
+        Please specify `from_logits=False`, `reduction='none'`
 
         Parameters
         ----------
@@ -123,7 +168,6 @@ class split_test(object):
         y_pred: the predicted label
 
         """
-
         if self.eva_metric == 'mse':
             metric_tmp = ((y_true - y_pred)**2).flatten()
         elif self.eva_metric == 'mae':
@@ -144,40 +188,39 @@ class split_test(object):
         Save the initialization for full and mask network models under class Dnn
         """
         self.model.built = True
-        self.model_mask.built = True
+        self.model_alter.built = True
 
         # self.model.save_weights(self.cp_path+'/model_init.h5')
-        # self.model_mask.save_weights(self.cp_path+'/model_mask_init.h5')
-        self.model.save(self.cp_path+'/model_init')
-        self.model_mask.save(self.cp_path+'/model_mask_init')
+        # self.model_alter.save_weights(self.cp_path+'/model_alter_init.h5')
+        self.model.save(self.cp_path+'/model_full_init')
+        self.model_alter.save(self.cp_path+'/model_alter_init')
 
     def reset_model(self):
         """
         Reset the full and mask network models under class Dnn
         """
         self.model.built = True
-        self.model_mask.built = True
+        self.model_alter.built = True
 
         # self.model.load_weights(self.cp_path+'/model_init.h5')
-        # self.model_mask.load_weights(self.cp_path+'/model_mask_init.h5')
-        self.model = load_model(self.cp_path+'/model_init')
-        self.model_mask = load_model(self.cp_path+'/model_mask_init')
+        # self.model_alter.load_weights(self.cp_path+'/model_alter_init.h5')
+        self.model = load_model(self.cp_path+'/model_full_init')
+        self.model_alter = load_model(self.cp_path+'/model_alter_init')
 
-    def reload_model(self, path_full, path_mask):
+    def reload_model(self, path_null, path_alter):
         """
         reload the pre-saved model.
         """
         # path_tmp = self.cp_path+'/model'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
-        # mask_path_tmp = self.cp_path+'/model_mask'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
-        self.model.save_weights(path_full)
-        self.model_mask.save_weights(path_mask)
-        self.model.load_weights(path_full)
-        self.model_mask.load_weights(path_mask)
+        # mask_path_tmp = self.cp_path+'/model_alter'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
+        self.model.save_weights(path_null)
+        self.model_alter.save_weights(path_alter)
+        self.model.load_weights(path_null)
+        self.model_alter.load_weights(path_alter)
 
-    ## can be extent to @abstractmethod
-    def dual_feat(self, X, cat_feats=[], k=0):
+    def alter_feat(self, X, k=0, cat_feats=[]):
         """
-        Return instances with masked/perm k-th hypothesized features (dual feats).
+        Return instances with masked/perm k-th hypothesized features (alter feats).
 
         Parameters
         ----------
@@ -197,8 +240,7 @@ class split_test(object):
             Z = self.perm_cov(X, k=k)
         return Z
 
-
-    def mask_cov(self, X, cat_feats=[], k=0):
+    def mask_cov(self, X, k=0, cat_feats=[]):
         """
         Return instances with masked k-th hypothesized features.
 
@@ -268,7 +310,58 @@ class split_test(object):
         Z[:,self.inf_feats[k]] = np.random.randn(len(X), len(self.inf_feats[k]))
         return Z
 
-    def adaRatio(self, X, y, k=0, cat_feats=[], fit_params={}, split_params={}):
+
+
+
+    def pb_ttest(self, metric_null, metric_alter, perturb_level=0.):
+        """
+        Perturb T-test: return p-value for diff btw `metric_null` and `metric_alter` for the one-/two-split test.
+
+        Parameters
+        ----------
+        metric_null: {array-like} of shape (n_samples)
+            metric for samples based on null model
+
+        metric_alter: {array-like} of shape (n_samples)
+            metric for samples based on alter model
+
+        perturb_level: float
+            The level of perturbation; the final perturbation is `perturb_level * std(metric_null)`
+
+        Returns
+        -------
+
+        P_value: array of float [0, 1]
+            The p_values for target one-/two-split test.
+        """
+        inf_sample = len(metric_null)
+        perturb_base = metric_null.std()
+        diff_tmp = metric_null - metric_alter + perturb_level * perturb_base * np.random.randn(inf_sample)
+        Lambda_tmp = np.sqrt(inf_sample) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
+        p_value_tmp = norm.cdf(Lambda_tmp)
+        return p_value_tmp
+
+    def perm_p_value(self, X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_level=0., num_perm=100):
+        P_value_perm = []
+        for j in range(num_perm):
+            ## generate perm datasets for the null/alter models
+            X_inf_perm = X_inf.copy()
+            X_inf_perm = self.perm_cov(X_inf_perm, k)
+            X_inf_alter_perm = X_inf_alter.copy()
+            X_inf_alter_perm = self.perm_cov(X_inf_alter_perm, k)
+            ## predict the outcome by null/alter models
+            pred_y = self.model_null.predict(X_inf_perm)
+            pred_y_alter = self.model_null.predict(X_inf_alter_perm)
+            ## compute the metrics
+            metric_null_tmp = self.metric(y_inf, pred_y)
+            metric_alter_tmp = self.metric(y_inf_alter, pred_y_alter)
+            ## compute p-value
+            p_value_tmp = self.pb_ttest(metric_null_tmp, metric_alter_tmp, perturb_level=perturb_level)
+            P_value_perm.append(p_value_tmp)
+        return P_value_perm
+        
+
+    def tuneHP(self, k, X, y, test_params, fit_params, tune_params, verbose=1):
         """
         Return a data-adaptive splitting ratio and perturbation level.
 
@@ -286,16 +379,13 @@ class split_test(object):
         fit_params: dict | shape = dict of fitting parameters
             See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``.
 
-        split_params: {dict of splitting parameters}
-
-            split: {'one-split', 'two-split'}, default='one-split'
-                one-split or two-split tests.
+        tune_params: {dict of splitting parameters}
 
             perturb: float, default=None
                 Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 
             num_perm: int, default=100
-                Number of permutation for determine the splitting ratio.
+                Number of permutation to estimate the Type I error.
 
             ratio_grid: list of float (0,1), default=[.2, .4, .6, .8]**
                 A list of estimation/inference ratios under searching.
@@ -306,13 +396,7 @@ class split_test(object):
             perturb_scale: integer, default=5
                 The scale of perturb, and the perturbation grid is generated based on 2**range(-perturb_scale, perturb_scale)*var(losses by full model)
 
-            min_inf: int, default=0
-                The minimal size for inference sample.
-
-            min_est: int, default=0
-                The minimal size for estimation sample.
-
-            ratio_method: {'fuse', 'close'}, default='fuse'
+            ratio_method: {'fuse', 'log-ratio'}, default='fuse'
                 The adaptive splitting method to determine the optimal estimation/inference ratios.
 
             cv_num: int, default=1
@@ -340,217 +424,173 @@ class split_test(object):
 
         perturb_opt: float
             A reasonable perturbation level.
-
         """
 
-        split_params_default = {'split': 'one-split',
-                        'perturb': None,
-                        'num_perm': 100,
-                        'ratio_grid': [.2, .4, .6, .8],
-                        'if_reverse': 0,
-                        'perturb_scale': 5,
-                        'min_inf': 0,
-                        'min_est': 0,
-                        'ratio_method': 'fuse',
-                        'cv_num': 1,
-                        'cp': 'hommel',
-                        'verbose': 1}
-        
-        split_params_default.update(split_params)
-        split_params = split_params_default
+        ## default testing params
+        tune_params = self.update_tune_params(tune_params)
+        test_params = self.update_test_params(test_params)
+        find_ratio, find_pb = 0, 0
 
-        perturb=split_params['perturb']
-        split=split_params['split']
-        perturb_scale=split_params['perturb_scale']
-        ratio_grid=split_params['ratio_grid']
-        if_reverse=split_params['if_reverse']
-        min_inf=split_params['min_inf']
-        min_est=split_params['min_est']
-        ratio_method=split_params['ratio_method']
-        num_perm=split_params['num_perm']
-        cv_num= split_params['cv_num']
-        cp = split_params['cp']
-        verbose= split_params['verbose']
+        if tune_params['ratio_method'] == 'log-ratio':
+            root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
+            test_params['inf_ratio'] = 1. - root / len(X)
 
-        ratio_grid.sort()
-        if if_reverse == 1:
-            ratio_grid = list(reversed(ratio_grid))
-
-        candidate, Err1_lst, ratio_lst, P_value_lst = [], [], [], []
-        found = 0
-        if split == 'two-split':
-            for ratio_tmp in ratio_grid:
-                ratio_tmp = ratio_tmp/2
-                m_tmp = int(len(X)*ratio_tmp)
-                n_tmp = len(X) - 2*m_tmp
-                if (m_tmp < min_inf) or (n_tmp < min_est):
-                    continue
-                
+        if test_params['inf_ratio'] is None:
+            err_lst, ratio_lst, p_value_lst = [], [], []
+            for ratio_tmp in tune_params['ratio_grid']:
+                test_params['inf_ratio'] = ratio_tmp
+                ## permutate data to estimate the Type I error
+                X_perm = X.copy()
+                X_perm = self.perm_cov(X_perm, k)
                 # split data
-                P_value = []
-                for h in range(cv_num):
+                P_value_cv = []
+                for h in range(tune_params['cv_num']):
+                    ## train models via CV
                     self.reset_model()
-                    P_value_cv = []
-                    ## generate permutated samples
-                    X_perm = X.copy()
-                    X_perm = self.perm_cov(X_perm, k)
-                    ## split sample
-                    X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=1)
-                    # training for full model
-                    history = self.model.fit(x=X_train, y=y_train, **fit_params)
-
-                    # training for mask model
-                    Z_train = self.dual_feat(X_train, cat_feats, k)
-                    history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
-                    Z_test = self.dual_feat(X_test, cat_feats, k)
-
-                    # evaluation for mask model
-                    pred_y_mask = self.model_mask.predict(Z_test)
-                    for j in range(num_perm):
-                        X_test_perm = X_test.copy()
-                        X_test_perm = self.perm_cov(X_test_perm, k)
-                        pred_y = self.model.predict(X_test_perm)
-                        ind_inf, ind_inf_mask = train_test_split(range(len(pred_y)), train_size=m_tmp, random_state=42)
-                        metric_tmp = self.metric(y_test[ind_inf], pred_y[ind_inf])
-                        metric_mask_tmp = self.metric(y_test[ind_inf_mask], pred_y_mask[ind_inf_mask])
-                        p_value_tmp = self.diff_p_value(metric_tmp, metric_mask_tmp)
-                        P_value_cv.append(p_value_tmp)
-                    P_value.append(P_value_cv)
-                P_value = np.array(P_value)
-                P_value_cp = np.array([comb_p_value(P_value[:,i], cp=cp) for i in range(num_perm)])
-                ## compute the type 1 error
-                Err1 = len(P_value_cp[P_value_cp < self.alpha]) / len(P_value_cp)
-                Err1_lst.append(Err1)
-                # P_value_lst.append(P_value)
+                    _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, test_params, fit_params, return_data=True)
+                    if test_params['split'] == "two-split":
+                        P_value_perm = self.perm_p_value(X_inf, X_inf_alter, y_inf, y_inf_alter, test_params['perturb'], tune_params['num_perm'])
+                    else:
+                        P_value_perm = self.perm_p_value(X_inf, X_inf_alter, y_inf, y_inf_alter, 1., tune_params['num_perm'])
+                    P_value_cv.append(P_value_perm)
+                P_value_cv = np.array(P_value_cv)
+                P_value_cp = np.array([comb_p_value(P_value_cv[:,i], cp=tune_params['cp']) for i in range(tune_params['num_perm'])])
+                ## compte Type 1 error
+                err_tmp = len(P_value_cp[P_value_cp < self.alpha]) / len(P_value_cp)
+                err_lst.append(err_tmp)
                 ratio_lst.append(ratio_tmp)
-
-                if verbose==1:
-                    print('(AdaRatio) Est. Type 1 error: %.3f; p_value_mean: %.3f, inf sample ratio: %.3f' 
-                        %(Err1, P_value_cp.mean(), ratio_tmp))
-                    # print('(AdaRatio) p_value: %.3f, inference sample ratio: %.3f' %(P_value.mean(), ratio_tmp))
-
-                if Err1 < self.alpha:
-                    found = 1
-                    if ratio_method == 'fuse':
-                        m_opt = m_tmp
-                        n_opt = len(X) - 2*m_opt
+                ## print the estimated Type 1 error
+                if verbose>=1:
+                    print('(tuneHP: ratio) Est. Type 1 error: %.3f; inf sample ratio: %.3f' %(err_tmp, ratio_tmp))
+                ## if the Type I error is under control, early stop
+                if err_tmp < self.alpha:
+                    find_ratio = 1
+                    if tune_params['ratio_method'] == 'fuse':
                         break
-
-            if found==0:
+            
+            ## if we can not control the estimated Type I error
+            if find_ratio==0:
                 warnings.warn("No ratio can control the Type 1 error, pls increase the sample size, and the inference sample ratio is set as the min of ratio_grid.")
-                Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
-                m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
-                n_opt = len(X) - 2*m_opt
+                test_params['inf_ratio'] = min(tune_params['ratio_grid'])
 
-            return n_opt, m_opt
+        if test_params['perturb'] is None:
+            ## check if the test is "one-split" test
+            assert test_params['split'] == 'one-split', "Only 'one-split' test need to tune `perturb`."
 
-        if split == 'one-split':
-            if perturb != None:
-                perturb_grid = [perturb]
-
-            for perturb_idx_tmp in range(-perturb_scale, perturb_scale):
-                perturb_level_tmp = 2**(perturb_idx_tmp)
-                ## stop if current perturb is enough to control the type 1 error
-                if found == 1:
-                    break
-                Err1_lst, ratio_lst, perturb_lst, P_value_lst = [], [], [], []
-                for ratio_tmp in ratio_grid:
-                    m_tmp = int(len(X)*ratio_tmp)
-                    n_tmp = len(X) - m_tmp
-
-                    if (m_tmp < min_inf) or (n_tmp < min_est):
-                        continue
-                    # split data
-                    P_value = []
-                    for h in range(cv_num):
-                        self.reset_model()
-                        P_value_cv = []
-                        ## generate permutated samples
-                        X_perm = X.copy()
-                        X_perm = self.perm_cov(X_perm, k)
-                        # split samples
-                        X_train, X_test, y_train, y_test = train_test_split(X_perm, y, train_size=n_tmp, random_state=h)
-                        # training for full model
-                        history = self.model.fit(x=X_train, y=y_train, **fit_params)
-                        
-                        # training for mask model
-                        Z_train = self.dual_feat(X_train, cat_feats, k)
-                        history_mask = self.model_mask.fit(x=Z_train, y=y_train, **fit_params)
-                        
-                        ## evaluation for the mask model
-                        Z_test = self.dual_feat(X_test, cat_feats, k)
-                        pred_y_mask = self.model_mask.predict(Z_test)
-                        metric_mask_tmp = self.metric(y_test, pred_y_mask)
-
-                        # evaluation
-                        for j in range(num_perm):
-                            X_test_perm = X_test.copy()
-                            X_test_perm = self.perm_cov(X_test_perm, k)
-                            ## compute the metric based on full model
-                            pred_y = self.model.predict(X_test_perm)
-                            metric_tmp = self.metric(y_test, pred_y)
-                            ## compute the p-value based on the diff metrics
-                            p_value_tmp = self.diff_p_value(metric_tmp, metric_mask_tmp, 
-                                                    perturb_level=perturb_level_tmp)
-                            P_value_cv.append(p_value_tmp)
-                        P_value.append(P_value_cv)
-
-                    P_value = np.array(P_value)
-                    
-                    P_value_cp = np.array([comb_p_value(P_value[:,i], cp=cp) for i in range(num_perm)])
-                    Err1 = len(P_value_cp[P_value_cp<=self.alpha])/len(P_value_cp)
-                    Err1_lst.append(Err1)
-
-                    if verbose==1:
-                        print('(AdaRatio) Est. Type 1 err: %.3f; p_value_mean: %.3f, inf sample ratio: %.3f, perturb_level: %s' 
-                            %(Err1, P_value_cp.mean(), ratio_tmp, perturb_level_tmp))
-
-                    P_value_lst.append(P_value_cp)
-                    ratio_lst.append(ratio_tmp)
-                    perturb_lst.append(perturb_idx_tmp)
-
-                    if Err1 < self.alpha:
-                        found = 1
-                        m_opt = m_tmp
-                        n_opt = len(X) - m_opt
-                        perturb_idx_opt = perturb_idx_tmp
+            X_perm = X.copy()
+            X_perm = self.perm_cov(X_perm, k)
+            P_value_cv = []
+            for h in range(tune_params['cv_num']):
+                self.reset_model()
+                _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, test_params, fit_params, return_data=True)
+                
+                P_value_pb = []
+                for perturb_tmp in tune_params['perturb_range']:
+                    P_value_perm = self.perm_p_value(X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_tmp, tune_params['num_perm'])
+                    P_value_pb.append(P_value_perm)
+                P_value_cv.append(P_value_pb)
+            P_value_cv = np.array(P_value_cv) 
+            for u in range(len(tune_params['perturb_range'])):
+                pb_tmp = tune_params['perturb_range'][u]
+                test_params['perturb'] = pb_tmp
+                P_value_cp = P_value_cp = np.array([comb_p_value(P_value_cv[:,u,i], cp=tune_params['cp']) for i in range(tune_params['num_perm'])])
+                err_tmp = len(P_value_cp[P_value_cp < self.alpha]) / len(P_value_cp)
+                if verbose>=1:
+                    print('(tuneHP: pb) Est. Type 1 error: %.3f; perturbation level: %.3f' %(err_tmp, pb_tmp))
+                if err_tmp < self.alpha:
+                    find_pb = 1
+                    if tune_params['ratio_method'] == 'fuse':
                         break
-            if found==0:
-                warnings.warn("No ratio and perturb_level can control the Type 1 error," \
-                    "pls increase the perturb_level and sample size, and inference sample ratio is set as the one minimize the permutation Type 1 Error.")
-                Err1_lst, ratio_lst = np.array(Err1_lst), np.array(ratio_lst)
-                m_opt = int(ratio_lst[np.argmin(Err1_lst)] * len(X))
-                n_opt = len(X) - m_opt
-                perturb_idx_opt = perturb_lst[np.argmin(Err1_lst)]
+        self.test_params = test_params
+        return test_params
 
-            return n_opt, m_opt, perturb_idx_opt
-
-
-    def diff_p_value(self, metric_full, metric_mask, perturb_level=0.):
+    def get_metrics(self, k, X, y, test_params, fit_params, return_data=False):
         """
-        Return p-value for diff btw `metric_full` and `metric_mask` for the one-/two-split test.
+        Return metrics for null/alter models.
 
         Parameters
         ----------
-        metric_full: {array-like} of shape (n_samples)
-            metric for samples based on full model
 
-        metric_mask: {array-like} of shape (n_samples)
-            metric for samples based on mask model
+        X: {array-like} of shape (n_samples, dim_features)
+            Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+             If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+             If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, *X must channel_last image data*.   
+
+        y: {array-like} of shape (n_samples,)
+             Output vector/matrix relative to X.
+
+        test_params: {dict of testing parameters}
+
+            split: {'one-split', 'two-split'}, default='one-split'
+                one-split or two-split test statistic.
+
+            inf_ratio: float, default=0.5
+                A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method.
+
+            min_inf: int, default=0
+                The minimal size for inference sample.
+
+            min_est: int, default=0
+                The minimal size for estimation sample.
+
+            perturb: float, default=1.
+                Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
+
+            cv_num: int, default=5
+                The number of cross-validation to shuffle the estimation/inference samples in testing.
+
+            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'
+                A method to combine p-values obtained from cross-validation.
+    
+        fit_params: {dict of fitting parameters}
+            See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
 
         Returns
         -------
-
         P_value: array of float [0, 1]
-            The p_values for target one-/two-split test.
+            The p_values for target hypothesis testings.
         """
-        perturb_base = metric_full.std()
-        diff_tmp = metric_full - metric_mask + perturb_level * perturb_base * np.random.randn(len(metric_full))
-        Lambda_tmp = np.sqrt(len(diff_tmp)) * ( diff_tmp.std() )**(-1)*( diff_tmp.mean() )
-        p_value_tmp = norm.cdf(Lambda_tmp)
-        return p_value_tmp
 
-    def testing(self, X, y, fit_params, split_params={}, cat_feats=[], cv_num=5, cp='hommel', inf_ratio=None):
+        ## default testing params
+        self.update_test_params(test_params)
+        if test_params['split'] == 'two-split':
+            n = len(X) - 2*int(len(X)*inf_ratio/2)
+        else:
+            n = len(X) - int(len(X)*inf_ratio)
+        ## reset learning rate
+        init_lr_null = deepcopy(self.model_null.optimizer.lr.numpy())
+        init_lr_alter = deepcopy(self.model_alter.optimizer.lr.numpy())
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=42)
+        if test_params['split'] == 'two-split':
+            X_inf, X_inf_alter, y_inf, y_inf_alter = train_test_split(X_test, y_test, train_size=.5, random_state=42)
+        if test_params['split'] == 'one-split':
+            X_inf, X_inf_alter, y_inf, y_inf_alter = X_test.copy(), X_test.copy(), y_test.copy(), y_test.copy()
+        
+        ## initialize the models and learning rates
+        self.reset_model()
+        self.model_null.optimizer.lr.assign(init_lr_null)
+        self.model_alter.optimizer.lr.assign(init_lr_alter)
+        
+        ## fit, predict, and inference in the null model
+        history = self.model_null.fit(X_train, y_train, **fit_params)
+        pred_y = self.model_null.predict(X_inf)
+        metric_null = self.metric(y_inf, pred_y)
+        
+        # fit, predict, and inference in the alternative model
+        Z_train = self.alter_feat(X_train, k)
+        history_alter = self.model_alter.fit(Z_train, y_train, **fit_params)
+        Z_inf = self.alter_feat(X_inf_alter, k)
+        pred_y_alter = self.model_alter.predict(Z_inf)
+        metric_alter = self.metric(y_inf_alter, pred_y_alter)
+
+        if return_data:
+            return X_train, y_train, X_inf, X_inf_alter, y_inf, y_inf_alter, metric_null, metric_alter
+        else:
+            return metric_null, metric_alter
+
+
+    def test_base(self, k, X, y, test_params, fit_params, verbose=0):
         """
         Return p-values for hypothesis testing for inf_feats in class split_test.
 
@@ -564,20 +604,96 @@ class split_test(object):
 
         y: {array-like} of shape (n_samples,)
              Output vector/matrix relative to X.
-        
-        cat_feats: list, default = []
-            The col-index for categorical features; **now it's only work for tabular data**
 
-        fit_params: {dict of fitting parameters}
-            See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
-
-        split_params: {dict of splitting parameters}
+        test_params: {dict of testing parameters}
 
             split: {'one-split', 'two-split'}, default='one-split'
                 one-split or two-split test statistic.
 
-            perturb: float, default=None
+            inf_ratio: float, default=0.5
+                A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method.
+
+            min_inf: int, default=0
+                The minimal size for inference sample.
+
+            min_est: int, default=0
+                The minimal size for estimation sample.
+
+            perturb: float, default=1.
                 Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
+
+            cv_num: int, default=5
+                The number of cross-validation to shuffle the estimation/inference samples in testing.
+
+            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'
+                A method to combine p-values obtained from cross-validation.
+    
+        fit_params: {dict of fitting parameters}
+            See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
+
+        Returns
+        -------
+
+        P_value: array of float [0, 1]
+            The p_values for target hypothesis testings.
+        """
+
+        ## update test/tune params
+        test_params = self.update_test_params(test_params)
+        tune_params = self.update_tune_params(tune_params)
+
+        ## reset learning rate
+        init_lr_null = deepcopy(self.model.optimizer.lr.numpy())
+        init_lr_alter = deepcopy(self.model.optimizer.lr.numpy())
+
+        ## (two-split) determine the splitting ratio for est and inf samples
+        ## testing
+        P_value_cv = []
+        for h in range(cv_num):
+            metric_null, metric_alter = self.get_metrics(k, X, y, test_params, fit_params)
+            ## compute p-value
+            p_value_tmp = self.pb_ttest(metric_null, metric_alter, perturb_level)
+            if verbose >= 2:
+                print('cv: %d; p_value: %.5f; metric_null: %.5f(%.5f); metric_alter: %.5f(%.5f)' 
+                    %(h, p_value_tmp, 
+                        metric_null.mean(), metric_null.std(), 
+                        metric_alter.mean(), metric_alter.std()))
+            P_value_cv.append(p_value_tmp)
+        
+        self.p_values_comb.append(P_value_cv)
+        
+        P_value_cv = np.array(P_value_cv)
+        p_value_cp = comb_p_value(P_value_cv, cp=cp)
+        
+        if verbose >= 1:
+            print('#'*50)
+            if p_value_cp < self.alpha:
+                print('%d-th inf: reject H0 with p_value: %.3f' %(k, p_value_cp))
+            else:
+                print('%d-th inf: accept H0 with p_value: %.3f' %(k, p_value_cp))
+            print('#'*50)
+        return p_value_cp, P_value_cv
+
+
+    def testing(self, X, y, fit_params, tune_params={}, inf_ratio=None, perturb=None, cv_num=5, cp='hommel'):
+        """
+        Return p-values for hypothesis testing for inf_feats in class split_test.
+
+        Parameters
+        ----------
+
+        X: {array-like} of shape (n_samples, dim_features)
+            Instances matrix/tensor, where n_samples in the number of samples and dim_features is the dimension of the features.
+             If X is vectorized feature, ``shape`` should be ``(#Samples, dim of feaures)``
+             If X is image/matrix data, ``shape`` should be ``(#samples, img_rows, img_cols, channel)``, that is, *X must channel_last image data*.   
+
+        y: {array-like} of shape (n_samples,)
+             Output vector/matrix relative to X.
+    
+        fit_params: {dict of fitting parameters}
+            See keras ``fit``: (https://keras.rstudio.com/reference/fit.html), including ``batch_size``, ``epoch``, ``callbacks``, ``validation_split``, ``validation_data``, and so on.
+
+        tune_params: {dict of splitting parameters} when ``inf_ratio=None``
 
             num_perm: int, default=100
                 Number of permutation for determine the splitting ratio.
@@ -589,21 +705,15 @@ class split_test(object):
                 ``if_reverse = 0`` indicates the loop of ``ratio_grid`` starts from smallest one to largest one; ``if_reverse = 1`` indicates the loop of ``ratio_grid`` starts from largest one to smallest one.
 
             perturb_scale: integer, default=5
-                The scale of perturb, and the perturbation grid is generated based on 2**range(-perturb_scale, perturb_scale)*var(losses by full model)
+                The scale of perturb, and the perturbation grid is generated based on ``2**range(-perturb_scale, perturb_scale)*var(losses by full model)``
 
-            min_inf: int, default=0
-                The minimal size for inference sample.
+            ratio_method: {'fuse', 'log-ratio'}, default=`fuse`
+                The adaptive splitting method to determine the optimal estimation/inference ratios. 
 
-            min_est: int, default=0
-                The minimal size for estimation sample.
-
-            ratio_method: {'fuse', 'close'}, default='fuse'
-                The adaptive splitting method to determine the optimal estimation/inference ratios.
-
-            cv_num: int, default=*cv_num*
+            cv_num: int, default=`cv_num`
                 The number of cross-validation to shuffle the estimation/inference samples in adaptive ratio splitting.
 
-            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default = *cp*
+            cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default = `cp`
                 A method to combine p-values obtained from cross-validation. see (https://arxiv.org/pdf/1212.4966.pdf) for more detail.
 
             verbose: {0,1}, default=1
@@ -615,8 +725,8 @@ class split_test(object):
         cp: {'gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'}, default ='hommel'
             A method to combine p-values obtained from cross-validation.
 
-        inf_ratio: float, default=None**
-            A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method ``metric``.
+        inf_ratio: float, default=`None`
+            A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method.
 
         Returns
         -------
@@ -625,142 +735,33 @@ class split_test(object):
             The p_values for target hypothesis testings.
 
         """
-        split_params_default = {'split': 'one-split',
-                                'perturb': None,
-                                'num_perm': 100,
-                                'perturb_scale': 5,
-                                'ratio_grid': [.2, .4, .6, .8],
-                                'if_reverse': 0,
-                                'min_inf': 0,
-                                'min_est': 0,
-                                'ratio_method': 'fuse',
-                                'cv_num': cv_num,
-                                'cp': cp,
-                                'verbose': 1}
-        
-        split_params_default.update(split_params)
-        split_params = split_params_default
-        
+        self.update_cp_dir()
         ## create checkpoints path
         if not os.path.exists(self.cp_path):
             os.mkdir(self.cp_path)
+
+        ## default splitting params
+        test_params=self.update_test_params(test_params)
+        tune_params=self.update_tune_params(tune_params)
+
         ## save initial weights
         self.save_init()
+        ## reset learning rate
         init_lr_full = deepcopy(self.model.optimizer.lr.numpy())
-        init_lr_mask = deepcopy(self.model.optimizer.lr.numpy())
+        init_lr_alter = deepcopy(self.model.optimizer.lr.numpy())
 
-        P_value = []
+        P_value, P_value_cv = [], []
         
         for k in range(len(self.inf_feats)):
             ## initialize the models and learning rates
             self.reset_model()
-            self.model.optimizer.lr.assign(init_lr_full)
-            self.model_mask.optimizer.lr.assign(init_lr_mask)
-            
-            ## (one-split) determine the splitting ratio for est and inf samples
-            if split_params['split'] == 'one-split':
-                if ((inf_ratio == None) or (split_params['perturb'] == None)):
-                    if split_params['ratio_method'] == 'fuse':
-                        n, m, perturb_idx = self.adaRatio(X, y, k, cat_feats=cat_feats, 
-                                                    fit_params=fit_params, split_params=split_params)
-                        perturb_level = 2**perturb_idx
-                        print('%d-th inference; Adaptive data splitting: n: %d; m: %d; perturb: %s' 
-                            %(k, n, m, perturb_level))
-                    
-                    elif split_params['ratio_method'] == 'log-ratio':
-                        root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
-                        inf_ratio = 1 - root / len(X)
-                        if split_params['perturb'] == None:
-                            split_params['ratio_grid'] = [inf_ratio]
-                            n, m, perturb_idx = self.adaRatio(X, y, k, cat_feats=cat_feats, 
-                                                    fit_params=fit_params, split_params=split_params)
-                            perturb_level = 2**perturb_idx
-                        else:
-                            perturb_idx = split_params['perturb']
-                            perturb_level = 2**perturb_idx
-                            m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
-                        print('%d-th inference; log ratio data splitting: n: %d; m: %d; perturb: %s' 
-                            %(k, n, m, perturb_level))
-                    else:
-                        raise Exception("inf ratio method must be 'fuse' or 'log-ratio' if inf_ratio is not given!")
-                else:
-                    m, n = int(inf_ratio * len(X)), len(X) - int(inf_ratio * len(X))
-                    perturb_idx = split_params['perturb']
-                    perturb_level = 2**perturb_idx
-                    print('%d-th inference; fix data splitting: n: %d; m: %d' %(k, n, m))
-
-            ## (two-split) determine the splitting ratio for est and inf samples
-            elif split_params['split'] == 'two-split':
-                perturb_level = 0.
-                if inf_ratio == None:
-                    if split_params['ratio_method'] == 'fuse':
-                        n, m = self.adaRatio(X, y, k, cat_feats=cat_feats, 
-                                            fit_params=fit_params, split_params=split_params)
-                        print('%d-th inference; Adaptive data splitting: n: %d; m: %d' %(k, n, m))
-                    elif split_params['ratio_method'] == 'log-ratio':
-                        root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
-                        inf_ratio = 1 - root / len(X)
-                        m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
-                        print('%d-th inference; log-ratio data splitting: n: %d; m: %d' %(k, n, m))
-                    else:
-                        raise Exception("inf ratio method must be 'fuse' or 'log-ratio' if inf_ratio is not given!")
-                else:
-                    m, n = int(inf_ratio * len(X)/2)*2, len(X) - int(inf_ratio * len(X)/2)*2
-            else:
-                raise Exception("split method must be 'one-split' or 'two-split'!")
-
-            ## testing
-            P_value_cv = []
-            for h in range(cv_num):
-                X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n, random_state=h)
-                if split_params['split'] == 'two-split':
-                    X_inf, X_inf_mask, y_inf, y_inf_mask = train_test_split(X_test, y_test, train_size=.5, random_state=42)
-                if split_params['split'] == 'one-split':
-                    X_inf, X_inf_mask, y_inf, y_inf_mask = X_test.copy(), X_test.copy(), y_test.copy(), y_test.copy()
-                
-                self.reset_model()
-                self.model.optimizer.lr.assign(init_lr_full)
-                self.model_mask.optimizer.lr.assign(init_lr_mask)
-                
-                ## fit, predict, and inference in full model
-                history = self.model.fit(X_train, y_train, **fit_params)
-                pred_y = self.model.predict(X_inf)
-                metric_full = self.metric(y_inf, pred_y)
-                
-                # fit, predict, and inference in mask model
-                Z_train = self.dual_feat(X_train, cat_feats, k)
-                history_mask = self.model_mask.fit(Z_train, y_train, **fit_params)
-                Z_inf = self.dual_feat(X_inf_mask, cat_feats, k)
-                pred_y_mask = self.model_mask.predict(Z_inf)
-                metric_mask = self.metric(y_inf_mask, pred_y_mask)
-                
-                ## compute p-value
-                p_value_tmp = self.diff_p_value(metric_full, metric_mask, perturb_level)
-                print('cv: %d; p_value: %.5f; metric: %.5f(%.5f); metric_mask: %.5f(%.5f)' 
-                    %(h, p_value_tmp, 
-                        metric_full.mean(), metric_full.std(), 
-                        metric_mask.mean(), metric_mask.std()))
-
-                P_value_cv.append(p_value_tmp)
-            
-            self.p_values_comb.append(P_value_cv)
-            
-            P_value_cv = np.array(P_value_cv)
-            p_value_mean = comb_p_value(P_value_cv, cp=cp)
-            
-
-            print('#'*50)
-
-            if p_value_mean < self.alpha:
-                print('%d-th inf: reject H0 with p_value: %.3f' %(k, p_value_mean))
-            else:
-                print('%d-th inf: accept H0 with p_value: %.3f' %(k, p_value_mean))
-
-            print('#'*50)
-
-            P_value.append(p_value_mean)
+            test_params = self.tuneHP(k, X, y, test_params, fit_params, tune_params)
+            p_value_cp_tmp, p_value_cv_tmp = self.test_base(k, X, y, test_params, fit_params)
+            P_value.append(p_value_cp_tmp)
+            P_value_cv.append(list(p_value_cv_tmp))
         # return P_value, fit_err, P_value_cv
-        self.p_values = P_value
+        self.p_values = np.array(P_value)
+        self.p_values_comb = np.array(P_value_cv)
         return P_value
 
     def visual(self, X, y, plt_params={'cmap': 'RdBu', 'alpha':0.6}, plt_mask_params={'cmap': 'RdBu', 'alpha':0.6}):
@@ -910,7 +911,6 @@ class perm_test(object):
                 if hasattr(layer, 'bias_initializer'):
                     layer.bias.initializer.run(session=session)
 
-    ## can be extent to @abstractmethod
     def mask_cov(self, X, k=0):
         Z = X.copy()
         if type(self.inf_feats[k]) is list:
@@ -1065,14 +1065,14 @@ class Hperm_test(object):
         Save the initialization for the network model under class HPT
         """
         self.model.save_weights(self.cp_path+'/model_init.h5')
-        # self.model_mask.save_weights(self.cp_path+'/model_mask_init.h5')
+        # self.model_alter.save_weights(self.cp_path+'/model_alter_init.h5')
 
     def reset_model(self):
         """
         Reset the full and mask network models under class HPT
         """
         self.model.load_weights(self.cp_path+'/model_init.h5')
-        # self.model_mask.load_weights(self.cp_path+'/model_mask_init.h5')
+        # self.model_alter.load_weights(self.cp_path+'/model_alter_init.h5')
 
     # def reset_model(self):
     #   if int(tf.__version__[0]) == 2:
