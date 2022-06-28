@@ -345,8 +345,8 @@ class split_test(object):
         p_value_tmp = norm.cdf(Lambda_tmp)
         return p_value_tmp
 
-    def perm_p_value(self, k, X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_level=0., num_perm=100):
-        P_value_perm = []
+    def perm_p_value(self, k, X_inf, X_inf_alter, y_inf, y_inf_alter, return_metric=False, perturb_level=0., num_perm=100):
+        P_value_perm, metric_null_perm, metric_alter_perm = [], [], []
         for j in range(num_perm):
             ## generate perm datasets for the null/alter models
             X_inf_perm = X_inf.copy()
@@ -354,17 +354,26 @@ class split_test(object):
             X_inf_alter_perm = X_inf_alter.copy()
             X_inf_alter_perm = self.perm_cov(X_inf_alter_perm, k)
             ## predict the outcome by null/alter models
-            pred_y = self.model_null.predict(X_inf_perm)
-            pred_y_alter = self.model_null.predict(X_inf_alter_perm)
+            # pred_y = self.model_null.predict(X_inf_perm)
+            # pred_y_alter = self.model_alter.predict(X_inf_alter_perm)
+            ## https://github.com/tensorflow/tensorflow/issues/40261
+            pred_y = self.model_null(X_inf_perm, training=False)
+            pred_y_alter = self.model_alter(X_inf_alter_perm, training=False)
             ## compute the metrics
             metric_null_tmp = self.metric(y_inf, pred_y)
             metric_alter_tmp = self.metric(y_inf_alter, pred_y_alter)
             ## compute p-value
             p_value_tmp = self.pb_ttest(metric_null_tmp, metric_alter_tmp, perturb_level=perturb_level)
             P_value_perm.append(p_value_tmp)
-        return P_value_perm
+            if return_metric:
+                metric_null_perm.append(metric_null_tmp)
+                metric_alter_perm.append(metric_alter_tmp)
+        if return_metric:
+            P_value_perm, np.array(metric_null_perm), np.array(metric_alter_perm)
+        else:
+            return P_value_perm
         
-    def tuneHP(self, k, X, y, test_params, fit_params, tune_params):
+    def tuneHP(self, k, X, y, fit_params, test_params, tune_params):
         """
         Return a data-adaptive splitting ratio and perturbation level.
 
@@ -450,7 +459,7 @@ class split_test(object):
                 for h in range(tune_params['cv_num']):
                     ## train models via CV
                     self.reset_model()
-                    _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, test_params, fit_params, return_data=True)
+                    _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, fit_params, test_params, return_data=True)
                     if test_params['split'] == "two-split":
                         P_value_perm = self.perm_p_value(k, X_inf, X_inf_alter, y_inf, y_inf_alter, test_params['perturb'], tune_params['num_perm'])
                     else:
@@ -487,7 +496,7 @@ class split_test(object):
             P_value_cv = []
             for h in range(tune_params['cv_num']):
                 self.reset_model()
-                _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, test_params, fit_params, return_data=True)
+                _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, fit_params, test_params, return_data=True)
                 P_value_pb = []
                 for perturb_tmp in tune_params['perturb_range']:
                     P_value_perm = self.perm_p_value(k, X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_tmp, tune_params['num_perm'])
@@ -510,7 +519,7 @@ class split_test(object):
         self.test_params = test_params
         return test_params
 
-    def get_metrics(self, k, X, y, test_params, fit_params, return_data=False):
+    def get_metrics(self, k, X, y, fit_params, test_params, return_data=False):
         """
         Return metrics for null/alter models.
 
@@ -573,14 +582,14 @@ class split_test(object):
         
         ## fit, predict, and inference in the null model
         history = self.model_null.fit(X_train, y_train, **fit_params)
-        pred_y = self.model_null.predict(X_inf)
+        pred_y = self.model_null(X_inf, training=False)
         metric_null = self.metric(y_inf, pred_y)
         
         # fit, predict, and inference in the alternative model
         Z_train = self.alter_feat(X_train, k)
         history_alter = self.model_alter.fit(Z_train, y_train, **fit_params)
         Z_inf = self.alter_feat(X_inf_alter, k)
-        pred_y_alter = self.model_alter.predict(Z_inf)
+        pred_y_alter = self.model_alter(Z_inf, training=False)
         metric_alter = self.metric(y_inf_alter, pred_y_alter)
 
         if return_data:
@@ -589,7 +598,7 @@ class split_test(object):
             return metric_null, metric_alter
 
 
-    def test_base(self, k, X, y, test_params, fit_params, verbose=0):
+    def test_base(self, k, X, y, fit_params, test_params, verbose=0):
         """
         Return p-values for hypothesis testing for inf_feats in class split_test.
 
@@ -637,9 +646,8 @@ class split_test(object):
             The p_values for target hypothesis testings.
         """
 
-        ## update test/tune params
+        ## update test params
         test_params = self.update_test_params(test_params)
-        tune_params = self.update_tune_params(tune_params)
 
         ## reset learning rate
         init_lr_null = deepcopy(self.model_null.optimizer.lr.numpy())
@@ -648,12 +656,12 @@ class split_test(object):
         ## (two-split) determine the splitting ratio for est and inf samples
         ## testing
         P_value_cv = []
-        for h in range(cv_num):
-            metric_null, metric_alter = self.get_metrics(k, X, y, test_params, fit_params)
+        for h in range(test_params['cv_num']):
+            metric_null, metric_alter = self.get_metrics(k, X, y, fit_params, test_params)
             ## compute p-value
-            p_value_tmp = self.pb_ttest(metric_null, metric_alter, perturb_level)
+            p_value_tmp = self.pb_ttest(metric_null, metric_alter, test_params['perturb'])
             if verbose >= 2:
-                print('cv: %d; p_value: %.5f; metric_null: %.5f(%.5f); metric_alter: %.5f(%.5f)' 
+                print('cv: %d; p_value: %.5f; loss_null: %.5f(%.5f); loss_alter: %.5f(%.5f)' 
                     %(h, p_value_tmp, 
                         metric_null.mean(), metric_null.std(), 
                         metric_alter.mean(), metric_alter.std()))
@@ -662,19 +670,16 @@ class split_test(object):
         self.p_values_comb.append(P_value_cv)
         
         P_value_cv = np.array(P_value_cv)
-        p_value_cp = comb_p_value(P_value_cv, cp=cp)
+        p_value_cp = comb_p_value(P_value_cv, cp=test_params['cp'])
         
         if verbose >= 1:
-            print('#'*50)
             if p_value_cp < self.alpha:
-                print('%d-th inf: reject H0 with p_value: %.3f' %(k, p_value_cp))
+                print(' \U0001F9EA'+' %d-th Hypothesis: reject H0 with p_value: %.3f' %(k, p_value_cp))
             else:
-                print('%d-th inf: accept H0 with p_value: %.3f' %(k, p_value_cp))
-            print('#'*50)
+                print(' \U0001F9EA'+' %d-th Hypothesis: accept H0 with p_value: %.3f' %(k, p_value_cp))
         return p_value_cp, P_value_cv
 
-
-    def testing(self, X, y, fit_params, tune_params={}, inf_ratio=None, perturb=None, cv_num=5, cp='hommel'):
+    def testing(self, X, y, fit_params, test_params={}, tune_params={}):
         """
         Return p-values for hypothesis testing for inf_feats in class split_test.
 
@@ -737,7 +742,7 @@ class split_test(object):
         self.update_cp_dir()
         ## create checkpoints path
         if not os.path.exists(self.cp_path):
-            os.mkdir(self.cp_path)
+            os.makedirs(self.cp_path)
 
         ## default splitting params
         test_params=self.update_test_params(test_params)
@@ -752,10 +757,11 @@ class split_test(object):
         P_value, P_value_cv = [], []
         
         for k in range(len(self.inf_feats)):
+            print(" %s for %d-th Hypothesis ".center(70, '=') %(test_params['split'], k))
             ## initialize the models and learning rates
             self.reset_model()
-            test_params = self.tuneHP(k, X, y, test_params, fit_params, tune_params)
-            p_value_cp_tmp, p_value_cv_tmp = self.test_base(k, X, y, test_params, fit_params)
+            test_params = self.tuneHP(k, X, y, fit_params, test_params, tune_params)
+            p_value_cp_tmp, p_value_cv_tmp = self.test_base(k, X, y, fit_params, test_params, verbose=test_params['verbose'])
             P_value.append(p_value_cp_tmp)
             P_value_cv.append(list(p_value_cv_tmp))
         # return P_value, fit_err, P_value_cv
