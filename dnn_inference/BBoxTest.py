@@ -67,13 +67,13 @@ class split_test(object):
     visual
     """
 
-    def __init__(self, inf_feats, model_null, model_alter, change='perm', alpha=.05, verbose=0, eva_metric='zero-one', cp_path='./saved'):
+    def __init__(self, inf_feats, model_null, model_alter, alpha=.05, verbose=0, eva_metric='zero-one', cp_path='./saved'):
         self.name = 'split_test'
         self.inf_feats = inf_feats
         self.model_null = model_null
         self.model_alter = model_alter
         self.alpha = alpha
-        self.change = change
+        self.change = 'perm'
         self.eva_metric = eva_metric
         self.p_values = []
         self.p_values_comb = []
@@ -81,14 +81,14 @@ class split_test(object):
         self.test_params = {}
         self.tune_params = {}
 
-    def update_cp_dir():
+    def update_cp_dir(self):
         """
         Update checkpoint dir by using datetime
         """
         start_time = datetime.datetime.now().strftime('%m-%d_%H-%M')
         self.cp_path = os.path.join(self.cp_path, self.name, start_time)
 
-    def update_test_params(test_params):
+    def update_test_params(self, test_params):
         """
         Update test params
         """
@@ -121,7 +121,7 @@ class split_test(object):
         self.test_params = test_params
         return test_params
 
-    def update_tune_params(tune_params):
+    def update_tune_params(self, tune_params):
         """
         Update tune params
         """
@@ -129,13 +129,14 @@ class split_test(object):
                                 'ratio_grid': [.2, .4, .6, .8],
                                 'if_reverse': 0,
                                 'perturb_range': 2.**np.arange(-5,5),
-                                'ratio_method': 'fuse',
+                                'tune_ratio_method': 'fuse',
+                                'tune_pb_method': 'fuse',
                                 'cv_num': 1,
                                 'cp': 'hommel',
                                 'verbose': 1}
         ## update tune params
         tune_params_default.update(tune_params)
-        tune_params = test_params_default
+        tune_params = tune_params_default
 
         tune_params['ratio_grid'].sort()
         tune_params['perturb_range'].sort()
@@ -144,10 +145,11 @@ class split_test(object):
         
         ## check everything
         assert isinstance(tune_params['num_perm'], int), "'num_perm' must be int."
-        assert (min(tune_params['ratio_grid']) > 0.0) and (max(tune_params['ratio_grid']) > 1.0), "'ratio_grid' in `tune_params` must in (0,1)."
+        assert (min(tune_params['ratio_grid']) > 0.0) and (max(tune_params['ratio_grid']) < 1.0), "'ratio_grid' in `tune_params` must in (0,1)."
         assert tune_params['if_reverse'] in [0, 1], "`if_reverse` in `tune_params` must be 0 or 1."
         assert (min(tune_params['perturb_range']) > 0.0), "'perturb_range' in `tune_params` must in nonnegative."
-        assert tune_params['ratio_method'] in ['log-ratio', 'fuse'], "`ratio_method` in `tune_params` must be `log-ratio` or `fuse`."
+        assert tune_params['tune_ratio_method'] in ['log-ratio', 'fuse'], "`tune_ratio_method` in `tune_params` must be `log-ratio` or `fuse`."
+        assert tune_params['tune_pb_method'] in ['fuse'], "`tune_pb_method` in `tune_params` must be `fuse`."
         assert tune_params['cp'] in ['gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy'], "combing method `cp` in `tune_params` must in ['gmean', 'min', 'hmean', 'Q1', 'hommel', 'cauchy']."
         assert isinstance(tune_params['cv_num'], int), "'cv_num' must be int."
         assert isinstance(tune_params['verbose'], int), "'verbose' must be int."
@@ -187,24 +189,28 @@ class split_test(object):
         """
         Save the initialization for full and mask network models under class Dnn
         """
-        self.model.built = True
-        self.model_alter.built = True
-
-        # self.model.save_weights(self.cp_path+'/model_init.h5')
-        # self.model_alter.save_weights(self.cp_path+'/model_alter_init.h5')
-        self.model.save(self.cp_path+'/model_full_init')
-        self.model_alter.save(self.cp_path+'/model_alter_init')
+        if os.path.exists(self.cp_path+'/model_null_init'):
+            pass
+        else:
+            self.model_null.built = True
+            self.model_alter.built = True
+            # self.model.save_weights(self.cp_path+'/model_null_init.h5')
+            # self.model_alter.save_weights(self.cp_path+'/model_alter_init.h5')
+            self.model_null.save(self.cp_path+'/model_null_init')
+            self.model_alter.save(self.cp_path+'/model_alter_init')
 
     def reset_model(self):
         """
         Reset the full and mask network models under class Dnn
         """
-        self.model.built = True
+        if not os.path.exists(self.cp_path+'/model_null_init'):
+            self.update_cp_dir()
+            self.save_init()
+        self.model_null.built = True
         self.model_alter.built = True
-
-        # self.model.load_weights(self.cp_path+'/model_init.h5')
+        # self.model.load_weights(self.cp_path+'/model_null_init.h5')
         # self.model_alter.load_weights(self.cp_path+'/model_alter_init.h5')
-        self.model = load_model(self.cp_path+'/model_full_init')
+        self.model_null = load_model(self.cp_path+'/model_null_init')
         self.model_alter = load_model(self.cp_path+'/model_alter_init')
 
     def reload_model(self, path_null, path_alter):
@@ -213,9 +219,9 @@ class split_test(object):
         """
         # path_tmp = self.cp_path+'/model'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
         # mask_path_tmp = self.cp_path+'/model_alter'+'_inf'+str(k)+'_cv'+str(h)+'.h5'
-        self.model.save_weights(path_null)
+        self.model_null.save_weights(path_null)
         self.model_alter.save_weights(path_alter)
-        self.model.load_weights(path_null)
+        self.model_null.load_weights(path_null)
         self.model_alter.load_weights(path_alter)
 
     def alter_feat(self, X, k=0, cat_feats=[]):
@@ -258,7 +264,7 @@ class split_test(object):
         Z = X.copy()
         n_sample = len(Z)
 
-        if len(self.inf_feats[k].shape) > 1:
+        if hasattr(self.inf_feats[k][0], "__len__"):
             ## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
             if len(cat_feats):
                 warnings.warn("cat_feats is ignored. cat_feats only works for tabular data, whereas a image dataset is given.")
@@ -287,7 +293,7 @@ class split_test(object):
          k-th hypothesized features in inf_feats
         """
         Z = X.copy()
-        if len(self.inf_feats[k].shape) > 1:
+        if hasattr(self.inf_feats[k][0], "__len__"):
             ## for channels_last image data: shape should be (#samples, img_rows, img_cols, channel)
             Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], :]= np.random.permutation(Z[:,self.inf_feats[k][0][:,None], self.inf_feats[k][1], :])
         else:
@@ -309,8 +315,6 @@ class split_test(object):
         Z = X.copy()
         Z[:,self.inf_feats[k]] = np.random.randn(len(X), len(self.inf_feats[k]))
         return Z
-
-
 
 
     def pb_ttest(self, metric_null, metric_alter, perturb_level=0.):
@@ -341,7 +345,7 @@ class split_test(object):
         p_value_tmp = norm.cdf(Lambda_tmp)
         return p_value_tmp
 
-    def perm_p_value(self, X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_level=0., num_perm=100):
+    def perm_p_value(self, k, X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_level=0., num_perm=100):
         P_value_perm = []
         for j in range(num_perm):
             ## generate perm datasets for the null/alter models
@@ -360,8 +364,7 @@ class split_test(object):
             P_value_perm.append(p_value_tmp)
         return P_value_perm
         
-
-    def tuneHP(self, k, X, y, test_params, fit_params, tune_params, verbose=1):
+    def tuneHP(self, k, X, y, test_params, fit_params, tune_params):
         """
         Return a data-adaptive splitting ratio and perturbation level.
 
@@ -396,7 +399,7 @@ class split_test(object):
             perturb_scale: integer, default=5
                 The scale of perturb, and the perturbation grid is generated based on 2**range(-perturb_scale, perturb_scale)*var(losses by full model)
 
-            ratio_method: {'fuse', 'log-ratio'}, default='fuse'
+            tune_ratio_method: {'fuse', 'log-ratio'}, default='fuse'
                 The adaptive splitting method to determine the optimal estimation/inference ratios.
 
             cv_num: int, default=1
@@ -425,13 +428,13 @@ class split_test(object):
         perturb_opt: float
             A reasonable perturbation level.
         """
-
+        self.save_init()
         ## default testing params
         tune_params = self.update_tune_params(tune_params)
         test_params = self.update_test_params(test_params)
         find_ratio, find_pb = 0, 0
 
-        if tune_params['ratio_method'] == 'log-ratio':
+        if tune_params['tune_ratio_method'] == 'log-ratio':
             root, info = brentq(size_fun, 3., len(X), args=(len(X), 2000.), full_output=True)
             test_params['inf_ratio'] = 1. - root / len(X)
 
@@ -449,9 +452,9 @@ class split_test(object):
                     self.reset_model()
                     _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, test_params, fit_params, return_data=True)
                     if test_params['split'] == "two-split":
-                        P_value_perm = self.perm_p_value(X_inf, X_inf_alter, y_inf, y_inf_alter, test_params['perturb'], tune_params['num_perm'])
+                        P_value_perm = self.perm_p_value(k, X_inf, X_inf_alter, y_inf, y_inf_alter, test_params['perturb'], tune_params['num_perm'])
                     else:
-                        P_value_perm = self.perm_p_value(X_inf, X_inf_alter, y_inf, y_inf_alter, 1., tune_params['num_perm'])
+                        P_value_perm = self.perm_p_value(k, X_inf, X_inf_alter, y_inf, y_inf_alter, 1., tune_params['num_perm'])
                     P_value_cv.append(P_value_perm)
                 P_value_cv = np.array(P_value_cv)
                 P_value_cp = np.array([comb_p_value(P_value_cv[:,i], cp=tune_params['cp']) for i in range(tune_params['num_perm'])])
@@ -460,12 +463,14 @@ class split_test(object):
                 err_lst.append(err_tmp)
                 ratio_lst.append(ratio_tmp)
                 ## print the estimated Type 1 error
-                if verbose>=1:
+                if tune_params['verbose']>=2:
                     print('(tuneHP: ratio) Est. Type 1 error: %.3f; inf sample ratio: %.3f' %(err_tmp, ratio_tmp))
                 ## if the Type I error is under control, early stop
                 if err_tmp < self.alpha:
                     find_ratio = 1
-                    if tune_params['ratio_method'] == 'fuse':
+                    if tune_params['tune_ratio_method'] == 'fuse':
+                        if tune_params['verbose']>=1:
+                            print('(tuneHP: ratio) Done with inf sample ratio: %.3f' %(ratio_tmp))
                         break
             
             ## if we can not control the estimated Type I error
@@ -483,10 +488,9 @@ class split_test(object):
             for h in range(tune_params['cv_num']):
                 self.reset_model()
                 _, _, X_inf, X_inf_alter, y_inf, y_inf_alter, _, _ = self.get_metrics(k, X_perm, y, test_params, fit_params, return_data=True)
-                
                 P_value_pb = []
                 for perturb_tmp in tune_params['perturb_range']:
-                    P_value_perm = self.perm_p_value(X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_tmp, tune_params['num_perm'])
+                    P_value_perm = self.perm_p_value(k, X_inf, X_inf_alter, y_inf, y_inf_alter, perturb_tmp, tune_params['num_perm'])
                     P_value_pb.append(P_value_perm)
                 P_value_cv.append(P_value_pb)
             P_value_cv = np.array(P_value_cv) 
@@ -495,11 +499,13 @@ class split_test(object):
                 test_params['perturb'] = pb_tmp
                 P_value_cp = P_value_cp = np.array([comb_p_value(P_value_cv[:,u,i], cp=tune_params['cp']) for i in range(tune_params['num_perm'])])
                 err_tmp = len(P_value_cp[P_value_cp < self.alpha]) / len(P_value_cp)
-                if verbose>=1:
+                if tune_params['verbose']>=2:
                     print('(tuneHP: pb) Est. Type 1 error: %.3f; perturbation level: %.3f' %(err_tmp, pb_tmp))
                 if err_tmp < self.alpha:
                     find_pb = 1
-                    if tune_params['ratio_method'] == 'fuse':
+                    if tune_params['tune_pb_method'] == 'fuse':
+                        if tune_params['verbose']>=1:
+                            print('(tuneHP: pb) Done with inf sample ratio: %.3f' %(pb_tmp))
                         break
         self.test_params = test_params
         return test_params
@@ -527,12 +533,6 @@ class split_test(object):
             inf_ratio: float, default=0.5
                 A pre-specific inference sample ratio, if ``est_size=None``, then it is determined by adaptive splitting method.
 
-            min_inf: int, default=0
-                The minimal size for inference sample.
-
-            min_est: int, default=0
-                The minimal size for estimation sample.
-
             perturb: float, default=1.
                 Perturb level for the one-split test, if ``perturb = None``, then the perturb level is determined by adaptive tunning.
 
@@ -550,13 +550,12 @@ class split_test(object):
         P_value: array of float [0, 1]
             The p_values for target hypothesis testings.
         """
-
         ## default testing params
         self.update_test_params(test_params)
         if test_params['split'] == 'two-split':
-            n = len(X) - 2*int(len(X)*inf_ratio/2)
+            n = len(X) - 2*int(len(X)*test_params['inf_ratio']/2)
         else:
-            n = len(X) - int(len(X)*inf_ratio)
+            n = len(X) - int(len(X)*test_params['inf_ratio'])
         ## reset learning rate
         init_lr_null = deepcopy(self.model_null.optimizer.lr.numpy())
         init_lr_alter = deepcopy(self.model_alter.optimizer.lr.numpy())
@@ -643,8 +642,8 @@ class split_test(object):
         tune_params = self.update_tune_params(tune_params)
 
         ## reset learning rate
-        init_lr_null = deepcopy(self.model.optimizer.lr.numpy())
-        init_lr_alter = deepcopy(self.model.optimizer.lr.numpy())
+        init_lr_null = deepcopy(self.model_null.optimizer.lr.numpy())
+        init_lr_alter = deepcopy(self.model_alter.optimizer.lr.numpy())
 
         ## (two-split) determine the splitting ratio for est and inf samples
         ## testing
@@ -707,7 +706,7 @@ class split_test(object):
             perturb_scale: integer, default=5
                 The scale of perturb, and the perturbation grid is generated based on ``2**range(-perturb_scale, perturb_scale)*var(losses by full model)``
 
-            ratio_method: {'fuse', 'log-ratio'}, default=`fuse`
+            tune_ratio_method: {'fuse', 'log-ratio'}, default=`fuse`
                 The adaptive splitting method to determine the optimal estimation/inference ratios. 
 
             cv_num: int, default=`cv_num`
@@ -747,8 +746,8 @@ class split_test(object):
         ## save initial weights
         self.save_init()
         ## reset learning rate
-        init_lr_full = deepcopy(self.model.optimizer.lr.numpy())
-        init_lr_alter = deepcopy(self.model.optimizer.lr.numpy())
+        init_lr_full = deepcopy(self.model_null.optimizer.lr.numpy())
+        init_lr_alter = deepcopy(self.model_alter.optimizer.lr.numpy())
 
         P_value, P_value_cv = [], []
         
