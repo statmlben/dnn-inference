@@ -4,19 +4,11 @@ Installation
 Dependencies
 ------------
 
-``dnn-inference`` requires:
+``dnn-inference`` requires: **Python>=3.8** + [pip libs](./requirements.txt)
 
-.. list-table::
-   :widths: 30 30 30 30 30 30
-   :header-rows: 0
+.. code:: bash
 
-   * - **Python>=3.8**
-     - **numpy**
-     - **sklearn**
-     - **Tensorflow>=2.0**
-     - **scipy**
-     - **Keras**
-
+  pip install -r requirements.txt
 
 User installation
 -----------------

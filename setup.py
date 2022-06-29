@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages, Extension
+from pip.req import parse_requirements
 
 with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()

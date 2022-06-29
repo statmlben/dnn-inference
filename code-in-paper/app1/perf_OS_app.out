@@ -1,0 +1,82 @@
+Using TensorFlow backend.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+WARNING: Logging before flag parsing goes to stderr.
+W0513 18:40:57.863636 140257881335616 deprecation_wrapper.py:119] From
+
+W0513 18:40:58.362352 140257881335616 deprecation.py:323] From
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0513 18:40:58.666746 140257881335616 deprecation_wrapper.py:119] From
+
+Train on 5700 samples, validate on 1426 sample
+
+Train on 5700 samples, validate on 1426 sample
+
+Type 1 error: 0.053; p_value: 0.506, inference sample ratio: 0.500, perturb: 0.05
+Train on 6840 samples, validate on 1711 sample
+Train on 6840 samples, validate on 1711 sample
+Type 1 error: 0.059; p_value: 0.518, inference sample ratio: 0.400, perturb: 0.05
+Train on 7980 samples, validate on 1996 sample
+Train on 7980 samples, validate on 1996 sample
+Type 1 error: 0.052; p_value: 0.504, inference sample ratio: 0.300, perturb: 0.05
+Train on 5700 samples, validate on 1426 sample
+
+Train on 5700 samples, validate on 1426 sample
+
+Type 1 error: 0.049; p_value: 0.494, inference sample ratio: 0.500, perturb: 0.1
+Train on 6840 samples, validate on 1711 sample
+Train on 6840 samples, validate on 1711 sample
+Type 1 error: 0.047; p_value: 0.483, inference sample ratio: 0.400, perturb: 0.1
+Train on 7980 samples, validate on 1996 sample
+Train on 7980 samples, validate on 1996 sample
+Type 1 error: 0.044; p_value: 0.509, inference sample ratio: 0.300, perturb: 0.1
+0-th inference; Adaptive data splitting: n: 7126; m: 7125; perturb: 0.1
+Train on 5700 samples, validate on 1426 sample
+
+Train on 5700 samples, validate on 1426 sample
+
+diff: 0.007(0.141); metric: 0.010(0.097); metric_mask: 0.003(0.052)
+accept H0 with p_value: 1.000
+Train on 5700 samples, validate on 1426 sample
+
+Train on 5700 samples, validate on 1426 sample
+
+Type 1 error: 0.046; p_value: 0.489, inference sample ratio: 0.500, perturb: 0.05
+Train on 6840 samples, validate on 1711 sample
+Train on 6840 samples, validate on 1711 sample
+Type 1 error: 0.048; p_value: 0.506, inference sample ratio: 0.400, perturb: 0.05
+Train on 7980 samples, validate on 1996 sample
+Train on 7980 samples, validate on 1996 sample
+Type 1 error: 0.043; p_value: 0.513, inference sample ratio: 0.300, perturb: 0.05
+1-th inference; Adaptive data splitting: n: 8551; m: 5700; perturb: 0.05
+Train on 6840 samples, validate on 1711 sample
+Train on 6840 samples, validate on 1711 sample
+diff: 0.001(0.079); metric: 0.004(0.059); metric_mask: 0.004(0.065)
+accept H0 with p_value: 0.790
+Train on 5700 samples, validate on 1426 sample
+
+Train on 5700 samples, validate on 1426 sample
+
+Type 1 error: 0.038; p_value: 0.513, inference sample ratio: 0.500, perturb: 0.05
+Train on 6840 samples, validate on 1711 sample
+Train on 6840 samples, validate on 1711 sample
+Type 1 error: 0.054; p_value: 0.507, inference sample ratio: 0.400, perturb: 0.05
+Train on 7980 samples, validate on 1996 sample
+Train on 7980 samples, validate on 1996 sample
+Type 1 error: 0.055; p_value: 0.490, inference sample ratio: 0.300, perturb: 0.05
+2-th inference; Adaptive data splitting: n: 7126; m: 7125; perturb: 0.05
+Train on 5700 samples, validate on 1426 sample
+diff: -0.026(0.190); metric: 0.007(0.086); metric_mask: 0.034(0.181)
+reject H0 with p_value: 0.000
+testing time: 3797.317
