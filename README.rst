@@ -1,14 +1,11 @@
 .. dnn-inference documentation master file
 
-🔬 dnn-inference: significance tests of feature relevance for a black-box learner
-================
+🔬 dnn-inference: significance tests of feature relevance for a black-box model
+===============================================================================
 
 .. -*- mode: rst -*-
 
-|dAI|_ |PyPi|_ |Keras|_ |MIT|_ |Python3|_ |tensorflow|_ |downloads|_ |downloads_month|_
-
-.. |dAI| image:: https://img.shields.io/badge/Powered%20by-cuhk%40dAI-purple.svg
-.. _dAI: https://www.bendai.org
+|PyPi|_ |Keras|_ |MIT|_ |Python3|_ |tensorflow|_ |downloads|_ |downloads_month|_
 
 .. |PyPi| image:: https://badge.fury.io/py/dnn-inference.svg
 .. _PyPi: https://pypi.org/project/dnn-inference/
@@ -68,6 +65,28 @@ Please check more details in our paper `arXiv:2103.04985 <https://arxiv.org/abs/
 - Asymptotically Type I error control and power consistency.
 
 
+Installation
+============
+
+Dependencies
+------------
+
+``dnn-inference`` requires: **Python>=3.8** + [pip libs](./requirements.txt)
+
+.. code:: bash
+
+  pip install -r requirements.txt
+
+User installation
+-----------------
+
+Install ``dnn-inference`` using ``pip``
+
+.. code:: bash
+
+	pip install dnn_inference
+	pip install git+https://github.com/statmlben/dnn-inference.git
+
 Reference
 ---------
 **If you use this code please star the repository and cite the following paper:**
@@ -83,20 +102,17 @@ Reference
          primaryClass={stat.ML}
    }
 
-📒 Contents
------------
+Notebook
+========
+
+
+MNIST dataset :download:`pdf <./docs/nb/MNIST_demo.ipynb>`
+
+Boston Housing Dataset
+----------------------
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   ./docs/source/installation
-   ./docs/source/example
-   ./docs/source/api
+    ./nb/Boston_house_prices.ipynb
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
-   
-.. quickstart
