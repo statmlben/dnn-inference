@@ -61,7 +61,7 @@ class split_test(object):
 
     Methods
     -------
-    adaRatio
+    tuneHP
     alter_feat
     testing
     visual
@@ -171,9 +171,9 @@ class split_test(object):
 
         """
         if self.eva_metric == 'mse':
-            metric_tmp = ((y_true - y_pred)**2).flatten()
+            metric_tmp = np.array((y_true - y_pred)**2).flatten()
         elif self.eva_metric == 'mae':
-            metric_tmp = abs(y_true - y_pred).flatten()
+            metric_tmp = np.array(abs(y_true - y_pred)).flatten()
         elif self.eva_metric == 'zero-one':
             label_pred = np.argmax(y_pred, 1)
             label_true = np.argmax(y_true, 1)
@@ -602,7 +602,7 @@ class split_test(object):
 
     def test_base(self, k, X, y, fit_params, test_params, verbose=0):
         """
-        Return p-values for hypothesis testing for inf_feats in class split_test.
+        Return p-values for hypothesis testing for inf_feats in class split_test when `inf_ratio` and `perturb` are given.
 
         Parameters
         ----------
@@ -1055,9 +1055,9 @@ class Hperm_test(object):
 
     def metric(self, y_true, y_pred):
         if self.eva_metric == 'mse':
-            metric_tmp = ((y_true - y_pred)**2).flatten()
+            metric_tmp = np.array((y_true - y_pred)**2).flatten()
         elif self.eva_metric == 'mae':
-            metric_tmp = abs(y_true - y_pred).flatten()
+            metric_tmp = np.array(abs(y_true - y_pred)).flatten()
         elif self.eva_metric == 'zero-one':
             label_pred = np.argmax(y_pred, 1)
             label_true = np.argmax(y_true, 1)

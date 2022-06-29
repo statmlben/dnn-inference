@@ -171,9 +171,9 @@ class split_test(object):
 
         """
         if self.eva_metric == 'mse':
-            metric_tmp = ((y_true - y_pred)**2).flatten()
+            metric_tmp = np.array((y_true - y_pred)**2).flatten()
         elif self.eva_metric == 'mae':
-            metric_tmp = abs(y_true - y_pred).flatten()
+            metric_tmp = np.array(abs(y_true - y_pred)).flatten()
         elif self.eva_metric == 'zero-one':
             label_pred = np.argmax(y_pred, 1)
             label_true = np.argmax(y_true, 1)
@@ -1055,16 +1055,16 @@ class Hperm_test(object):
 
     def metric(self, y_true, y_pred):
         if self.eva_metric == 'mse':
-            metric_tmp = ((y_true - y_pred)**2).flatten()
+            metric_tmp = np.array((y_true - y_pred)**2).flatten()
         elif self.eva_metric == 'mae':
-            metric_tmp = abs(y_true - y_pred).flatten()
+            metric_tmp = np.array(abs(y_true - y_pred)).flatten()
         elif self.eva_metric == 'zero-one':
             label_pred = np.argmax(y_pred, 1)
             label_true = np.argmax(y_true, 1)
             metric_tmp = 1. - 1.*(label_true == label_pred)
         elif self.eva_metric == 'cross-entropy':
             label_true = np.argmax(y_true, 1)
-            metric_tmp = np.log(y_pred[range(len(y_pred)),label_true])
+            metric_tmp = -np.log(y_pred[range(len(y_pred)),label_true])
         else:
             metric_tmp = self.eva_metric(y_true, y_pred)
         return metric_tmp

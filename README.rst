@@ -44,7 +44,7 @@
 -----------------
 
 .. image:: ./logo/demo_result.png
-   :width: 800
+   :width: 600
 
 **dnn-inference** is able to provide an asymptotically valid `p-value` to examine if :math:`\mathcal{S}` is discriminative features to predict :math:`Y`.
 Specifically, the proposed testing is:
@@ -105,14 +105,5 @@ Reference
 Notebook
 ========
 
-
-MNIST dataset :download:`pdf <./docs/nb/MNIST_demo.ipynb>`
-
-Boston Housing Dataset
-----------------------
-
-.. toctree::
-    :maxdepth: 2
-
-    ./nb/Boston_house_prices.ipynb
-
+MNIST dataset: `Jupyter Notebook <https://dnn-inference.readthedocs.io/en/latest/nb/MNIST_demo.html>`_
+Boston house prices dataset: `Jupyter Notebook <https://dnn-inference.readthedocs.io/en/latest/nb/Boston_house_prices.html>`_
