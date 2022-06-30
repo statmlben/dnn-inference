@@ -70,7 +70,7 @@ Installation
 Dependencies
 ------------
 
-``dnn-inference`` requires: **Python>=3.8** + [pip libs](./requirements.txt)
+``dnn-inference`` requires: **Python>=3.8** + `./requirements.txt`
 
 .. code:: bash
 
