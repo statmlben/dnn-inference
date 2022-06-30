@@ -106,4 +106,5 @@ Notebook
 ========
 
 MNIST dataset: `Jupyter Notebook <https://dnn-inference.readthedocs.io/en/latest/nb/MNIST_demo.html>`_
+
 Boston house prices dataset: `Jupyter Notebook <https://dnn-inference.readthedocs.io/en/latest/nb/Boston_house_prices.html>`_

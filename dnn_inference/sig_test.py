@@ -760,7 +760,7 @@ class split_test(object):
         P_value, P_value_cv = [], []
         
         for k in range(len(self.inf_feats)):
-            print(" %s for %d-th Hypothesis ".center(70, '=') %(test_params['split'], k))
+            print(" %s test for %d-th Hypothesis ".center(70, '=') %(test_params['split'], k))
             ## initialize the models and learning rates
             self.reset_model()
             test_params = test_params_org
