@@ -12,7 +12,7 @@ import time
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.optimizers import Adam, SGD
 import argparse
-import emoji
+import emoji 
 
 def load_data():
     np.random.seed(0)
