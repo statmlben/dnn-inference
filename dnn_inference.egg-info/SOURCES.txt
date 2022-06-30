@@ -1,8 +1,12 @@
+LICENSE
 README.rst
 setup.cfg
 setup.py
-dnn_inference/BBoxTest.py
+dnn_inference/BBox_adaTest.py
 dnn_inference/__init__.py
+dnn_inference/base.py
+dnn_inference/old_funs.py
+dnn_inference/sig_test.py
 dnn_inference.egg-info/PKG-INFO
 dnn_inference.egg-info/SOURCES.txt
 dnn_inference.egg-info/dependency_links.txt

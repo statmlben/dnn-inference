@@ -101,9 +101,10 @@ Reference
          primaryClass={stat.ML}
    }
 
+
 Notebook
 ========
 
-- **MNIST dataset**: `Jupyter Notebook <https://dnn-inference.readthedocs.io/en/latest/nb/MNIST_demo.html>`_
+- **MNIST dataset**: `Notebook1 <https://dnn-inference.readthedocs.io/en/latest/nb/MNIST_demo.html>`_
 
-- **Boston house prices dataset**: `Jupyter Notebook <https://dnn-inference.readthedocs.io/en/latest/nb/Boston_house_prices.html>`_
+- **Boston house prices dataset**: `Notebook2 <https://dnn-inference.readthedocs.io/en/latest/nb/Boston_house_prices.html>`_
