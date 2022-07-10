@@ -9,7 +9,7 @@ scipy==1.8.1
 seaborn==0.11.2
 setuptools==59.6.0
 tensorflow==2.9.1
-Babel==2.8.0
+Babel==2.9.1
 imagesize==1.2.0
 readme-renderer==26.0
 Sphinx>=3.1.2
