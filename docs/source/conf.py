@@ -15,10 +15,11 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import hachibee_sphinx_theme
+import sphinx.apidoc
 # -- Project information -----------------------------------------------------
 
 project = 'dnn-inference'
-copyright = '2021, Ben Dai'
+copyright = '2022, Ben Dai'
 author = 'Ben Dai'
 # The full version, including alpha/beta/rc tags
 # release = '0.10'
