@@ -15,7 +15,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import hachibee_sphinx_theme
-import sphinx.apidoc
+# import sphinx.apidoc
 # -- Project information -----------------------------------------------------
 
 project = 'dnn-inference'
