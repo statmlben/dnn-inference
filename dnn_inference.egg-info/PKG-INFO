@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: dnn-inference
-Version: 0.15
+Version: 0.16
 Summary: Dnn-Inference is a Python module for hypothesis testing based on deep neural networks.
 Home-page: https://github.com/statmlben/dnn-inference
 Author: Ben Dai
@@ -12,7 +12,7 @@ License-File: LICENSE
 
 .. dnn-inference documentation master file
 
-🔬 dnn-inference: significance tests of feature relevance for a black-box model
+🔬 dnn-inf: significance tests of feature relevance for a black-box model
 ===============================================================================
 
 .. -*- mode: rst -*-
@@ -82,7 +82,7 @@ Installation
 Dependencies
 ------------
 
-``dnn-inference`` requires: **Python>=3.8** + [pip libs](./requirements.txt)
+``dnn-inference`` requires: **Python>=3.8** + `requirements.txt <./requirements.txt>`_
 
 .. code:: bash
 

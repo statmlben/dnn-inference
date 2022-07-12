@@ -1,6 +1,6 @@
 .. dnn-inference documentation master file
 
-🔬 dnn-inference: significance tests of feature relevance for a black-box model
+🔬 dnn-inf: significance tests of feature relevance for a black-box model
 ===============================================================================
 
 .. -*- mode: rst -*-
@@ -31,7 +31,7 @@
 .. image:: ./logo/logo_header.png
    :width: 900
 
-**dnn-inference** is a Python module for hypothesis testing based on black-box models, including **deep neural networks**. 
+**dnn-inf** is a Python module for hypothesis testing based on black-box models, including **deep neural networks**. 
 
 - GitHub repo: `https://github.com/statmlben/dnn-inference <https://github.com/statmlben/dnn-inference>`_
 - Documentation: `https://dnn-inference.readthedocs.io <https://dnn-inference.readthedocs.io/en/latest/>`_
