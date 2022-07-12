@@ -11,3 +11,4 @@ numpy
 sklearn
 scipy
 matplotlib
+emoji==1.7.0

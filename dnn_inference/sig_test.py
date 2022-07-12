@@ -21,7 +21,7 @@ import os
 from scipy.optimize import brentq
 from copy import deepcopy
 import time, datetime
-from base import comb_p_value, size_fun
+from .base import comb_p_value, size_fun
 import emoji 
 
 class split_test(object):

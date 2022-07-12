@@ -77,13 +77,12 @@ Reference
 
 .. code:: bib
 
-   @misc{dai2021significance,
-         title={Significance tests of feature relevance for a blackbox learner},
-         author={Ben Dai and Xiaotong Shen and Wei Pan},
-         year={2021},
-         eprint={2103.04985},
-         archivePrefix={arXiv},
-         primaryClass={stat.ML}
+   @article{dai2022significance,
+   title={Significance Tests of Feature Relevance for a Black-Box Learner},
+   author={Dai, Ben and Shen, Xiaotong and Pan, Wei},
+   journal={IEEE Transactions on Neural Networks and Learning Systems},
+   year={2022},
+   publisher={IEEE}
    }
 
 📒 Contents
