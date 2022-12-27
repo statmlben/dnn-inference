@@ -7,5 +7,5 @@ pandas==1.4.3
 scikit_learn==1.1.1
 scipy==1.8.1
 seaborn==0.11.2
-setuptools==59.6.0
+setuptools==65.5.1
 tensorflow==2.9.1
