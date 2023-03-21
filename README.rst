@@ -47,7 +47,7 @@
 
 **dnn-inference** is able to provide an asymptotically valid `p-value` to examine if $S$ is discriminative features to predict $Y$.
 Specifically, the proposed testing is:
-$$H_0: R(f^*) - R_{S}(g^*) = 0, \ versus \ H_a: R(f^*) - R_{S}(g^*) < 0,$$
+$$H_0: R(f^*) - R_{S}(g^*) = 0,   H_a: R(f^*) - R_{S}(g^*) < 0,$$
 where $X_S$ is a collection of hypothesized features, $R$ and $R_S$ are risk functions with/without the hypothesized features $X_S$, 
 and $f^*$ and $g^*$ are population minimizers on $R$ and $R_S$ respectively. 
 The proposed test just considers the difference between the best predictive scores with/without hypothesized features. 
