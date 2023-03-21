@@ -53,7 +53,7 @@ and $f^*$ and $g^*$ are population minimizers on $R$ and $R_S$ respectively.
 The proposed test just considers the difference between the best predictive scores with/without hypothesized features. 
 Please check more details in our paper `arXiv:2103.04985 <https://arxiv.org/abs/2103.04985>`_.
 
-- When `log-likelihood` is used as a loss function, then the test is equivalent to a conditional independence test: `$Y \perp X_{S} | X_{S^c}$`. 
+- When `log-likelihood` is used as a loss function, then the test is equivalent to a conditional independence test: `$Y indep X_{S} | X_{S^c}$`. 
 - Only `a small number of fitting` on neural networks is required, and the number can be as small as 1.
 - Asymptotically Type I error control and power consistency.
 
