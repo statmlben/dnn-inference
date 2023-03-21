@@ -39,29 +39,28 @@
 - Open Source: `MIT license <https://opensource.org/licenses/MIT>`_
 - Paper: `arXiv:2103.04985 <https://arxiv.org/abs/2103.04985>`_
 
+🎯 What We Can Do
+-----------------
 
-.. 🎯 What We Can Do
-.. -----------------
+.. image:: ./logo/demo_result.png
+   :width: 600
 
-.. .. image:: ./logo/demo_result.png
-..    :width: 600
+**dnn-inference** is able to provide an asymptotically valid `p-value` to examine if :math:`\mathcal{S}` is discriminative features to predict :math:`Y`.
+Specifically, the proposed testing is:
 
-.. **dnn-inference** is able to provide an asymptotically valid `p-value` to examine if :math:`\mathcal{S}` is discriminative features to predict :math:`Y`.
-.. Specifically, the proposed testing is:
+.. math::
 
+   H_0: R(f^*) - R_{\mathcal{S}}(g^*) = 0, \quad \text{versus} \quad H_a: R(f^*) - R_{\mathcal{S}}(g^*) < 0,
 
-..    H_0: R(f^*) - R_{\mathcal{S}}(g^*) = 0, \quad \text{versus} \quad H_a: R(f^*) - R_{\mathcal{S}}(g^*) < 0,
+where :math:`\mathcal{S}` is a collection of hypothesized features, 
+:math:`R` and :math:`R_{\mathcal{S}}` are risk functions with/without the hypothesized features :math:`\mathbf{X}_{\mathcal{S}}`, 
+and :math:`f^*` and :math:`g^*` are population minimizers on :math:`R` and :math:`R_{\mathcal{S}}` respectively. 
+The proposed test just considers the difference between the best predictive scores with/without hypothesized features. 
+Please check more details in our paper `arXiv:2103.04985 <https://arxiv.org/abs/2103.04985>`_.
 
-
-.. where :math:`\mathcal{S}` is a collection of hypothesized features, 
-.. :math:`R` and :math:`R_{\mathcal{S}}` are risk functions with/without the hypothesized features :math:`\mathbf{X}_{\mathcal{S}}`, 
-.. and :math:`f^*` and :math:`g^*` are population minimizers on :math:`R` and :math:`R_{\mathcal{S}}` respectively. 
-.. The proposed test just considers the difference between the best predictive scores with/without hypothesized features. 
-.. Please check more details in our paper `arXiv:2103.04985 <https://arxiv.org/abs/2103.04985>`_.
-
-.. - When `log-likelihood` is used as a loss function, then the test is equivalent to a conditional independence test: :math:`Y \perp X_{\mathcal{S}} | X_{\mathcal{S}^c}`. 
-.. - Only `a small number of fitting` on neural networks is required, and the number can be as small as 1.
-.. - Asymptotically Type I error control and power consistency.
+- When `log-likelihood` is used as a loss function, then the test is equivalent to a conditional independence test: :math:`Y \perp X_{\mathcal{S}} | X_{\mathcal{S}^c}`. 
+- Only `a small number of fitting` on neural networks is required, and the number can be as small as 1.
+- Asymptotically Type I error control and power consistency.
 
 
 Installation
