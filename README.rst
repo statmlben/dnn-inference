@@ -48,9 +48,9 @@
 **dnn-inference** is able to provide an asymptotically valid `p-value` to examine if :math:`\mathcal{S}` is discriminative features to predict :math:`Y`.
 Specifically, the proposed testing is:
 
-.. math::
-
+$$
    H_0: R(f^*) - R_{\mathcal{S}}(g^*) = 0, \quad \text{versus} \quad H_a: R(f^*) - R_{\mathcal{S}}(g^*) < 0,
+$$
 
 where :math:`\mathcal{S}` is a collection of hypothesized features, 
 :math:`R` and :math:`R_{\mathcal{S}}` are risk functions with/without the hypothesized features :math:`\mathbf{X}_{\mathcal{S}}`, 
