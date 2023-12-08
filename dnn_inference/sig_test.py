@@ -751,7 +751,7 @@ class split_test(object):
         test_params=self.update_test_params(test_params)
         tune_params=self.update_tune_params(tune_params)
 
-        test_params_org = tune_params.copy()
+        test_params_org = test_params.copy()
         ## save initial weights
         self.save_init()
         ## reset learning rate
@@ -807,6 +807,8 @@ class split_test(object):
                 for col in range(cols):
                     X_mask_tmp = np.nan*np.ones(X_demo.shape)
                     X_mask_tmp = self.mask_cov(X_mask_tmp, k=col)[0]
+                    #if X.shape[-1]==3:
+                    #    X_mask_tmp = X_mask_tmp[:,:,0] 
                     ax = fig.add_subplot(spec[row, col])
                     im1 = ax.imshow(X_demo[row], vmin=0, vmax=1, **plt_params)
                     ax.axis('off')
