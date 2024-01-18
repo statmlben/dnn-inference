@@ -3,7 +3,7 @@
 .. raw:: html
 
     <embed>
-        <a href="https://github.com/statmlben/dnn-inference"><img src="logo/logo_c.png" align="right" height="138" /></a>
+        <a href="https://github.com/statmlben/dnn-inference"><img src="logo/logo_c.png" align="right" height="150" /></a>
     </embed>
 
 🔬 dnn inference
