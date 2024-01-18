@@ -34,8 +34,8 @@
 .. |downloads_month| image:: https://pepy.tech/badge/dnn-inference/month
 .. _downloads_month: https://pepy.tech/project/dnn-inference
 
-.. image:: ./logo/logo_header.png
-   :width: 900
+.. .. image:: ./logo/logo_header.png
+..    :width: 900
 
 **dnn-inf** is a Python module for hypothesis testing based on black-box models, including **deep neural networks**. 
 
