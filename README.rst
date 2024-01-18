@@ -1,7 +1,7 @@
 .. dnn-inference documentation master file
 
-🔬 dnn-inf: significance tests of feature relevance for a black-box model
-===============================================================================
+🔬 dnn-inf: significance tests of feature relevance for a black-box model <a href="https://github.com/statmlben/dnn-inference"><img src="logo/logo_c.png" align="right" height="138" /></a>
+============================================================================================================================================================================================
 
 .. -*- mode: rst -*-
 
@@ -41,9 +41,6 @@
 
 🎯 What We Can Do
 -----------------
-
-.. image:: ./logo/demo_result.png
-   :width: 600
 
 **dnn-inference** is able to provide an asymptotically valid `p-value` to examine if $S$ is discriminative features to predict $Y$.
 Specifically, the proposed testing is:
