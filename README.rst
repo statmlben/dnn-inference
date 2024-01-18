@@ -1,13 +1,13 @@
 .. dnn-inference documentation master file
 
-🔬 dnn-inf: significance tests of feature relevance for a black-box model 
-==========================================================================
-
 .. raw:: html
 
     <embed>
         <a href="https://github.com/statmlben/dnn-inference"><img src="logo/logo_c.png" align="right" height="138" /></a>
     </embed>
+
+🔬 dnn inference
+==================
 
 .. -*- mode: rst -*-
 
