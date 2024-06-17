@@ -11,7 +11,7 @@
 
 .. -*- mode: rst -*-
 
-|PyPi|_ |Keras|_ |MIT|_ |Python3|_ |tensorflow|_ |downloads|_ |downloads_month|_
+|PyPi|_ |Keras|_ |MIT|_ |Python3|_ |tensorflow|_ |downloads|_
 
 .. |PyPi| image:: https://badge.fury.io/py/dnn-inference.svg
 .. _PyPi: https://pypi.org/project/dnn-inference/
@@ -30,9 +30,6 @@
 
 .. |downloads| image:: https://pepy.tech/badge/dnn-inference
 .. _downloads: https://pepy.tech/project/dnn-inference
-
-.. |downloads_month| image:: https://pepy.tech/badge/dnn-inference/month
-.. _downloads_month: https://pepy.tech/project/dnn-inference
 
 .. .. image:: ./logo/logo_header.png
 ..    :width: 900
